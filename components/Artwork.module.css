@@ -1,0 +1,21 @@
+.filters { display: flex; align-items: end; gap: 16px; flex-wrap: wrap; margin: 32px 0; }
+.filters > div { display: grid; gap: 8px; }
+.filters > div:first-child { flex: 1 1 280px; }
+.filters label { font-size: .9rem; }
+.filters input,.filters select { min-height: 44px; padding: 10px 12px; color: inherit; background: #fff; border: 1px solid #9ca8a4; border-radius: 4px; max-width: 100%; }
+.filters > a { padding-block: 12px; }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li { display: grid; grid-template-columns: 88px minmax(0,1fr) 160px; gap: 24px; align-items: center; padding-block: 24px; border-top: 1px solid #d9dddb; }
+.thumb { background: #e6e9e5; min-height: 66px; display: grid; place-items: center; font-size: .75rem; color: #46534f; }
+.thumb img { width: 100%; height: auto; display: block; }
+.title { min-width: 0; overflow-wrap: anywhere; } .title a { font-size: 1.15rem; font-weight: 600; display: inline-block; padding-block: 6px; } .title p { margin: 4px 0 0; }
+.state { display: grid; gap: 8px; font-size: .9rem; }
+.detail { display: grid; grid-template-columns: minmax(0,1fr) minmax(300px,.8fr); gap: 48px; align-items: start; }
+.preview { display: grid; gap: 20px; background: #e6e9e5; padding: 24px; min-height: 240px; align-items: center; }
+.preview img { width: 100%; height: auto; object-fit: contain; max-height: 70vh; }
+.metadata { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; margin-block: 32px; }
+.metadata dd { overflow-wrap: anywhere; }
+.publication h2,.history h2 { font-size: 1.35rem; margin: 0 0 16px; }
+.publication { border-block: 1px solid #d9dddb; padding-block: 24px; }
+.history { margin-top: 40px; } .history ol { list-style: none; padding: 0; } .history li { padding-block: 16px; border-bottom: 1px solid #d9dddb; font-size: .9rem; font-variant-numeric: tabular-nums; } .history p { margin: 6px 0 0; overflow-wrap: anywhere; }
+@media(max-width:700px) { .list li { grid-template-columns: 64px minmax(0,1fr); gap: 16px; } .state { grid-column: 2; grid-template-columns: repeat(2,minmax(0,1fr)); } .detail { grid-template-columns: 1fr; gap: 28px; } .filters > div { flex: 1 1 140px; } .filters > div:first-child { flex-basis: 100%; } }
