@@ -1,0 +1,7 @@
+"use client";
+import {MenuItem,Stack,TextField} from "@mui/material";
+import type {EditorialBlock} from "@/lib/editorial/media";
+type Block=Extract<EditorialBlock,{type:"textMedia"}>;
+export function TextMediaFields({value,onChange}:{value:Block;onChange(value:Block):void}){
+ return <Stack spacing={2}>{value.secondMedia&&<TextField select label="Disposition des deux médias sur ordinateur" value={value.mediaLayout??"columns"} onChange={event=>onChange({...value,mediaLayout:event.target.value as "columns"|"rows"})}><MenuItem value="columns">Côte à côte</MenuItem><MenuItem value="rows">L’un au-dessus de l’autre</MenuItem></TextField>}<TextField select label="Composition" value={value.layout} onChange={event=>onChange({...value,layout:event.target.value as Block["layout"]})}><MenuItem value="split">Texte et média · 50/50</MenuItem><MenuItem value="successive">Deux panneaux plein écran successifs</MenuItem></TextField><TextField select label="Position du média sur ordinateur" value={value.desktopMediaSide} onChange={event=>onChange({...value,desktopMediaSide:event.target.value as Block["desktopMediaSide"]})}><MenuItem value="left">À gauche</MenuItem><MenuItem value="right">À droite</MenuItem></TextField><TextField select label="Ordre sur mobile" value={value.mobileMediaOrder} onChange={event=>onChange({...value,mobileMediaOrder:event.target.value as Block["mobileMediaOrder"]})}><MenuItem value="before">Média avant le texte</MenuItem><MenuItem value="after">Texte avant le média</MenuItem></TextField></Stack>;
+}

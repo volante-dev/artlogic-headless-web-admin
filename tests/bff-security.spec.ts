@@ -1,6 +1,6 @@
 import {expect,test} from "@playwright/test";
 async function session(page:import("@playwright/test").Page){
-  await page.goto("/");await page.getByRole("link",{name:/se connecter/i}).click();
+  await page.goto("/");await page.getByRole("button",{name:/se connecter/i}).click();
   await page.getByRole("button",{name:/continuer avec le compte de test/i}).click();
   await expect(page.getByRole("button",{name:/déconnexion/i})).toBeVisible();
 }
@@ -9,6 +9,8 @@ test("ignores forged internal headers and limits operations",async({page,context
   expect(anonymous.status()).toBe(401);
   await session(page);
   expect((await page.request.get("/api/session",{headers:{"x-bff-key":"forged","x-admin-session":"forged"}})).status()).toBe(200);
+  expect((await page.request.put("/api/site-content",{data:{}})).status()).toBe(405);
+  expect((await page.request.get("/api/site-logos")).status()).toBe(405);
   expect((await page.request.put("/api/session",{data:{}})).status()).toBe(405);
   expect((await page.request.get("/api/proxy?url=https://example.invalid")).status()).toBe(404);
   const csrf=(await context.cookies()).find(c=>c.name.endsWith("artlogic_csrf"))!.value;

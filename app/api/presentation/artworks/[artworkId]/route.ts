@@ -1,0 +1,3 @@
+import {presentationHandler} from "@/lib/bff/presentation";
+export const GET=presentationHandler("artworkRead");
+export const PUT=presentationHandler("artworkSave");

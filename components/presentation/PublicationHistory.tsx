@@ -1,0 +1,11 @@
+"use client";
+import {useState} from "react";
+import {Button,Dialog,DialogActions,DialogContent,DialogTitle,List,ListItem,Stack,Typography} from "@mui/material";
+import {usePresentationDraft} from "./usePresentationDraft";
+import type {Release} from "./types";
+export function PublicationHistory(){const state=usePresentationDraft(),[selected,setSelected]=useState<Release|null>(null);
+ async function restore(){if(!selected)return;try{await state.mutate("/publications/"+selected.id+"/restore",{replaceDraft:true});await state.reload();state.confirmPublication();state.setStatus("Restauration confirmée. Une nouvelle version est publiée et le brouillon a été remplacé.");setSelected(null);}catch{/* Shared feedback preserves the selected version. */}}
+ return <section><Typography variant="h2" component="h2">Historique des publications</Typography><Typography color="text.secondary">Les dix dernières versions peuvent être restaurées si elles restent compatibles.</Typography><List disablePadding>{state.history.map(release=><ListItem key={release.id} divider disableGutters sx={{py:2,justifyContent:"space-between",gap:2,flexWrap:"wrap"}}><Stack><Typography sx={{fontWeight:600}}>Version {release.sequence}{release.active?" · en ligne":""}</Typography><Typography variant="body2" color="text.secondary">{new Date(release.createdAt).toLocaleString("fr-FR")} · {release.authorLabel}</Typography></Stack><Button onClick={()=>setSelected(release)} disabled={!release.compatible||state.busy||state.uncertain}>Restaurer la version {release.sequence}</Button></ListItem>)}</List>{!state.history.length&&<Typography>Aucune publication. Prévisualisez le brouillon, puis publiez votre première version.</Typography>}
+ <Dialog open={Boolean(selected)} onClose={()=>!state.busy&&setSelected(null)} aria-labelledby="restore-title"><DialogTitle id="restore-title">Restaurer la version {selected?.sequence} ?</DialogTitle><DialogContent>Cette action remplacera le brouillon enregistré et publiera immédiatement une nouvelle version. Le logo, les textes de navigation et la visibilité des œuvres restent inchangés.</DialogContent><DialogActions><Button disabled={state.busy} onClick={()=>setSelected(null)}>Annuler</Button><Button disabled={state.busy} onClick={restore} variant="contained">Restaurer et publier</Button></DialogActions></Dialog>
+ </section>;
+}

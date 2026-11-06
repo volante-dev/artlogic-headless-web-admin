@@ -1,0 +1,30 @@
+.editor { min-width: 0; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: end; margin-block: 24px 32px; }
+.toolbar label { display: flex; flex-direction: column; gap: 8px; }
+.toolbar select { min-height: 44px; padding: 8px 12px; background: var(--admin-field); color: inherit; max-width: 100%; }
+.group { padding: 24px 0 0; margin: 40px 0; min-width: 0; border: 0; border-top: 1px solid var(--admin-divider); }
+.group legend { padding: 0 16px 0 0; font-size: 1.35rem; font-weight: 600; }
+.translation { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 24px; padding-block: 20px; border-bottom: 1px solid var(--admin-divider); }
+.reference,.input { min-width: 0; overflow-wrap: anywhere; }
+.reference p { white-space: pre-wrap; }
+.input label { display: block; margin-bottom: 8px; }
+.input textarea { display: block; width: 100%; min-height: 64px; resize: vertical; font: inherit; line-height: 1.5; padding: 12px; border: 1px solid var(--admin-border); border-radius: 3px; color: var(--admin-ink); background: var(--admin-field); caret-color: var(--admin-primary); }
+.input textarea[aria-invalid="true"] { border-color: var(--admin-error); }
+.hint { font-size: .9rem; color: var(--admin-muted); margin: 8px 0; }
+.fieldError,.error { color: var(--admin-error); }
+.error { padding: 16px; border: 1px solid var(--admin-error); overflow-wrap: anywhere; }
+.comparison { padding: 24px; border: 1px solid var(--admin-border); margin-block: 24px; overflow-wrap: anywhere; }
+.comparison ul { padding-left: 20px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-block: 24px; }
+.actions button { min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+@media(max-width:700px) { .translation { grid-template-columns: minmax(0,1fr); gap: 12px; } .group { margin-block: 32px; } .comparison { padding: 16px; } }
+
+.logoInput { margin-block: 20px; min-width: 0; }
+.logoInput label { display: block; margin-bottom: 8px; }
+.logoInput input { max-width: 100%; min-height: 44px; padding: 8px 0; }
+
+.group { background:var(--admin-paper); padding:24px; margin:32px 0; border:0; border-radius:16px; box-shadow:var(--admin-raised); }
+.group legend { font-family:inherit; font-weight:500; padding:0 8px; font-size:1.5rem; }
+.comparison { background:var(--admin-control); border:0; border-radius:8px; }
+.actions button+button { background:transparent; color:var(--admin-ink); border-color:var(--admin-border); }
+@media(max-width:600px) { .group { padding:20px 16px; } }

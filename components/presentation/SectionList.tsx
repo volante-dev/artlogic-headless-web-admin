@@ -1,0 +1,5 @@
+"use client";
+import {Box,Button,Stack,Typography} from "@mui/material";
+import {sectionLabels} from "./page-editor";
+import type {Page} from "./types";
+export function SectionList({page,selected,onSelect,locale}:{page:Page;selected:string;onSelect:(id:string)=>void;locale:string}){return <Box component="section" aria-label="Sections de la page"><Typography component="h2" variant="h2" sx={{mb:2}}>Sections · {page.sections.length}/30</Typography>{!page.sections.length&&<Typography>Cette page est vide. Ajoutez une section ; le site affichera sinon son état vide.</Typography>}<Stack component="ol" spacing={1} sx={{p:0,m:0,listStyle:"none"}}>{page.sections.map((section,index)=>{const heading="heading" in section.props?section.props.heading?.[locale]:null;return <Box component="li" key={section.id}><Button fullWidth variant={selected===section.id?"contained":"outlined"} aria-pressed={selected===section.id} onClick={()=>onSelect(section.id)} sx={{textAlign:"left",justifyContent:"start",p:1.5,whiteSpace:"normal"}}>{index+1}. {sectionLabels[section.type]}{heading?" · "+heading:""}{section.hidden?" · masquée":""}</Button></Box>;})}</Stack></Box>;}

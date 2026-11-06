@@ -11,3 +11,6 @@ playwright-report
 coverage
 .agents
 .codex
+Dockerfile*
+.dockerignore
+build

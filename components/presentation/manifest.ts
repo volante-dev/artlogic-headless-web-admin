@@ -1,0 +1,12 @@
+import type {Capabilities,PageKey,Theme} from "./types";
+export type ColorRole=keyof Theme["colors"];
+export type TypeRole=keyof Theme["typography"];
+export interface EditorField{id:string;path:string;kind:"shortText"|"text"|"localizedText"|"link"|"image"|"video"|"artworkSelection"|"articleSelection"|"taxonomySelection"|"formSelection"|"enum"|"boolean"|"number"|"list";label:{fr:string;en:string};maxLength?:number;maxItems?:number;minimum?:number;maximum?:number;values?:string[];fields?:EditorField[];requiredForPublication?:boolean}
+export interface ContrastPair{foreground:ColorRole;background:ColorRole;role:TypeRole|"control";mediaOverlay?:number}
+export interface SectionDefinition{type:string;schemaVersion:1;variants:string[];allowedPages:PageKey[];requiredOn:PageKey[];maxPerPage?:number;fields:EditorField[];contrastPairs:ContrastPair[];propsSchema:Record<string,unknown>}
+export interface Manifest{schemaVersion:1;profileId:string;componentContractVersion:1;sections:SectionDefinition[];fonts:{id:string;label:string;faces:{weight:number;style:"normal"|"italic"}[]}[];theme:{colorRoles:ColorRole[];typographyRoles:TypeRole[];base:Theme;contrastPairs:ContrastPair[]};presets:{id:string;label:{fr:string;en:string};theme:Theme}[];defaultPreset:string}
+// The authenticated endpoint validates its manifest before returning capabilities.
+export function editorManifest(caps:Capabilities):Manifest{return caps.manifest as unknown as Manifest;}
+export const colorLabels:Record<ColorRole,string>={background:"Fond de page",surface:"Fond des contenus",mutedSurface:"Fond secondaire",inverseSurface:"Fond sombre",text:"Texte principal",mutedText:"Texte secondaire",inverseText:"Texte sur fond sombre",disabledText:"Texte désactivé",accent:"Couleur d’accent",onAccent:"Texte sur l’accent",link:"Lien",linkHover:"Lien au survol",border:"Bordure",focus:"Indicateur de focus",selection:"Sélection de texte",onSelection:"Texte sélectionné",error:"Erreur",onError:"Texte d’erreur",success:"Succès",onSuccess:"Texte de succès",warning:"Avertissement",onWarning:"Texte d’avertissement"};
+export const typeLabels:Record<TypeRole,string>={h1:"Grand titre",h2:"Titre de section",h3:"Sous-titre",body:"Texte courant",caption:"Légende",navigation:"Navigation",button:"Bouton"};
+export const typographyBounds:Record<TypeRole,readonly[number,number]>={h1:[1.5,6],h2:[1.25,4],h3:[1.125,3],body:[1,1.5],caption:[.75,1.125],navigation:[.875,1.25],button:[.875,1.25]};

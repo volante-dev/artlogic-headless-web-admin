@@ -1,0 +1,7 @@
+"use client";
+import {Button,FormControlLabel,Checkbox,Stack,Typography} from "@mui/material";
+import {LocalizedField} from "./LocalizedField";
+export function FooterText({label,value,locale,onChange,max=160}:{label:string;value:Record<string,string|null>;locale:string;onChange:(v:Record<string,string|null>)=>void;max?:number}){return <LocalizedField field={{id:"footerText",path:"footerText",kind:"localizedText",label:{fr:label,en:label},maxLength:max}} value={value} locale={locale} onChange={onChange}/>;}
+export function FooterRowActions({enabled,onEnabled,index,total,onMove,onRemove}:{enabled:boolean;onEnabled:(v:boolean)=>void;index:number;total:number;onMove:(delta:number)=>void;onRemove:()=>void}){return <Stack direction="row" useFlexGap spacing={1} sx={{flexWrap:"wrap",alignItems:"center"}}><FormControlLabel control={<Checkbox checked={enabled} onChange={e=>onEnabled(e.target.checked)}/>} label="Afficher"/><Button disabled={index===0} onClick={()=>onMove(-1)}>Monter</Button><Button disabled={index===total-1} onClick={()=>onMove(1)}>Descendre</Button><Button color="error" onClick={onRemove}>Supprimer</Button></Stack>;}
+export function FooterCount({label,count,max}:{label:string;count:number;max:number}){return <Typography variant="body2" color="text.secondary">{label} · {count} / {max}</Typography>;}
+export function moveFooterItem<T>(items:T[],index:number,delta:number){const result=[...items],target=index+delta;if(target<0||target>=items.length)return result;[result[index],result[target]]=[result[target]!,result[index]!];return result;}

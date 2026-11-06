@@ -1,7 +1,7 @@
 import { expect,test } from "@playwright/test";
 async function login(page:import("@playwright/test").Page){
   await page.goto("/");
-  await page.getByRole("link",{name:/se connecter/i}).click();
+  await page.getByRole("button",{name:/se connecter/i}).click();
   await page.getByRole("button",{name:/continuer avec le compte de test/i}).click();
   await expect(page.getByRole("button",{name:/déconnexion/i})).toBeVisible();
 }
@@ -18,7 +18,7 @@ test("SSO creates opaque protected cookies and logout clears the local session",
   const response=await page.request.get("/api/session");expect(response.status()).toBe(200);
   expect(await response.text()).not.toMatch(/access_token|refresh_token|accessToken|refreshToken/);
   await page.getByRole("button",{name:/déconnexion/i}).click();
-  await expect(page.getByRole("link",{name:/se connecter/i})).toBeVisible();
+  await expect(page.getByRole("button",{name:/se connecter/i})).toBeVisible();
   expect((await context.cookies()).some(c=>c.name.endsWith("artlogic_admin_session"))).toBe(false);
 });
 test("callback failure removes the temporary transaction cookie",async({page,context})=>{

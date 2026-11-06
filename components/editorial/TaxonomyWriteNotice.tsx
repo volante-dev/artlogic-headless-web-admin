@@ -1,0 +1,10 @@
+"use client";
+import {ArticleUsageLinks} from "./ArticleUsageLinks";
+import {articleKindDescriptors} from "@/lib/editorial/article-kind";
+import {Alert,Button,Stack} from "@mui/material";
+import {articleErrorMessage} from "@/lib/editorial/client";
+import type {useTaxonomyWrite} from "./useTaxonomyWrite";
+export function TaxonomyWriteNotice({state,existing}:{state:ReturnType<typeof useTaxonomyWrite>;existing:boolean}){
+ const current=state.comparison?.data;
+ return <>{Boolean(state.error)&&<Alert severity="error">{articleErrorMessage(state.error)}<ArticleUsageLinks error={state.error}/>{state.blocked&&existing&&<Button disabled={state.busy} onClick={()=>void state.compare()}>Relire la version enregistrée</Button>}{state.blocked&&!existing&&<p>Fermez ce formulaire et recherchez l’entrée dans la liste avant de recommencer.</p>}</Alert>}{current&&<section className="editorial-taxonomy-comparison" aria-label="Version enregistrée"><h3>Version enregistrée</h3><p>Votre saisie reste dans les champs. Comparez-la avant de poursuivre.</p>{"author" in current&&current.author?<><p>{current.author.name}</p>{Object.entries(current.author.bio??{}).map(([code,bio])=><p key={code}>{code.toUpperCase()} · {bio}</p>)}<p>{current.author.link}</p></>:Object.entries(current.labels).map(([code,label])=><p key={code}>{code.toUpperCase()} · {label}</p>)}{"hierarchical" in current&&<dl><dt>Rubriques</dt><dd>{current.allowedArticleKinds.map(kind=>articleKindDescriptors[kind].label).join(" · ")}</dd><dt>Hiérarchie</dt><dd>{current.hierarchical?"Autorisée":"Désactivée"}</dd><dt>Ajout depuis l’éditeur</dt><dd>{current.inlineCreationLocked?"Verrouillé":"Autorisé"}</dd><dt>Filtre public</dt><dd>{current.publicFilter?"Activé":"Désactivé"}</dd><dt>Descendants dans les filtres</dt><dd>{current.includeChildren?"Inclus":"Exclus"}</dd></dl>}<p>Ordre d’affichage : {current.position}</p><Stack direction="row" useFlexGap sx={{flexWrap:"wrap",gap:1}}><Button onClick={state.rebase}>Conserver ma saisie pour le prochain enregistrement</Button></Stack></section>}</>;
+}

@@ -1,5 +1,6 @@
 "use client";
 import {useState} from "react";
+import {AdminIcon} from "./AdminIcon";
 import {useRouter} from "next/navigation";
 export function LogoutButton({csrfCookie}:{csrfCookie:string}){
   const [pending,setPending]=useState(false),[error,setError]=useState("");
@@ -12,5 +13,5 @@ export function LogoutButton({csrfCookie}:{csrfCookie:string}){
       if(response.status!==204)throw new Error();router.replace("/");router.refresh();
     }catch{setError("La déconnexion n’a pas pu être confirmée. Réessayez.");setPending(false);}
   }
-  return <div><button type="button" onClick={logout} disabled={pending}>{pending?"Déconnexion…":"Déconnexion"}</button>{error&&<p role="alert">{error}</p>}</div>;
+  return <div className="logout-control"><button className="logout-button" type="button" onClick={logout} disabled={pending}><AdminIcon name="logout"/><span>{pending?"Déconnexion…":"Déconnexion"}</span></button>{error&&<p role="alert">{error}</p>}</div>;
 }

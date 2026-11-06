@@ -1,0 +1,16 @@
+"use client";
+import {useEffect,useState} from "react";
+import {Alert,Button} from "@mui/material";
+import {formFetch,FormRequestError} from "@/lib/forms/client";
+import {receptionError,receptionDate} from "@/lib/forms/reception-client";
+import type {components} from "@/lib/forms/contract-types.generated";
+import styles from "./reception.module.css";
+type ExportState=components["schemas"]["FormsExport"];
+export function SubmissionExport({selection,csrfCookie,disabled=false}:{selection:components["schemas"]["FormsExportInput"]["selection"];csrfCookie:string;disabled?:boolean}){
+ const [state,setState]=useState<ExportState|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(""),[pollRevision,setPollRevision]=useState(0);
+ useEffect(()=>{if(state?.state!=="pending")return;const controller=new AbortController();let timer:ReturnType<typeof setTimeout>|undefined;const poll=async()=>{try{const next=await formFetch<ExportState>(["exports",state.id],{signal:AbortSignal.any([controller.signal,AbortSignal.timeout(15000)])});if(controller.signal.aborted)return;setState(next.data);if(next.data.state==="pending")timer=setTimeout(()=>void poll(),2000);}catch(error){if(!controller.signal.aborted){if(error instanceof FormRequestError&&error.status===404)setState(null);setError(error instanceof FormRequestError&&error.status===404?"Cet export a expiré. Relancez sa préparation.":receptionError(error));}}};timer=setTimeout(()=>void poll(),1200);return()=>{controller.abort();if(timer)clearTimeout(timer);};},[state?.id,state?.state,pollRevision]);
+ async function prepare(){setBusy(true);setError("");try{const result=await formFetch<ExportState>(["exports"],{method:"POST",body:{selection},csrfCookie});setState(result.data);}catch(error){setError(receptionError(error));}finally{setBusy(false);}}
+ async function download(){if(!state)return;setBusy(true);setError("");try{const result=await formFetch<components["schemas"]["FormsAccess"]>(["exports",state.id,"access"],{method:"POST",body:{},csrfCookie});window.location.assign(result.data.url);}catch(error){setError(receptionError(error));}finally{setBusy(false);}}
+ const failed=state?.state==="failed";
+ return <div><div className={styles.export}><Button variant="outlined" onClick={()=>void prepare()} disabled={disabled||busy||state?.state==="pending"}>{state?.state==="pending"?"Préparation de l’export…":failed?"Relancer l’export":"ids" in selection?"Exporter la sélection":"Exporter les résultats"}</Button>{state?.state==="ready"&&<><Button onClick={()=>void download()} disabled={busy}>Télécharger le CSV</Button><span className={styles.subtle}>Disponible jusqu’au {receptionDate(state.expiresAt)}.</span></>}{state?.state==="pending"&&<span className={styles.subtle} role="status">Le fichier sera disponible ici.</span>}</div>{failed&&<Alert severity="error">{state.errorCode==="form_export_too_large"?"L’export est trop volumineux. Réduisez la sélection avant de le relancer.":state.errorCode==="submission_deleted"?"Une demande a été supprimée. Cet export a été retiré.":"L’export n’a pas pu être préparé. Vous pouvez le relancer."}</Alert>}{error&&<Alert severity="error" action={state?.state==="pending"?<Button onClick={()=>{setError("");setPollRevision(value=>value+1);}}>Réessayer</Button>:undefined}>{error}</Alert>}</div>;
+}

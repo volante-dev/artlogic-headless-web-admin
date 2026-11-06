@@ -1,0 +1,16 @@
+"use client";
+import {useRef,useState} from "react";
+import {Alert,Button,Checkbox,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,FormControlLabel} from "@mui/material";
+import type {ContactState} from "../../lib/bff/contact";
+export function RetryConfirmation({inquiryId,state,etag,csrfCookie,onAccepted,onReload}:{inquiryId:string;state:ContactState;etag:string;csrfCookie:string;onAccepted:()=>Promise<void>;onReload:()=>Promise<void>}){
+ const [open,setOpen]=useState(false),[ack,setAck]=useState(false),[pending,setPending]=useState(false),[error,setError]=useState(""),intent=useRef<{key:string;etag:string;ack:boolean}|null>(null);
+ if(state!=="failed"&&state!=="uncertain")return null;
+ function begin(){intent.current=null;setAck(false);setError("");setOpen(true);}
+ async function confirm(){if(pending||state==="uncertain"&&!ack)return;setPending(true);setError("");intent.current??={key:crypto.randomUUID(),etag,ack};const action=intent.current;
+  try{const csrf=decodeURIComponent(document.cookie.split("; ").find(value=>value.startsWith(csrfCookie+"="))?.slice(csrfCookie.length+1)??"");const response=await fetch("/api/inquiries/"+inquiryId+"/retry",{method:"POST",headers:{"Content-Type":"application/json","X-CSRF-Token":csrf,"If-Match":action.etag,"Idempotency-Key":action.key},body:JSON.stringify({acknowledgeUncertain:action.ack}),cache:"no-store"});
+   if(response.status===202){setOpen(false);intent.current=null;await onAccepted();return;}
+   await onReload();if(response.status===412){setOpen(false);return;}if(response.status===401||response.status===403){setOpen(false);return;}if(response.status===409){setError("Cette confirmation ne peut pas être appliquée. L’état actuel a été relu ; vérifiez l’historique.");return;}throw new Error();
+  }catch{await onReload().catch(()=>{});setError("La relance n’a pas pu être confirmée. L’état a été relu. Réessayez cette même confirmation pour retrouver son résultat, ou fermez pour vérifier l’historique.");}finally{setPending(false);}
+ }
+ return <><Button variant="contained" onClick={begin}>Relancer la notification</Button><Dialog open={open} onClose={()=>{if(!pending)setOpen(false);}} aria-labelledby="retry-title" aria-describedby="retry-description"><DialogTitle id="retry-title">Relancer la notification ?</DialogTitle><DialogContent><DialogContentText id="retry-description">Une seule nouvelle tentative sera programmée pour cette demande. Cette action ne modifie pas sa date d’expiration.</DialogContentText>{state==="uncertain"&&<><Alert severity="warning" sx={{mt:3}}>Le serveur mail a peut-être déjà accepté cette notification. Une relance peut envoyer un doublon.</Alert><FormControlLabel sx={{mt:2}} control={<Checkbox checked={ack} disabled={pending} onChange={event=>setAck(event.target.checked)}/>} label="Je comprends le risque de doublon et confirme la relance."/></>}{error&&<Alert severity="error" sx={{mt:2}}>{error}</Alert>}</DialogContent><DialogActions><Button autoFocus disabled={pending} onClick={()=>setOpen(false)}>Annuler</Button><Button variant="contained" disabled={pending||state==="uncertain"&&!ack} onClick={()=>void confirm()}>{pending?"Programmation…":"Confirmer la relance"}</Button></DialogActions></Dialog></>;
+}

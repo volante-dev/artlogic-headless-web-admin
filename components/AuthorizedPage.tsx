@@ -1,3 +1,4 @@
+import {BindingConfirmation} from "./BindingConfirmation";
 import {connection} from "next/server";
 import Link from "next/link";
 import {backendJson,BffError} from "@/lib/bff/client";
@@ -15,9 +16,10 @@ export async function AuthorizedPage({render}:{render:(context:{csrfCookie:strin
   }catch(error){const status=error instanceof BffError?error.status:503;
     return <main id="contenu"><SessionNotice status={status} csrfCookie={csrfCookie} hasSession/></main>;
   }
+  if(admin.bindingConfirmation)return <BindingConfirmation siteName={stringValue(loadConfig(),"SITE_NAME")} version={admin.bindingConfirmation.version} csrfCookie={csrfCookie}/>;
   try{content=await render({csrfCookie});}catch(error){const status=error instanceof BffError?error.status:503;
     if(status===401||status===403)return <main id="contenu"><SessionNotice status={status} csrfCookie={csrfCookie} hasSession/></main>;
     content=<section><h1>{status===404?"Ressource introuvable":status===400?"Recherche invalide":"Contenu momentanément indisponible"}</h1><p role="alert">{status===404?"Cette ressource ne figure pas dans votre catalogue.":status===400?"Recommencez la recherche avec de nouveaux critères.":"Rechargez la page pour réessayer."}</p><Link prefetch={false} href="/">Revenir à l’accueil</Link></section>;
   }
-  return <AdminShell siteName={stringValue(loadConfig(),"SITE_NAME")} displayName={admin.displayName} csrfCookie={csrfCookie}>{content}</AdminShell>;
+  return <AdminShell formsEnabled={loadConfig().FORMS_ENABLED==="true"} editorialEnabled={loadConfig().EDITORIAL_ENABLED==="true"} siteName={stringValue(loadConfig(),"SITE_NAME")} displayName={admin.displayName} csrfCookie={csrfCookie}>{content}</AdminShell>;
 }

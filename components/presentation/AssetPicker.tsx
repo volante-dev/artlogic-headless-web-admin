@@ -1,0 +1,6 @@
+"use client";
+import {useState} from "react";
+import {Button,Dialog,DialogActions,DialogContent,DialogTitle,Stack,Typography} from "@mui/material";
+import {AssetManager} from "./AssetManager";
+import type {Asset} from "./types";
+export function AssetPicker({kind,label,value,onChange,csrfCookie}:{kind:Asset["kind"];label:string;value?:string|null;onChange:(asset:Asset|null)=>void;csrfCookie?:string}){const [open,setOpen]=useState(false);return <Stack spacing={1}><Typography>{label}</Typography><Stack direction="row" spacing={1} useFlexGap sx={{flexWrap:"wrap"}}><Button variant="outlined" onClick={()=>setOpen(true)}>{value?"Changer":"Choisir"} {label.toLowerCase()}</Button>{value&&<Button onClick={()=>onChange(null)}>Retirer {label.toLowerCase()}</Button>}</Stack>{value&&<Typography variant="caption" color="text.secondary">Média sélectionné : {value.slice(0,8)}</Typography>}<Dialog open={open} onClose={()=>setOpen(false)} fullWidth maxWidth="md" aria-labelledby="asset-picker-title"><DialogTitle id="asset-picker-title">{label}</DialogTitle><DialogContent><AssetManager csrfCookie={csrfCookie} kind={kind} onSelect={asset=>{onChange(asset);setOpen(false);}}/></DialogContent><DialogActions><Button onClick={()=>setOpen(false)}>Fermer</Button></DialogActions></Dialog></Stack>;}

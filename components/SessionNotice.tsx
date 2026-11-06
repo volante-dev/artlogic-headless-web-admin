@@ -1,5 +1,9 @@
 import {LogoutButton} from "./LogoutButton";
+import {loadConfig,stringValue} from "@/lib/config/env";
 export function SessionNotice({status,csrfCookie,hasSession=false}:{status:number;csrfCookie:string;hasSession?:boolean}){
-  const text=status===403?"Votre compte ne dispose pas des droits nécessaires.":status===503?"La vérification de votre compte est momentanément indisponible.":"Connectez-vous avec votre compte Volante pour gérer les œuvres et les synchronisations.";
-  return <section className="notice"><h1>Accéder à l’administration</h1><p role={status===503?"alert":undefined}>{text}</p><a className="button" href="/auth/login">Se connecter avec Volante</a>{hasSession&&<LogoutButton csrfCookie={csrfCookie}/>}</section>;
+  const config=loadConfig(),local=config.DATA_MODE==="mock"&&config.DEPLOYMENT_ENV==="local";
+  if(status===429)return <section className="notice"><div className="login-brand">{stringValue(config,"SITE_NAME")}</div><h1>Accès momentanément limité</h1><p role="alert">Le nombre de requêtes autorisées est atteint. Votre connexion est conservée. Patientez un instant avant de réessayer.</p><a className="button" href="">Réessayer la page</a></section>;
+  const text=status===403?"Votre compte ne dispose pas des droits nécessaires.":status===503?"La vérification de votre compte est momentanément indisponible.":local?"Utilisez le compte de test pour gérer votre site local. Aucun compte Volante n’est nécessaire.":"Connectez-vous avec votre compte Volante pour administrer le site de votre entreprise.";
+  const login=local?new URL("/auth/login",stringValue(config,"ADMIN_ORIGIN")).href:"/auth/login";
+  return <section className="notice"><div className="login-brand">{stringValue(config,"SITE_NAME")}</div><h1>Accéder à l’administration</h1><p role={status===503?"alert":undefined}>{text}</p><form className="login-form" action={login} method="get"><label className="remember-session"><input type="checkbox" name="rememberMe" value="true"/>Se souvenir de moi pendant 30 jours</label><button className="button" type="submit">{status===503?"Réessayer la connexion":local?"Se connecter en local":status===403?"Utiliser un autre compte":"Se connecter avec Volante"}</button></form>{hasSession&&<LogoutButton csrfCookie={csrfCookie}/>}</section>;
 }

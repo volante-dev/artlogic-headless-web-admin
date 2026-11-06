@@ -1,0 +1,16 @@
+.panel { min-width: 0; }
+.heading,.row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.heading p { max-width: 65ch; color: var(--admin-muted); }
+.heading button { flex-shrink: 0; }
+.list { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+.part { border-top: 1px solid var(--admin-border); padding-block: 1.5rem; }
+.part h3 { font-size: 1.05rem; margin: 0 0 .5rem; }
+.part p { margin: .5rem 0 1rem; max-width: 65ch; }
+.address { overflow-wrap: anywhere; }
+.meta { color: var(--admin-muted); font-variant-numeric: tabular-nums; }
+.history { margin-top: 1rem; }
+.history summary { cursor: pointer; min-height: 44px; padding-block: .5rem; }
+.history summary:focus-visible { outline: 2px solid var(--admin-primary); outline-offset: 3px; }
+.history ul { padding-left: 1.25rem; }
+.history li { padding-block: .375rem; overflow-wrap: anywhere; }
+@media (max-width: 700px) { .heading,.row { flex-direction: column; } .heading button { width: 100%; } }

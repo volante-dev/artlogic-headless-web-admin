@@ -1,0 +1,6 @@
+"use client";
+import type {ArticleCapabilities} from "@/lib/editorial/client";
+export function ArticleLocalePanel({capabilities,value,onChange,disabled}:{capabilities:ArticleCapabilities;value:string;onChange(value:string):void;disabled?:boolean}){
+ const locales=[...capabilities.activeLocales,...capabilities.preparingLocales];
+ return <div className="editorial-locale-tabs" role="tablist" aria-label="Langue de rédaction">{locales.map((locale,index)=><button key={locale.code} type="button" role="tab" aria-selected={value===locale.code} aria-controls="editorial-composition" tabIndex={value===locale.code?0:-1} disabled={disabled} onKeyDown={event=>{const next=event.key==="ArrowRight"?(index+1)%locales.length:event.key==="ArrowLeft"?(index-1+locales.length)%locales.length:event.key==="Home"?0:event.key==="End"?locales.length-1:null;if(next!==null){event.preventDefault();onChange(locales[next]!.code);event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();}}} onClick={()=>onChange(locale.code)}>{locale.code.toUpperCase()}<span>{locale.label}{capabilities.preparingLocales.some(l=>l.code===locale.code)?" · En préparation":""}</span></button>)}</div>;
+}

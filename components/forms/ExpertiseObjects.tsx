@@ -1,0 +1,7 @@
+"use client";
+import type {SubmissionDetail} from "@/lib/forms/reception-client";
+import {SubmissionAttachment} from "./SubmissionAttachment";
+import styles from "./reception.module.css";
+export function ExpertiseObjects({detail,csrfCookie}:{detail:SubmissionDetail;csrfCookie:string}){
+ return <section className="workspace-panel"><h2>Objets confiés</h2>{(detail.objects??[]).map(object=>{const files=detail.attachments.filter(file=>file.objectId===object.id).sort((a,b)=>Number(b.primary)-Number(a.primary)||a.position-b.position),main=files[0],others=files.slice(1);return <section className={styles.object} key={object.id}><h3>{object.designation}</h3>{main&&<div className={styles.photos}><SubmissionAttachment submissionId={detail.id} csrfCookie={csrfCookie} file={main} alt={object.designation}/></div>}{others.length>0&&<details><summary>Voir les {others.length} autre(s) photo(s)</summary><div className={styles.photos}>{others.map((file,index)=><SubmissionAttachment key={file.id} submissionId={detail.id} csrfCookie={csrfCookie} file={file} alt={object.designation+" — vue "+(index+2)}/>)}</div></details>}<dl className={styles.facts}>{Object.entries({description:"Description",artistOrCulture:"Artiste ou culture",period:"Période",materials:"Matériaux",dimensions:"Dimensions",provenance:"Provenance"}).map(([key,label])=>{const value=object[key as keyof typeof object];return typeof value==="string"&&value?<div key={key}><dt>{label}</dt><dd>{value}</dd></div>:null;})}</dl></section>;})}</section>;
+}

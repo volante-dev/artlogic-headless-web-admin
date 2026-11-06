@@ -1,0 +1,10 @@
+"use client";
+import {Box,Button,Checkbox,FormControlLabel,Stack,Typography} from "@mui/material";
+import type {FooterConfiguration} from "./types";
+import {LinkField} from "./LinkField";
+import {FooterText,FooterRowActions,moveFooterItem} from "./FooterFields";
+type Group=FooterConfiguration["groups"][number];
+export function FooterGroupEditor({value,locale,onChange}:{value:Group;locale:string;onChange:(g:Group)=>void}){
+ const update=(index:number,patch:Partial<Group["links"][number]>)=>onChange({...value,links:value.links.map((v,i)=>i===index?{...v,...patch}:v)});
+ return <Stack spacing={3}><FooterText label="Titre de la colonne" value={value.title} locale={locale} onChange={title=>onChange({...value,title})}/>{value.links.map((l,i)=><Box key={l.id} id={"footer.groups."+value.id+".links."+l.id} tabIndex={-1} sx={{borderTop:1,borderColor:"divider",pt:3}}><Typography component="h4" variant="body1">Lien {i+1}</Typography><FooterRowActions enabled={l.enabled} onEnabled={enabled=>update(i,{enabled})} index={i} total={value.links.length} onMove={d=>onChange({...value,links:moveFooterItem(value.links,i,d)})} onRemove={()=>{onChange({...value,links:value.links.filter(v=>v.id!==l.id)});document.getElementById("footer.groups."+value.id)?.focus();}}/><Stack spacing={2}><LinkField label="Destination" value={l.destination??undefined} onChange={destination=>update(i,{destination:destination??null})}/><FormControlLabel control={<Checkbox checked={l.label===null} disabled={l.destination?.kind!=="page"} onChange={e=>update(i,{label:e.target.checked?null:{}})}/>} label="Utiliser le nom de la page"/>{l.label!==null&&<FooterText label="Libellé du lien" value={l.label} locale={locale} onChange={label=>update(i,{label})}/>}</Stack></Box>)}<Button variant="outlined" sx={{alignSelf:"start"}} disabled={value.links.length>=12} onClick={()=>onChange({...value,links:[...value.links,{id:crypto.randomUUID(),enabled:true,label:null,destination:{kind:"page",pageKey:"home"}}]})}>Ajouter un lien ({value.links.length}/12)</Button></Stack>;
+}

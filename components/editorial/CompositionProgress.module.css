@@ -1,0 +1,12 @@
+.progress{padding:20px 24px;border-radius:12px;background:var(--admin-paper);color:var(--admin-ink);box-shadow:var(--admin-raised);overflow-wrap:anywhere}
+.heading{display:flex;align-items:center;gap:12px;font-size:1rem;font-weight:500;margin:0 0 20px;line-height:1.4}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none;font-size:.875rem;line-height:1.4}
+.steps li{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0;color:var(--admin-muted)}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:44px;right:0;top:16px;height:1px;background:var(--admin-divider)}
+.steps li[data-state=current],.steps li[data-state=done]{color:var(--admin-ink)}
+.marker{position:relative;display:flex;align-items:center;justify-content:center;width:32px;height:32px;flex:0 0 32px;border-radius:50%;background:var(--admin-control);color:var(--admin-muted);font-variant-numeric:tabular-nums}
+.steps li[data-state=current] .marker{background:var(--admin-accent);color:var(--admin-primary)}
+.steps li[data-state=done] .marker{background:var(--admin-primary);color:white}
+.progress[data-status=failed] .heading,.progress[data-status=uncertain] .heading{color:var(--admin-error)}
+@media(max-width:800px){.progress{padding:20px}.steps{display:flex;flex-direction:column;gap:12px}.steps li{flex-direction:row;align-items:center;gap:12px}.steps li:not(:last-child)::after{left:16px;top:36px;bottom:-8px;right:auto;width:1px;height:auto}.heading{margin-bottom:16px}}
+@media(prefers-reduced-motion:reduce){.progress :global(.MuiCircularProgress-root),.progress :global(.MuiCircularProgress-circle){animation:none!important}}

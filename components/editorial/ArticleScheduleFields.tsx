@@ -1,0 +1,14 @@
+"use client";
+import {useState} from "react";
+import {Checkbox,FormControlLabel,MenuItem,Stack,TextField} from "@mui/material";
+import {scheduleCandidates} from "@/lib/editorial/schedule";
+export function ArticleScheduleFields({timeZone,onChange}:{timeZone:string;onChange(value:{startsAt:string;endsAt:string|null;timeZone:string}|null):void}){
+ const [start,setStart]=useState(""),[end,setEnd]=useState(""),[endEnabled,setEndEnabled]=useState(false),[startChoice,setStartChoice]=useState(""),[endChoice,setEndChoice]=useState("");
+ const starts=scheduleCandidates(start,timeZone),ends=scheduleCandidates(end,timeZone);
+ const change=(next:{start?:string;end?:string;endEnabled?:boolean;startChoice?:string;endChoice?:string})=>{
+  const a=next.start??start,b=next.end??end,enabled=next.endEnabled??endEnabled,choicesA=scheduleCandidates(a,timeZone),choicesB=scheduleCandidates(b,timeZone),choiceA=next.startChoice??(next.start!==undefined?"":startChoice),choiceB=next.endChoice??(next.end!==undefined?"":endChoice),startsAt=choicesA.length===1?choicesA[0]!.iso:choicesA.find(item=>item.iso===choiceA)?.iso,endsAt=choicesB.length===1?choicesB[0]!.iso:choicesB.find(item=>item.iso===choiceB)?.iso;
+  setStart(a);setEnd(b);setEndEnabled(enabled);setStartChoice(choiceA);setEndChoice(choiceB);onChange(startsAt&&(!enabled||endsAt&&Date.parse(endsAt)>Date.parse(startsAt))?{startsAt,endsAt:enabled?endsAt!:null,timeZone}:null);
+ };
+ const hint=(value:string,choices:typeof starts)=>value&&choices.length===0?"Cette heure n’existe pas dans ce fuseau.":choices.length>1?"Cette heure se produit deux fois. Choisissez son décalage UTC.":timeZone;
+ return <Stack spacing={3}><TextField label="Début de publication" type="datetime-local" value={start} onChange={event=>change({start:event.target.value})} error={Boolean(start)&&!starts.length} helperText={hint(start,starts)} slotProps={{inputLabel:{shrink:true}}}/>{starts.length>1&&<TextField select label="Décalage UTC du début" value={startChoice} onChange={event=>change({startChoice:event.target.value})}><MenuItem value="">Choisir</MenuItem>{starts.map(item=><MenuItem value={item.iso} key={item.iso}>{item.offset}</MenuItem>)}</TextField>}<FormControlLabel label="Prévoir une fin de publication" control={<Checkbox checked={endEnabled} onChange={event=>change({endEnabled:event.target.checked})}/>}/>{endEnabled&&<><TextField label="Fin de publication" type="datetime-local" value={end} onChange={event=>change({end:event.target.value})} error={Boolean(end)&&(!ends.length||Boolean(start)&&Date.parse(ends[0]?.iso??"")<=Date.parse(starts[0]?.iso??""))} helperText={hint(end,ends)} slotProps={{inputLabel:{shrink:true}}}/>{ends.length>1&&<TextField select label="Décalage UTC de la fin" value={endChoice} onChange={event=>change({endChoice:event.target.value})}><MenuItem value="">Choisir</MenuItem>{ends.map(item=><MenuItem value={item.iso} key={item.iso}>{item.offset}</MenuItem>)}</TextField>}</>}</Stack>;
+}
