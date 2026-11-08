@@ -96,7 +96,11 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        /**
+         * Métadonnées publiques autorisées, sans transfert
+         * @description Vérifier l’appartenance du média au catalogue actif et une œuvre disponible et publiée. Refuser les anciennes versions remplacées. Ignorer les requêtes Range (réponse complète 200) ; ne pas produire de 304 court-circuitant le contrôle.
+         */
+        head: operations["getPublishedMediaMetadata"];
         patch?: never;
         trace?: never;
     };
@@ -324,6 +328,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/admin/artwork-catalog/workspace": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Composer la grille et consulter la réserve.
+         * @description Deux collections paginées indépendantes sous la même révision. Le mode public est projeté sans nouvelle préférence admin.
+         */
+        get: operations["getArtworkCatalogWorkspace"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/artwork-catalog/placements/{artworkId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Déplacer ou publier à une position du catalogue.
+         * @description Commande atomique ; If-Match catalogue et publicationVersion requis. Un conflit exige une relecture avant nouvelle décision.
+         */
+        put: operations["placeArtworkInCatalog"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/public/site-content": {
         parameters: {
             query?: never;
@@ -424,7 +468,11 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        /**
+         * Métadonnées publiques autorisées, sans transfert
+         * @description Contrôle site + pointeur courant avant lecture Storage à chaque requête. Candidat/ancien/étranger/absent : 404 ; objet courant indisponible : 503, frontend utilisant le nom textuel.
+         */
+        head: operations["getPublicSiteLogoMetadata"];
         patch?: never;
         trace?: never;
     };
@@ -968,6 +1016,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/admin/presentation/artwork-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Lire les défauts des fiches d’œuvre
+         * @description Voir le contrat normatif README.md pour états, erreurs et confidentialité.
+         */
+        get: operations["getPresentationArtworkSettings"];
+        /**
+         * Enregistrer les défauts des fiches d’œuvre
+         * @description Voir le contrat normatif README.md pour états, erreurs et confidentialité.
+         */
+        put: operations["savePresentationArtworkSettings"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/internal/contact/config": {
         parameters: {
             query?: never;
@@ -1146,6 +1218,26 @@ export interface paths {
          * @description Normative semantics, compatibility, limits and status/code allowlists are in README.md.
          */
         get: operations["getGalleryPreviewArtworkExperience"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/preview/artwork-titles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Résoudre en lot les titres du snapshot pour les cartes d’aperçu.
+         * @description Lecture privée bornée, jamais le brouillon courant. Visibilité actuelle et scope du preview vérifiés.
+         */
+        get: operations["getGalleryPreviewArtworkTitles"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2726,6 +2818,159 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/public/media/{mediaId}/authorization": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Obtenir un accès GET temporaire au média actuellement public. */
+        get: operations["authorizePublicArtworkMedia"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/site-logos/{logoId}/authorization": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Obtenir un accès GET temporaire au média actuellement public. */
+        get: operations["authorizePublicSiteLogo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/media-observations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enregistrer une observation déclarative sans effet métier. */
+        post: operations["recordPublicMediaObservation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/image-descriptors/query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Describe eligible images without signing or fetching files */
+        post: operations["queryPublicImageDescriptors"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/media/{mediaId}/image-authorization": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authorize one bounded public image rendition */
+        get: operations["authorizePublicArtworkImage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/site-logos/{logoId}/image-authorization": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authorize one bounded public image rendition */
+        get: operations["authorizePublicSiteLogoImage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/presentation-assets/{assetId}/image-authorization": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authorize one bounded public image rendition */
+        get: operations["authorizePublicPresentationImage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/editorial/media/{assetId}/image-authorization": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Authorize one bounded public image rendition */
+        get: operations["authorizePublicEditorialImage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/public/image-observations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record a closed, untrusted display signal without affecting authorization */
+        post: operations["recordPublicImageObservation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -3061,6 +3306,100 @@ export interface components {
             display: "plp";
             /** @enum {string} */
             layout: "grid" | "masonry";
+        };
+        /** Artwork catalog placement command */
+        ArtworkCatalogPlacement: {
+            /** @enum {unknown} */
+            action: "move" | "publish";
+            publicationVersion: number;
+            destination: {
+                /** @enum {unknown} */
+                kind: "start" | "end";
+            } | {
+                /** @enum {unknown} */
+                kind: "before" | "after";
+                /** Format: uuid */
+                anchorArtworkId: string;
+            };
+        };
+        ArtworkCatalogWorkspaceItem: {
+            /** Format: uuid */
+            id: string;
+            sourceId: string;
+            title: string | null;
+            artist: string | null;
+            year: string | null;
+            medium: string | null;
+            dimensions: string | null;
+            /** @enum {string} */
+            availability: "available" | "withdrawn";
+            /** @enum {string} */
+            publication: "hidden" | "published";
+            publicationVersion: number;
+            effectivePublic: boolean;
+            /** Format: date-time */
+            lastSyncedAt: string;
+            media: components["schemas"]["AdminMedia"][];
+            warnings: string[];
+            catalogLarge: boolean;
+            publishable: boolean;
+            /** @enum {string|null} */
+            blockedReason: null | "artwork_unavailable";
+        };
+        ArtworkCatalogWorkspacePage: {
+            items: components["schemas"]["ArtworkCatalogWorkspaceItem"][];
+            nextCursor: string | null;
+            total: number;
+            unfilteredTotal: number;
+        };
+        ArtworkCatalogWorkspace: {
+            catalogRevision: number;
+            /** @enum {unknown} */
+            layout: "grid" | "masonry";
+            orderingAllowed: boolean;
+            published?: components["schemas"]["ArtworkCatalogWorkspacePage"];
+            reserve?: components["schemas"]["ArtworkCatalogWorkspacePage"];
+        };
+        ArtworkCatalogPlacementResult: {
+            artwork: components["schemas"]["AdminArtwork"];
+            catalogRevision: number;
+            changed: boolean;
+        };
+        EditorialRichText: {
+            /** @constant */
+            type: "doc";
+            content: components["schemas"]["EditorialRichNode"][];
+        };
+        EditorialRichNode: {
+            /** @constant */
+            type: "text";
+            text: string;
+            marks?: components["schemas"]["EditorialRichMark"][];
+        } | {
+            /** @constant */
+            type: "heading";
+            attrs: {
+                /** @enum {unknown} */
+                level: 2 | 3;
+            };
+            content?: components["schemas"]["EditorialRichNode"][];
+        } | {
+            /** @enum {unknown} */
+            type: "paragraph" | "bulletList" | "orderedList" | "listItem" | "blockquote";
+            content?: components["schemas"]["EditorialRichNode"][];
+        } | {
+            /** @constant */
+            type: "hardBreak";
+        };
+        EditorialRichMark: {
+            /** @enum {unknown} */
+            type: "bold" | "italic";
+        } | {
+            /** @constant */
+            type: "link";
+            attrs: {
+                href: string;
+            };
         };
         SiteLocale: {
             code: string;
@@ -3926,6 +4265,10 @@ export interface components {
             pageKey: components["schemas"]["PresentationPageKey"];
             sections: components["schemas"]["PresentationSection"][];
             settings?: components["schemas"]["PresentationGaleristSettings"];
+            /** @description Optional localized page meta descriptions. Empty secondary locales use the reference locale; absent values use the site description. Omitted on update preserves existing metadata. */
+            metaDescription?: {
+                [key: string]: string | null;
+            };
         } & unknown;
         PresentationDiagnostic: {
             field: string;
@@ -3997,6 +4340,7 @@ export interface components {
             galeristNavigation?: components["schemas"]["PresentationGaleristNavigation"] | null;
             pageIdentity?: components["schemas"]["PresentationGaleristIdentity"];
             footer?: components["schemas"]["PresentationFooterResolved"] | null;
+            metaDescription?: string;
         };
         PresentationAssetCreate: {
             /** @enum {string} */
@@ -4090,6 +4434,12 @@ export interface components {
             };
             formsWritable?: boolean;
             footer?: components["schemas"]["PresentationFooterCapability"];
+            artworkSettings?: {
+                /** @constant */
+                writable: true;
+                /** @constant */
+                contractVersion: 1;
+            };
         };
         PresentationPreviewInput: {
             pageKey: components["schemas"]["PresentationPageKey"];
@@ -4163,6 +4513,7 @@ export interface components {
             galeristNavigation?: components["schemas"]["PresentationGaleristNavigation"] | null;
             pageIdentity?: components["schemas"]["PresentationGaleristIdentity"];
             footer?: components["schemas"]["PresentationFooterResolved"] | null;
+            metaDescription?: string;
         };
         PresentationUploadAttempt: {
             /** Format: uuid */
@@ -4481,6 +4832,9 @@ export interface components {
             socialLinks: components["schemas"]["PresentationFooterSocialLink"][];
             showLanguageSelector: boolean;
             showDescription: boolean;
+            address?: {
+                [key: string]: components["schemas"]["PresentationFooterRichText"];
+            } | null;
         };
         PresentationFooterRead: {
             /** @constant */
@@ -4540,6 +4894,7 @@ export interface components {
             socialLinks: components["schemas"]["PresentationFooterResolvedLink"][];
             showLanguageSelector: boolean;
             showDescription: boolean;
+            address?: components["schemas"]["PresentationFooterRichText"] | null;
         };
         PresentationFooterCapability: {
             /** @constant */
@@ -4558,6 +4913,55 @@ export interface components {
                 /** @constant */
                 documentBytes: 262144;
             };
+        };
+        PresentationFooterRichText: {
+            /** @constant */
+            type: "doc";
+            content: components["schemas"]["PresentationFooterRichNode"][];
+        };
+        PresentationFooterRichNode: {
+            /** @constant */
+            type: "text";
+            text: string;
+            marks?: components["schemas"]["PresentationFooterRichMark"][];
+        } | {
+            /** @constant */
+            type: "heading";
+            attrs: {
+                /** @enum {unknown} */
+                level: 2 | 3;
+            };
+            content?: components["schemas"]["PresentationFooterRichNode"][];
+        } | {
+            /** @enum {unknown} */
+            type: "paragraph" | "bulletList" | "orderedList" | "listItem" | "blockquote";
+            content?: components["schemas"]["PresentationFooterRichNode"][];
+        } | {
+            /** @constant */
+            type: "hardBreak";
+        };
+        PresentationFooterRichMark: {
+            /** @enum {unknown} */
+            type: "bold" | "italic";
+        } | {
+            /** @constant */
+            type: "link";
+            attrs: {
+                href: string;
+            };
+        };
+        PresentationArtworkDefaults: {
+            year: boolean;
+            provenance: boolean;
+        };
+        PresentationArtworkSettingsRead: {
+            /** @constant */
+            schemaVersion: 1;
+            defaults: components["schemas"]["PresentationArtworkDefaults"];
+            revision: string;
+        };
+        PresentationArtworkSettingsUpdate: {
+            defaults: components["schemas"]["PresentationArtworkDefaults"];
         };
         ContactError: {
             error: {
@@ -4736,6 +5140,11 @@ export interface components {
             /** Format: uuid */
             presentationReleaseId: string | null;
             catalogRevision: number;
+            heroFocus?: null | components["schemas"]["GalleryFocusSelection"];
+            importedDescription?: components["schemas"]["EditorialRichText"] | null;
+            importedDescriptionLocale?: string | null;
+            importedProvenance?: components["schemas"]["EditorialRichText"] | null;
+            importedProvenanceLocale?: string | null;
         };
         GalleryPreviewExperience: {
             /** @constant */
@@ -4748,6 +5157,11 @@ export interface components {
             /** Format: uuid */
             snapshotId: string;
             revision: string;
+            heroFocus?: null | components["schemas"]["GalleryFocusSelection"];
+            importedDescription?: components["schemas"]["EditorialRichText"] | null;
+            importedDescriptionLocale?: string | null;
+            importedProvenance?: components["schemas"]["EditorialRichText"] | null;
+            importedProvenanceLocale?: string | null;
         };
         GalleryEditorialDraft: {
             /** Format: uuid */
@@ -4758,10 +5172,33 @@ export interface components {
                 [key: string]: string | null;
             };
             revision: string;
+            focusContext?: components["schemas"]["GalleryFocusContext"];
+            title?: {
+                [key: string]: string | null;
+            };
+            titleContext?: {
+                sourceTitle: string | null;
+                defaultLocale: string;
+                editableLocales: string[];
+                maxLength: number;
+                /** @constant */
+                lengthUnit: "utf16";
+            };
+            visibility?: components["schemas"]["GalleryVisibilityContext"];
         };
         GalleryEditorialUpdate: {
-            description: {
+            description?: {
                 [key: string]: string | null;
+            };
+            heroFocus?: null | components["schemas"]["GalleryFocusSelection"];
+            title?: {
+                [key: string]: string | null;
+            };
+            visibility?: {
+                /** @enum {string} */
+                year?: "inherit" | "show" | "hide";
+                /** @enum {string} */
+                provenance?: "inherit" | "show" | "hide";
             };
         };
         /**
@@ -4810,44 +5247,41 @@ export interface components {
             /** @enum {string} */
             layout: "grid" | "masonry";
         };
+        GalleryFocusSelection: {
+            /** Format: uuid */
+            mediaId: string;
+            x: number;
+            y: number;
+        };
+        GalleryFocusContext: {
+            primaryMedia: null | {
+                /** Format: uuid */
+                id: string;
+                width: number;
+                height: number;
+            };
+            selection: components["schemas"]["GalleryFocusSelection"] | null;
+            /** @enum {unknown} */
+            status: "none" | "applicable" | "stale" | "unavailable";
+        } & (unknown & unknown & unknown & unknown);
+        GalleryVisibilityContext: {
+            overrides: {
+                /** @enum {string} */
+                year: "inherit" | "show" | "hide";
+                /** @enum {string} */
+                provenance: "inherit" | "show" | "hide";
+            };
+            defaults: {
+                year: boolean;
+                provenance: boolean;
+            };
+            effective: {
+                year: boolean;
+                provenance: boolean;
+            };
+        };
         EditorialLocalizedText: {
             [key: string]: string;
-        };
-        EditorialRichMark: {
-            /** @enum {unknown} */
-            type: "bold" | "italic";
-        } | {
-            /** @constant */
-            type: "link";
-            attrs: {
-                href: string;
-            };
-        };
-        EditorialRichNode: {
-            /** @constant */
-            type: "text";
-            text: string;
-            marks?: components["schemas"]["EditorialRichMark"][];
-        } | {
-            /** @constant */
-            type: "heading";
-            attrs: {
-                /** @enum {unknown} */
-                level: 2 | 3;
-            };
-            content?: components["schemas"]["EditorialRichNode"][];
-        } | {
-            /** @enum {unknown} */
-            type: "paragraph" | "bulletList" | "orderedList" | "listItem" | "blockquote";
-            content?: components["schemas"]["EditorialRichNode"][];
-        } | {
-            /** @constant */
-            type: "hardBreak";
-        };
-        EditorialRichText: {
-            /** @constant */
-            type: "doc";
-            content: components["schemas"]["EditorialRichNode"][];
         };
         EditorialLocalizedRichText: {
             [key: string]: components["schemas"]["EditorialRichText"];
@@ -6300,6 +6734,8 @@ export interface components {
             condition?: components["schemas"]["FormsCondition"];
         };
         FormsDocument: {
+            /** @description Masque le titre dans tous les emplacements de cette version publiée. Absent : titre affiché. Un emplacement peut également masquer le titre. */
+            hideTitle?: boolean;
             /** @constant */
             schemaVersion: 1;
             /** @enum {string} */
@@ -6789,6 +7225,155 @@ export interface components {
             previousAttempts: number;
             previousFirstSendAt: string | null;
         };
+        DisplayId: string;
+        PublicMediaAuthorization: {
+            /** Format: uuid */
+            resourceId: string;
+            /**
+             * Format: uuid
+             * @description Identité immuable, égale à resourceId pour les médias actuels.
+             */
+            version: string;
+            /**
+             * Format: uri
+             * @description Capacité GET native Supabase compatible CDN ; ne pas journaliser.
+             */
+            url: string;
+            /** Format: date-time */
+            expiresAt: string;
+            /** @constant */
+            mimeType: "image/webp";
+            byteSize: number;
+        };
+        PublicMediaObservation: {
+            /** @enum {string} */
+            resourceKind: "artwork" | "siteLogo";
+            /** Format: uuid */
+            resourceId: string;
+            displayId: components["schemas"]["DisplayId"];
+            /** @enum {integer} */
+            retry: 0 | 1;
+            /** @enum {string} */
+            event: "loaded" | "failed" | "timeout" | "retry";
+            elapsedMs: number;
+        };
+        ImageResource: {
+            /** @enum {string} */
+            resourceKind: "artwork" | "siteLogo" | "presentation" | "editorial";
+            /** Format: uuid */
+            resourceId: string;
+        };
+        ImageSource: {
+            width: number;
+            height: number;
+            /** @enum {string} */
+            mimeType: "image/webp" | "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml";
+        };
+        ImageSourceFile: {
+            width: number;
+            height: number;
+            /** @enum {string} */
+            mimeType: "image/webp" | "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml";
+            byteSize: number;
+        };
+        ImageCandidate: {
+            /** @enum {string} */
+            rendition: "r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500";
+            /** @enum {string} */
+            mode: "transformed" | "reference";
+            expectedWidth: number;
+            expectedHeight: number;
+        };
+        PublicImageDescriptor: {
+            /** @enum {string} */
+            resourceKind: "artwork" | "siteLogo" | "presentation" | "editorial";
+            /** Format: uuid */
+            resourceId: string;
+            sourceVersion: string;
+            /** @constant */
+            policyVersion: "r1";
+            source: components["schemas"]["ImageSource"];
+            candidates: components["schemas"]["ImageCandidate"][];
+        };
+        ImageDescriptorQuery: {
+            resources: components["schemas"]["ImageResource"][];
+        };
+        ImageDescriptorItem: {
+            resource: components["schemas"]["ImageResource"];
+            /** @constant */
+            availability: "available";
+            descriptor: components["schemas"]["PublicImageDescriptor"];
+        } | {
+            resource: components["schemas"]["ImageResource"];
+            /** @constant */
+            availability: "unavailable";
+        };
+        ImageDescriptorResult: {
+            items: components["schemas"]["ImageDescriptorItem"][];
+        };
+        ImageRepresentation: {
+            /** @constant */
+            mode: "transformed";
+            expectedWidth: number;
+            expectedHeight: number;
+            mimeType: null;
+            byteSize: null;
+        } | {
+            /** @constant */
+            mode: "reference";
+            expectedWidth: number;
+            expectedHeight: number;
+            /** @enum {string} */
+            mimeType: "image/webp" | "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml";
+            byteSize: number;
+        };
+        ImageDelivery: {
+            /** Format: uri */
+            url: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        PublicImageAuthorization: {
+            /** @enum {string} */
+            resourceKind: "artwork" | "siteLogo" | "presentation" | "editorial";
+            /** Format: uuid */
+            resourceId: string;
+            sourceVersion: string;
+            /** @constant */
+            policyVersion: "r1";
+            /** @enum {string} */
+            requestedRendition: "r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500";
+            /** @enum {string} */
+            canonicalRendition: "r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500";
+            source: components["schemas"]["ImageSourceFile"];
+            representation: components["schemas"]["ImageRepresentation"];
+            delivery: components["schemas"]["ImageDelivery"];
+        };
+        ImageObservation: {
+            /** @enum {string} */
+            resourceKind: "artwork" | "siteLogo" | "presentation" | "editorial";
+            /** Format: uuid */
+            resourceId: string;
+            sourceVersion: string | null;
+            displayId: string;
+            /** @enum {integer} */
+            retry: 0 | 1;
+            /** @enum {string} */
+            event: "loaded" | "failed" | "timeout" | "retry";
+            elapsedMs: number;
+            requestedRendition: ("r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500") | null;
+            selectedRendition: ("r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500") | null;
+            /** @enum {string} */
+            mode: "transformed" | "reference" | "unknown";
+            /** @enum {string|null} */
+            fallbackReason: null | "descriptor_unavailable" | "source_untransformable" | "source_limited" | "transfer_failed" | "authorization_failed" | "budget_exhausted";
+        };
+        PublicImageError: {
+            error: {
+                /** @enum {string} */
+                code: "invalid_request" | "not_found" | "rate_limited" | "service_unavailable";
+            };
+        };
     };
     responses: {
         /** @description Dépendance indisponible, autorisation invérifiable ou service non prêt. */
@@ -7129,6 +7714,8 @@ export interface operations {
                 /** @description Curseur opaque signé retourné par la page précédente ; filtre et déploiement inchangés. */
                 cursor?: string;
                 display?: "plp";
+                /** @description Langue configurée ; défaut langue principale et titre source. */
+                locale?: string;
             };
             header?: never;
             path?: never;
@@ -7157,7 +7744,10 @@ export interface operations {
     };
     getPublishedArtwork: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Langue configurée ; défaut langue principale et titre source. */
+                locale?: string;
+            };
             header?: never;
             path: {
                 /** @description Identifiant opaque interne au déploiement. */
@@ -7213,6 +7803,45 @@ export interface operations {
                     "image/jpeg": string;
                     "image/png": string;
                 };
+            };
+            /** @description Phase direct : redirection temporaire après autorisation courante, sans corps. */
+            307: {
+                headers: {
+                    Location?: string;
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["TooManyRequests"];
+            503: components["responses"]["Unavailable"];
+        };
+    };
+    getPublishedMediaMetadata: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Identifiant opaque interne au déploiement. */
+                mediaId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Image locale après contrôle des droits au moment de la requête. Aucun redirect vers Storage, aucune URL signée ; image décodée/réencodée à l’import. */
+            200: {
+                headers: {
+                    /** @description private, no-store pour données catalogue, sessions, erreurs et médias ; aucun cache de contenu publiable. */
+                    "Cache-Control"?: string;
+                    "X-Content-Type-Options"?: "nosniff";
+                    /** @description Identifiant de corrélation sans donnée personnelle. */
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             400: components["responses"]["BadRequest"];
             404: components["responses"]["NotFound"];
@@ -7659,6 +8288,101 @@ export interface operations {
             };
             401: components["responses"]["Unauthorized"];
             403: components["responses"]["Forbidden"];
+            429: components["responses"]["TooManyRequests"];
+            503: components["responses"]["Unavailable"];
+        };
+    };
+    getArtworkCatalogWorkspace: {
+        parameters: {
+            query?: {
+                /** @description Nombre maximal d’éléments. */
+                limit?: number;
+                /** @description Recherche insensible à la casse dans titre et artiste ; texte traité comme littéral. */
+                q?: string;
+                /** @description Filtre sur décision locale. */
+                publication?: "hidden" | "published";
+                /** @description Filtre sur disponibilité source. */
+                availability?: "available" | "withdrawn";
+                /** @description Collections à retourner. */
+                collection?: "both" | "published" | "reserve";
+                /** @description Curseur signé de cette collection. */
+                publishedCursor?: string;
+                /** @description Curseur signé de cette collection. */
+                reserveCursor?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Succès. */
+            200: {
+                headers: {
+                    /** @description Identifiant de corrélation sans donnée personnelle. */
+                    "X-Request-Id"?: string;
+                    /** @description private, no-store pour données catalogue, sessions, erreurs et médias ; aucun cache de contenu publiable. */
+                    "Cache-Control"?: string;
+                    /** @description Version du catalogue pour précondition, pas un validateur de cache. */
+                    ETag?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtworkCatalogWorkspace"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            401: components["responses"]["Unauthorized"];
+            403: components["responses"]["Forbidden"];
+            409: components["responses"]["Conflict"];
+            429: components["responses"]["TooManyRequests"];
+            503: components["responses"]["Unavailable"];
+        };
+    };
+    placeArtworkInCatalog: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Jeton CSRF lié à la session, fourni par la page admin et comparé côté backend ; contrôle Origin supplémentaire par le BFF. */
+                "X-CSRF-Token": string;
+                /** @description ETag catalogue retourné par le workspace. */
+                "If-Match": string;
+            };
+            path: {
+                /** @description Identifiant opaque interne au déploiement. */
+                artworkId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ArtworkCatalogPlacement"];
+            };
+        };
+        responses: {
+            /** @description Décision effectivement enregistrée, avec nouvelle version éditoriale. */
+            200: {
+                headers: {
+                    /** @description Identifiant de corrélation sans donnée personnelle. */
+                    "X-Request-Id"?: string;
+                    /** @description private, no-store pour données catalogue, sessions, erreurs et médias ; aucun cache de contenu publiable. */
+                    "Cache-Control"?: string;
+                    ETag?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArtworkCatalogPlacementResult"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            401: components["responses"]["Unauthorized"];
+            403: components["responses"]["Forbidden"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+            412: components["responses"]["PreconditionFailed"];
+            413: components["responses"]["BadRequest"];
+            415: components["responses"]["BadRequest"];
+            428: components["responses"]["PreconditionRequired"];
             429: components["responses"]["TooManyRequests"];
             503: components["responses"]["Unavailable"];
         };
@@ -15274,6 +15998,44 @@ export interface operations {
                     "image/webp": string;
                 };
             };
+            /** @description Phase direct : redirection temporaire après autorisation courante, sans corps. */
+            307: {
+                headers: {
+                    Location?: string;
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["TooManyRequests"];
+            503: components["responses"]["SiteContentUnavailable"];
+        };
+    };
+    getPublicSiteLogoMetadata: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                logoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Image privée servie après contrôle de visibilité ; aucun 304 ni exposition de la clé Storage. */
+            200: {
+                headers: {
+                    /** @description Identifiant de corrélation. */
+                    "X-Request-Id"?: string;
+                    /** @description private, no-store ; aussi sur erreurs et images. */
+                    "Cache-Control"?: string;
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             400: components["responses"]["BadRequest"];
             404: components["responses"]["NotFound"];
             429: components["responses"]["TooManyRequests"];
@@ -19463,6 +20225,248 @@ export interface operations {
             };
         };
     };
+    getPresentationArtworkSettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Réponse validée */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    /** @description ETag fort, requis pour la prochaine écriture de cet agrégat. */
+                    ETag?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PresentationArtworkSettingsRead"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    savePresentationArtworkSettings: {
+        parameters: {
+            query?: never;
+            header: {
+                "X-CSRF-Token": string;
+                "If-Match": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PresentationArtworkSettingsUpdate"];
+            };
+        };
+        responses: {
+            /** @description Réponse validée */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    /** @description ETag fort, requis pour la prochaine écriture de cet agrégat. */
+                    ETag?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PresentationArtworkSettingsRead"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            412: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            413: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            415: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            428: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Erreur normalisée ; code et détails sur liste fermée par opération, voir README.md. */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
     getContactConfiguration: {
         parameters: {
             query?: never;
@@ -20269,6 +21273,8 @@ export interface operations {
                 /** @description Expected catalogue revision. Mismatch: 409 catalog_changed. */
                 catalogRevision?: number;
                 display?: "plp";
+                /** @description Langue configurée ; défaut langue principale et titre source. */
+                locale?: string;
             };
             header?: never;
             path?: never;
@@ -20889,6 +21895,28 @@ export interface operations {
                     "application/json": components["schemas"]["Error"];
                 };
             };
+            /** @description artwork_media_changed */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "artwork_media_changed",
+                     *         "message": "Synthetic safe error.",
+                     *         "requestId": "33333333-3333-4333-8333-333333333333"
+                     *       }
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
             /** @description version_conflict */
             412: {
                 headers: {
@@ -21073,6 +22101,203 @@ export interface operations {
                      *     }
                      */
                     "application/json": components["schemas"]["GalleryPreviewExperience"];
+                };
+            };
+            /** @description invalid_request */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "invalid_request",
+                     *         "message": "Synthetic safe error.",
+                     *         "requestId": "33333333-3333-4333-8333-333333333333"
+                     *       }
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description unauthorized */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "unauthorized",
+                     *         "message": "Synthetic safe error.",
+                     *         "requestId": "33333333-3333-4333-8333-333333333333"
+                     *       }
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description forbidden */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "forbidden",
+                     *         "message": "Synthetic safe error.",
+                     *         "requestId": "33333333-3333-4333-8333-333333333333"
+                     *       }
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description not_found */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "not_found",
+                     *         "message": "Synthetic safe error.",
+                     *         "requestId": "33333333-3333-4333-8333-333333333333"
+                     *       }
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description rate_limited */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    "Retry-After"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "rate_limited",
+                     *         "message": "Synthetic safe error.",
+                     *         "requestId": "33333333-3333-4333-8333-333333333333"
+                     *       }
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description service_unavailable, presentation_unavailable, presentation_configuration_mismatch */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "error": {
+                     *         "code": "service_unavailable",
+                     *         "message": "Synthetic safe error.",
+                     *         "requestId": "33333333-3333-4333-8333-333333333333"
+                     *       }
+                     *     }
+                     */
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    getGalleryPreviewArtworkTitles: {
+        parameters: {
+            query: {
+                /** @description Langue configurée autorisée dans cet aperçu. */
+                locale: string;
+                /** @description Au plus 100 UUID séparés par des virgules. */
+                ids: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Validated response */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "scope": "preview",
+                     *       "artwork": {
+                     *         "id": "11111111-1111-4111-8111-111111111111",
+                     *         "title": "Étude 01",
+                     *         "artist": "Artiste de démonstration",
+                     *         "year": "2026",
+                     *         "medium": "Encre sur papier",
+                     *         "dimensions": "30 × 40 cm",
+                     *         "media": [
+                     *           {
+                     *             "id": "22222222-2222-4222-8222-222222222222",
+                     *             "alt": "Étude abstraite de démonstration",
+                     *             "width": 800,
+                     *             "height": 600,
+                     *             "path": "/v1/public/media/22222222-2222-4222-8222-222222222222"
+                     *           }
+                     *         ],
+                     *         "slug": "etude-01-11111111111141118111111111111111"
+                     *       },
+                     *       "locale": "fr",
+                     *       "description": "Description synthétique de démonstration.",
+                     *       "descriptionLocale": "fr",
+                     *       "catalogRevision": 7,
+                     *       "snapshotId": "55555555-5555-4555-8555-555555555555",
+                     *       "revision": "12"
+                     *     }
+                     */
+                    "application/json": {
+                        items: {
+                            /** Format: uuid */
+                            id: string;
+                            title: string | null;
+                        }[];
+                    };
                 };
             };
             /** @description invalid_request */
@@ -36644,6 +37869,729 @@ export interface operations {
             };
         };
     };
+    authorizePublicArtworkMedia: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Media-Display-Id"?: components["schemas"]["DisplayId"];
+            };
+            path: {
+                mediaId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Autorisation fraîche, jamais un transfert binaire. */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicMediaAuthorization"];
+                };
+            };
+            /** @description Entrée invalide. */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ressource non accessible, sans distinction de cause. */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Limitation publique. */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    "Retry-After"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Service indisponible. */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    authorizePublicSiteLogo: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Media-Display-Id"?: components["schemas"]["DisplayId"];
+            };
+            path: {
+                logoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Autorisation fraîche, jamais un transfert binaire. */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicMediaAuthorization"];
+                };
+            };
+            /** @description Entrée invalide. */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Ressource non accessible, sans distinction de cause. */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Limitation publique. */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    "Retry-After"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Service indisponible. */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    recordPublicMediaObservation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublicMediaObservation"];
+            };
+        };
+        responses: {
+            /** @description Observation acceptée ; ne prouve ni un droit ni un transfert. */
+            204: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Entrée invalide. */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Corps trop grand. */
+            413: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Limitation publique. */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    "Retry-After"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Service indisponible. */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    queryPublicImageDescriptors: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageDescriptorQuery"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImageDescriptorResult"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Payload too large */
+            413: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Rate limit */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+        };
+    };
+    authorizePublicArtworkImage: {
+        parameters: {
+            query: {
+                rendition: "r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500";
+                version: string;
+            };
+            header?: never;
+            path: {
+                mediaId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageAuthorization"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable or inaccessible */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Rate limit */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+        };
+    };
+    authorizePublicSiteLogoImage: {
+        parameters: {
+            query: {
+                rendition: "r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500";
+                version: string;
+            };
+            header?: never;
+            path: {
+                logoId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageAuthorization"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable or inaccessible */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Rate limit */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+        };
+    };
+    authorizePublicPresentationImage: {
+        parameters: {
+            query: {
+                rendition: "r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500";
+                version: string;
+            };
+            header?: never;
+            path: {
+                assetId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageAuthorization"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable or inaccessible */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Rate limit */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+        };
+    };
+    authorizePublicEditorialImage: {
+        parameters: {
+            query: {
+                rendition: "r1-reference" | "r1-w64" | "r1-w96" | "r1-w128" | "r1-w160" | "r1-w256" | "r1-w320" | "r1-w480" | "r1-w640" | "r1-w768" | "r1-w960" | "r1-w1280" | "r1-w1600" | "r1-w1920" | "r1-w2500";
+                version: string;
+            };
+            header?: never;
+            path: {
+                assetId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageAuthorization"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable or inaccessible */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Rate limit */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+        };
+    };
+    recordPublicImageObservation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImageObservation"];
+            };
+        };
+        responses: {
+            /** @description Recorded */
+            204: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Payload too large */
+            413: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Rate limit */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+            /** @description Unavailable */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Referrer-Policy"?: "no-referrer";
+                    "X-Content-Type-Options"?: "nosniff";
+                    "X-Request-Id"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicImageError"];
+                };
+            };
+        };
+    };
 }
 
-export const sourceSha256 = "3e8fbac259fe632ded318a748c91b68285b88e383154336944dc1da2b40034d3";
+export const sourceSha256 = "ed1cb187ea17c84bfb86cd283b3bd3d3a3c1a56dccbc01b0e2696475cc36a7da";

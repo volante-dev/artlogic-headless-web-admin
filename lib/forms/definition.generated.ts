@@ -3,6 +3,7 @@ import type {FormDocument,FormIssue} from "./model.generated";
 import {validateConditions} from "./conditions.generated";
 import {DomainError} from "./errors.generated";
 export const formUuid=(v:string)=>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
+export function isFormTitleHidden(document:Pick<FormDocument,"hideTitle">,placement=false):boolean{return placement||document.hideTitle===true;}
 export function canonicalFormValue(value:unknown):string{
  if(Array.isArray(value))return "["+value.map(canonicalFormValue).join(",")+"]";
  if(value&&typeof value==="object")return "{"+Object.entries(value).sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>JSON.stringify(k)+":"+canonicalFormValue(v)).join(",")+"}";
@@ -11,6 +12,7 @@ export function canonicalFormValue(value:unknown):string{
 /** Structural JSON validation at the HTTP boundary precedes these shared semantic rules. */
 export function validateFormDefinition(d:FormDocument,locales:readonly string[],options:{draft?:boolean}={}):FormIssue[]{
  const issues:FormIssue[]=[],add=(path:string,code:string,fieldId?:string,locale?:string)=>issues.push({path,code,...(fieldId?{fieldId}:{}),...(locale?{locale}:{})});
+ if(d.hideTitle!==undefined&&typeof d.hideTitle!=="boolean")add("hideTitle","invalid_boolean");
  if(d.fields.length>200||d.steps.length>20||d.steps.length<1||new TextEncoder().encode(JSON.stringify(d)).length>1_000_000)add("document","limit_exceeded");
  const ids=new Set<string>(),steps=new Set<string>(),occupied=new Set<string>();
  const identity=(id:string,path:string)=>{if(!formUuid(id))add(path,"invalid_id");if(ids.has(id))add(path,"duplicate_id");ids.add(id);};
@@ -36,6 +38,6 @@ export function validateFormDefinition(d:FormDocument,locales:readonly string[],
 }
 export function assertExpertiseTitleOnly(previous:FormDocument,next:FormDocument):void{
  if(previous.kind!=="expertise")return;
- const omitTitles=(document:FormDocument)=>({...document,translations:Object.fromEntries(Object.entries(document.translations).map(([locale,{title:_title,...texts}])=>[locale,texts]))});
+ const omitTitles=(document:FormDocument)=>{const {hideTitle:_hideTitle,...content}=document;return {...content,translations:Object.fromEntries(Object.entries(document.translations).map(([locale,{title:_title,...texts}])=>[locale,texts]))};};
  if(canonicalFormValue(omitTitles(previous))!==canonicalFormValue(omitTitles(next)))throw new DomainError("forbidden");
 }

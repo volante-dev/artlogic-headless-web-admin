@@ -1,0 +1,436 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-28T10:33:30.836031+00:00",
+  "title": "Design System: Artlogic — Administration",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Ultramarine",
+        "tonalRamp": [
+          "oklch(15% 0.21761 265.86)",
+          "oklch(26% 0.21761 265.86)",
+          "oklch(38% 0.21761 265.86)",
+          "oklch(49% 0.21761 265.86)",
+          "oklch(61% 0.21761 265.86)",
+          "oklch(72% 0.21761 265.86)",
+          "oklch(84% 0.21761 265.86)",
+          "oklch(95% 0.21761 265.86)"
+        ]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Graphite de survol",
+        "tonalRamp": [
+          "oklch(15% 0.00425 84.59)",
+          "oklch(26% 0.00425 84.59)",
+          "oklch(38% 0.00425 84.59)",
+          "oklch(49% 0.00425 84.59)",
+          "oklch(61% 0.00425 84.59)",
+          "oklch(72% 0.00425 84.59)",
+          "oklch(84% 0.00425 84.59)",
+          "oklch(95% 0.00425 84.59)"
+        ]
+      },
+      "primary-light": {
+        "role": "primary",
+        "displayName": "Ultramarine éclairci",
+        "tonalRamp": [
+          "oklch(15% 0.16991 268.71)",
+          "oklch(26% 0.16991 268.71)",
+          "oklch(38% 0.16991 268.71)",
+          "oklch(49% 0.16991 268.71)",
+          "oklch(61% 0.16991 268.71)",
+          "oklch(72% 0.16991 268.71)",
+          "oklch(84% 0.16991 268.71)",
+          "oklch(95% 0.16991 268.71)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Papier au sous-ton bleuté",
+        "tonalRamp": [
+          "oklch(15% 0.00542 274.97)",
+          "oklch(26% 0.00542 274.97)",
+          "oklch(38% 0.00542 274.97)",
+          "oklch(49% 0.00542 274.97)",
+          "oklch(61% 0.00542 274.97)",
+          "oklch(72% 0.00542 274.97)",
+          "oklch(84% 0.00542 274.97)",
+          "oklch(95% 0.00542 274.97)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "tonalRamp": [
+          "oklch(15% 0.00425 84.59)",
+          "oklch(26% 0.00425 84.59)",
+          "oklch(38% 0.00425 84.59)",
+          "oklch(49% 0.00425 84.59)",
+          "oklch(61% 0.00425 84.59)",
+          "oklch(72% 0.00425 84.59)",
+          "oklch(84% 0.00425 84.59)",
+          "oklch(95% 0.00425 84.59)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Gris de lecture secondaire",
+        "tonalRamp": [
+          "oklch(15% 0.00868 80.70)",
+          "oklch(26% 0.00868 80.70)",
+          "oklch(38% 0.00868 80.70)",
+          "oklch(49% 0.00868 80.70)",
+          "oklch(61% 0.00868 80.70)",
+          "oklch(72% 0.00868 80.70)",
+          "oklch(84% 0.00868 80.70)",
+          "oklch(95% 0.00868 80.70)"
+        ]
+      },
+      "control": {
+        "role": "neutral",
+        "displayName": "Gris de contrôle",
+        "tonalRamp": [
+          "oklch(15% 0.00834 91.49)",
+          "oklch(26% 0.00834 91.49)",
+          "oklch(38% 0.00834 91.49)",
+          "oklch(49% 0.00834 91.49)",
+          "oklch(61% 0.00834 91.49)",
+          "oklch(72% 0.00834 91.49)",
+          "oklch(84% 0.00834 91.49)",
+          "oklch(95% 0.00834 91.49)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Gris de contour",
+        "tonalRamp": [
+          "oklch(15% 0.00968 100.01)",
+          "oklch(26% 0.00968 100.01)",
+          "oklch(38% 0.00968 100.01)",
+          "oklch(49% 0.00968 100.01)",
+          "oklch(61% 0.00968 100.01)",
+          "oklch(72% 0.00968 100.01)",
+          "oklch(84% 0.00968 100.01)",
+          "oklch(95% 0.00968 100.01)"
+        ]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Gris de séparation",
+        "tonalRamp": [
+          "oklch(15% 0.00843 91.49)",
+          "oklch(26% 0.00843 91.49)",
+          "oklch(38% 0.00843 91.49)",
+          "oklch(49% 0.00843 91.49)",
+          "oklch(61% 0.00843 91.49)",
+          "oklch(72% 0.00843 91.49)",
+          "oklch(84% 0.00843 91.49)",
+          "oklch(95% 0.00843 91.49)"
+        ]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Bleu de sélection",
+        "tonalRamp": [
+          "oklch(15% 0.03117 269.81)",
+          "oklch(26% 0.03117 269.81)",
+          "oklch(38% 0.03117 269.81)",
+          "oklch(49% 0.03117 269.81)",
+          "oklch(61% 0.03117 269.81)",
+          "oklch(72% 0.03117 269.81)",
+          "oklch(84% 0.03117 269.81)",
+          "oklch(95% 0.03117 269.81)"
+        ]
+      },
+      "selected": {
+        "role": "neutral",
+        "displayName": "Bleu d’information",
+        "tonalRamp": [
+          "oklch(15% 0.01542 269.98)",
+          "oklch(26% 0.01542 269.98)",
+          "oklch(38% 0.01542 269.98)",
+          "oklch(49% 0.01542 269.98)",
+          "oklch(61% 0.01542 269.98)",
+          "oklch(72% 0.01542 269.98)",
+          "oklch(84% 0.01542 269.98)",
+          "oklch(95% 0.01542 269.98)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Blanc",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(38% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(61% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "success": {
+        "role": "neutral",
+        "displayName": "Vert de confirmation",
+        "tonalRamp": [
+          "oklch(15% 0.07431 164.20)",
+          "oklch(26% 0.07431 164.20)",
+          "oklch(38% 0.07431 164.20)",
+          "oklch(49% 0.07431 164.20)",
+          "oklch(61% 0.07431 164.20)",
+          "oklch(72% 0.07431 164.20)",
+          "oklch(84% 0.07431 164.20)",
+          "oklch(95% 0.07431 164.20)"
+        ]
+      },
+      "success-surface": {
+        "role": "neutral",
+        "displayName": "Vert clair de confirmation",
+        "tonalRamp": [
+          "oklch(15% 0.01433 148.77)",
+          "oklch(26% 0.01433 148.77)",
+          "oklch(38% 0.01433 148.77)",
+          "oklch(49% 0.01433 148.77)",
+          "oklch(61% 0.01433 148.77)",
+          "oklch(72% 0.01433 148.77)",
+          "oklch(84% 0.01433 148.77)",
+          "oklch(95% 0.01433 148.77)"
+        ]
+      },
+      "warning": {
+        "role": "neutral",
+        "displayName": "Ocre d’avertissement",
+        "tonalRamp": [
+          "oklch(15% 0.07559 77.44)",
+          "oklch(26% 0.07559 77.44)",
+          "oklch(38% 0.07559 77.44)",
+          "oklch(49% 0.07559 77.44)",
+          "oklch(61% 0.07559 77.44)",
+          "oklch(72% 0.07559 77.44)",
+          "oklch(84% 0.07559 77.44)",
+          "oklch(95% 0.07559 77.44)"
+        ]
+      },
+      "warning-surface": {
+        "role": "neutral",
+        "displayName": "Ocre clair d’avertissement",
+        "tonalRamp": [
+          "oklch(15% 0.02374 88.24)",
+          "oklch(26% 0.02374 88.24)",
+          "oklch(38% 0.02374 88.24)",
+          "oklch(49% 0.02374 88.24)",
+          "oklch(61% 0.02374 88.24)",
+          "oklch(72% 0.02374 88.24)",
+          "oklch(84% 0.02374 88.24)",
+          "oklch(95% 0.02374 88.24)"
+        ]
+      },
+      "error": {
+        "role": "neutral",
+        "displayName": "Rouge d’erreur hérité",
+        "tonalRamp": [
+          "oklch(15% 0.14400 25.93)",
+          "oklch(26% 0.14400 25.93)",
+          "oklch(38% 0.14400 25.93)",
+          "oklch(49% 0.14400 25.93)",
+          "oklch(61% 0.14400 25.93)",
+          "oklch(72% 0.14400 25.93)",
+          "oklch(84% 0.14400 25.93)",
+          "oklch(95% 0.14400 25.93)"
+        ]
+      },
+      "field": {
+        "role": "neutral",
+        "displayName": "Gris de champ translucide",
+        "tonalRamp": [
+          "oklch(15% 0.00834 91.49)",
+          "oklch(26% 0.00834 91.49)",
+          "oklch(38% 0.00834 91.49)",
+          "oklch(49% 0.00834 91.49)",
+          "oklch(61% 0.00834 91.49)",
+          "oklch(72% 0.00834 91.49)",
+          "oklch(84% 0.00834 91.49)",
+          "oklch(95% 0.00834 91.49)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Titre de page",
+        "purpose": "Pages de l’administration."
+      },
+      "body": {
+        "displayName": "Texte courant",
+        "purpose": "Descriptions et contenu des formulaires."
+      }
+    },
+    "shadows": [
+      {
+        "name": "raised",
+        "value": "-12px -12px 22px rgba(255,255,255,0.98), 12px 14px 24px rgba(41,55,88,0.13)",
+        "purpose": "Grands panneaux de travail."
+      },
+      {
+        "name": "glass",
+        "value": "0 24px 72px rgba(41,55,88,0.2)",
+        "purpose": "Dialogues et popovers."
+      }
+    ],
+    "motion": [
+      {
+        "name": "fast",
+        "value": "120ms",
+        "purpose": "Couleurs et états des contrôles."
+      },
+      {
+        "name": "view",
+        "value": "180ms",
+        "purpose": "Onglets et apparition des popovers."
+      },
+      {
+        "name": "enter",
+        "value": "240ms",
+        "purpose": "Entrée des dialogues."
+      },
+      {
+        "name": "exit",
+        "value": "160ms",
+        "purpose": "Sortie des dialogues."
+      },
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrées et sélection des onglets MUI."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "600px"
+      },
+      {
+        "name": "md",
+        "value": "900px"
+      },
+      {
+        "name": "lg",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bouton principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action principale, sans élévation.",
+      "html": "<button class=\"ds-primary\">Enregistrer</button>",
+      "css": ".ds-primary{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:10px 18px;border:1px solid transparent;border-radius:4px;font-size:1rem;line-height:1.4;cursor:pointer;box-shadow:none;transition:background-color 120ms ease,color 120ms ease,border-color 120ms ease;min-height:44px;background:var(--admin-primary,#2952DE);color:#fff}.ds-primary:hover,.ds-primary:active{background:var(--admin-ink,#161513)}.ds-primary:focus-visible{outline:2px solid var(--admin-primary,#2952DE);outline-offset:3px;}.ds-primary:disabled{background:var(--admin-control,#E7E5DF);color:var(--admin-muted,#66635E);cursor:not-allowed}"
+    },
+    {
+      "name": "Bouton secondaire",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Action secondaire héritée avec bordure.",
+      "html": "<button class=\"ds-secondary\">Prévisualiser</button>",
+      "css": ".ds-secondary{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:10px 18px;border:1px solid transparent;border-radius:4px;font-size:1rem;line-height:1.4;cursor:pointer;box-shadow:none;transition:background-color 120ms ease,color 120ms ease,border-color 120ms ease;min-height:44px;background:transparent;color:var(--admin-ink,#161513);border-color:var(--admin-border,#C8C7C0)}.ds-secondary:hover{background:var(--admin-selected,#E8ECF7);border-color:var(--admin-primary,#2952DE)}.ds-secondary:focus-visible{outline:2px solid var(--admin-primary,#2952DE);outline-offset:3px;}"
+    },
+    {
+      "name": "Action texte",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Action texte du thème MUI.",
+      "html": "<button class=\"ds-text\">Actualiser</button>",
+      "css": ".ds-text{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:10px 18px;border:1px solid transparent;border-radius:4px;font-size:1rem;line-height:1.4;cursor:pointer;box-shadow:none;transition:background-color 120ms ease,color 120ms ease,border-color 120ms ease;background:transparent;color:var(--admin-primary,#2952DE)}.ds-text:hover{background:rgba(41,82,222,0.04)}.ds-text:focus-visible{outline:2px solid var(--admin-primary,#2952DE);outline-offset:3px;}"
+    },
+    {
+      "name": "Champ",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Champ hérité avec label et focus extérieur.",
+      "html": "<label class=\"ds-field-label\">Nom de la galerie<input class=\"ds-field\" value=\"Galerie\" /></label>",
+      "css": ".ds-field-label{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;display:grid;gap:8px;color:var(--admin-ink,#161513);font-size:1.0625rem}.ds-field{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;min-height:44px;padding:12px 14px;color:var(--admin-ink,#161513);background:var(--admin-field,rgba(231,229,223,.45));border:1px solid var(--admin-border,#C8C7C0);border-radius:4px;font-size:1.0625rem;max-width:100%}.ds-field:focus-visible{outline:2px solid var(--admin-primary,#2952DE);outline-offset:3px;}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation-item",
+      "description": "Page active dans la navigation principale.",
+      "html": "<nav class=\"ds-navigation\" aria-label=\"Navigation\"><a href=\"#\" aria-current=\"page\">Œuvres</a><a href=\"#\">Contenu du site</a></nav>",
+      "css": ".ds-navigation{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;display:flex;flex-direction:column;gap:6px}.ds-navigation a{display:flex;align-items:center;min-height:54px;padding:12px 16px;border-radius:4px;color:var(--admin-ink,#161513);text-decoration:none;font-size:1.0625rem;line-height:1.35;transition:background-color 180ms ease}.ds-navigation a:hover{background:var(--admin-control,#E7E5DF)}.ds-navigation a[aria-current]{background:var(--admin-accent,#DCE4FA)}.ds-navigation a:focus-visible{outline:2px solid var(--admin-primary,#2952DE);outline-offset:3px;}"
+    },
+    {
+      "name": "Onglets de travail",
+      "kind": "nav",
+      "refersTo": "workspace-tabs",
+      "description": "Navigation locale groupée héritée.",
+      "html": "<nav class=\"ds-tabs\" aria-label=\"Présentation\"><a href=\"#\" aria-current=\"page\">Identité visuelle</a><a href=\"#\">Pages</a></nav>",
+      "css": ".ds-tabs{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;display:flex;gap:4px;flex-wrap:wrap;background:var(--admin-control,#E7E5DF);padding:4px;border-radius:8px}.ds-tabs a{display:flex;align-items:center;justify-content:center;padding:10px 18px;min-height:44px;border-radius:4px;color:var(--admin-muted,#66635E);text-decoration:none;line-height:1.4}.ds-tabs a:hover{background:var(--admin-paper,#F5F6FA);color:var(--admin-ink,#161513)}.ds-tabs a[aria-current]{background:var(--admin-accent,#DCE4FA);color:var(--admin-ink,#161513)}.ds-tabs a:focus-visible{outline:2px solid var(--admin-primary,#2952DE);outline-offset:3px;outline-offset:-3px}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Étiquette neutre compacte.",
+      "html": "<span class=\"ds-chip\">Brouillon</span>",
+      "css": ".ds-chip{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:4px;background:var(--admin-control,#E7E5DF);color:var(--admin-ink,#161513);font-size:.875rem}"
+    },
+    {
+      "name": "Panneau de travail",
+      "kind": "card",
+      "refersTo": "work-panel",
+      "description": "Surface en relief pour un groupe de tâches.",
+      "html": "<section class=\"ds-panel\"><h2>Présentation</h2><p>Préparez les pages de votre galerie.</p></section>",
+      "css": ".ds-panel{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;background:var(--admin-paper,#F5F6FA);color:var(--admin-ink,#161513);box-shadow:var(--admin-raised,-12px -12px 22px rgba(255,255,255,0.98), 12px 14px 24px rgba(41,55,88,0.13));border-radius:16px;padding:28px}.ds-panel h2{font-weight:500;font-size:1.75rem;line-height:1.2;margin:0 0 16px}.ds-panel p{font-size:1.0625rem;line-height:1.55;margin:0 0 24px;max-width:72ch}@media(max-width:599px){.ds-panel{padding:24px 16px}}"
+    },
+    {
+      "name": "Surface de dialogue",
+      "kind": "custom",
+      "refersTo": "dialog",
+      "description": "Surface flottante frosted, sans simuler un dialogue interactif.",
+      "html": "<section class=\"ds-dialog\"><h2>Restaurer la version ?</h2><p>Cette action publiera une nouvelle version.</p></section>",
+      "css": ".ds-dialog{font-family:\"futura-pt\", \"Gill Sans\", \"Gill Sans MT\", \"Helvetica Neue\", Arial, sans-serif;font-weight:400;color:var(--admin-ink,#161513);background-color:rgba(245,246,250,.84);background-image:linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.04));backdrop-filter:blur(28px) saturate(1.25);-webkit-backdrop-filter:blur(28px) saturate(1.25);border:1px solid rgba(255,255,255,.75);box-shadow:0 24px 72px rgba(41,55,88,.2);border-radius:12px;margin:16px}.ds-dialog h2{font-size:1.75rem;font-weight:500;line-height:1.2;padding:28px 28px 16px;margin:0}.ds-dialog p{font-size:1.0625rem;line-height:1.55;padding:8px 28px 24px;margin:0}@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.ds-dialog{background-color:var(--admin-paper,#F5F6FA)}}@media(prefers-reduced-transparency:reduce){.ds-dialog{background:var(--admin-paper,#F5F6FA);backdrop-filter:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "L’atelier de galerie",
+    "overview": "Un atelier calme et tactile : les grands panneaux émergent d’un papier au subtil sous-ton bleuté, tandis que les commandes restent plates et lisibles. Le graphite porte le texte ; l’ultramarine indique l’action et le bleu pâle la sélection.\n\nCe système adapte les reliefs de Volante avec la palette et les typographies confirmées pour Artlogic. Il appartient exclusivement à l’administration : les thèmes et polices contribués pour le site public ne le modifient pas.",
+    "keyCharacteristics": [
+      "Relief blanc en haut à gauche, ombre douce en bas à droite.",
+      "Futura PT, titres en casse normale et poids moyen.",
+      "Contrôles compacts, focus visible, navigation persistante puis tiroir mobile."
+    ],
+    "rules": [
+      {
+        "name": "The Action and Selection Rule",
+        "body": "Réserver l’ultramarine aux actions et au focus ; utiliser le bleu pâle pour la sélection.",
+        "section": "colors"
+      },
+      {
+        "name": "The Shared Voice Rule",
+        "body": "Conserver la même famille dans les pages héritées et les éditeurs MUI ; Gill Sans est un repli, pas une seconde voix simultanée.",
+        "section": "typography"
+      },
+      {
+        "name": "The Work Surface Rule",
+        "body": "Porter le relief sur les grands panneaux de travail ; garder les boutons sans ombre.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do conserver l’identité réelle de la galerie et la séparation entre thème admin et thème du site.",
+      "Do réutiliser les panneaux en relief, les contrôles plats et les sélections bleu pâle.",
+      "Do garder les libellés français, les états métier et un focus visible au clavier.",
+      "Do permettre le retour à la ligne et réduire le mouvement selon les préférences système."
+    ],
+    "donts": [
+      "Don’t importer le logo Tournesol ni les couleurs historiques de la référence.",
+      "Don’t appliquer les polices ou couleurs du site contribué au shell de l’administration.",
+      "Don’t ajouter une ombre aux boutons ni couvrir les panneaux en relief de gradients.",
+      "Don’t masquer un avertissement ou un état désactivé pour simplifier visuellement un écran."
+    ]
+  }
+}

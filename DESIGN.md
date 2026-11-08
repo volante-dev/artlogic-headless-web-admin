@@ -237,3 +237,10 @@ Dans le constructeur de pages existant, les réglages « Nom et adresse » préc
 ## Navigation du site —016
 
 Même palette, Futura/Gill Sans et contrôles MUI que le reste de l’admin. Sept lignes stables, préférence « Afficher » distincte de la disponibilité publique, poignée et commandes Monter/Descendre accessibles. Écran indépendant du brouillon de présentation, message d’application immédiate, Annuler/Enregistrer et comparaison explicite après conflit ou réponse incertaine. Aucun sélecteur de langue ni éditeur de lien supplémentaire.
+
+
+## Classement des œuvres — 021
+
+Mode Operate : grille classique/masonry selon le réglage public, cartes standard/2×2 et légendes toujours accessibles ; commandes distinctes du lien de fiche. Réserve latérale de 300px, défilement propre et compteur, puis sous la grille sur petit écran. Le panneau de réserve utilise une variante intentionnellement plus légère du relief établi : ombre rgba(41,55,88,.10), lumière blanche décalée ; le proxy de déplacement utilise rgba(41,55,88,.20) pour signaler sa prise. Ce sont des niveaux de profondeur de la matière existante, sans nouvelle couleur sémantique.
+
+Pointer Events sur poignée, destination avant/après et dialogue global « Placer… ». Flip 220ms power2.out à confirmation du pointeur, retour proxy 140ms ; clavier et saisie directs, mouvement réduit sans déplacement spatial. Aucun stagger/inertie ni attente d’animation pour utiliser les commandes. Un titre secondaire facultatif reste une contribution de brouillon, avec référence Artlogic lisible et publication explicite.

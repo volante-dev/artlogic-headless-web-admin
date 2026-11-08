@@ -28,7 +28,11 @@ export async function backendRequest<T>(operation:Operation,input:BackendInput={
   if(input.body!==undefined)headers.set("Content-Type","application/json");
   if(input.bytes){if(operation!=="siteLogoUpload"||input.body!==undefined||!input.mime||!["image/png","image/jpeg","image/webp"].includes(input.mime))throw new BffError(415,"unsupported_media_type");if(input.bytes.byteLength>2097152)throw new BffError(413,"payload_too_large");headers.set("Content-Type",input.mime);}
   if(input.idempotencyKey){if(!uuidPattern.test(input.idempotencyKey))throw new BffError(400,"invalid_request");headers.set("Idempotency-Key",input.idempotencyKey);}
-  if(input.ifMatch){if(!((operation==="catalogFormatUpdate"||operation==="catalogModeUpdate")?/^"artwork-catalog-(?:mode-)?[0-9a-f-]{36}-(?:0|[1-9][0-9]{0,18})"$/:operation==="retryContactInquiry"?/^"inquiry-[0-9a-f-]{36}-[1-9][0-9]*"$/:operation==="siteContentUpdate"?/^"site-content-[1-9][0-9]*-[a-f0-9]{64}"$/:/^"publication-[0-9]+"$/).test(input.ifMatch))throw new BffError(400,"invalid_request");headers.set("If-Match",input.ifMatch);}
+  if(input.ifMatch){
+    const pattern=operation==="connectorSettingsUpdate"?/^"[1-9][0-9]{0,19}"$/:operation==="catalogPlacement"?/^"artwork-catalog-[0-9a-f-]{36}-[0-9]+"$/:operation==="catalogFormatUpdate"||operation==="catalogModeUpdate"?/^"artwork-catalog-(?:mode-)?[0-9a-f-]{36}-(?:0|[1-9][0-9]{0,18})"$/:operation==="retryContactInquiry"?/^"inquiry-[0-9a-f-]{36}-[1-9][0-9]*"$/:operation==="siteContentUpdate"?/^"site-content-[1-9][0-9]*-[a-f0-9]{64}"$/:/^"publication-[0-9]+"$/;
+    if(!pattern.test(input.ifMatch))throw new BffError(400,"invalid_request");headers.set("If-Match",input.ifMatch);
+  }
+
   try{
     const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+path+(input.query?.size?"?"+input.query.toString():""),{method:route.method,headers,body:input.bytes?new Uint8Array(input.bytes).buffer:input.body===undefined?undefined:JSON.stringify(input.body),
       cache:"no-store",redirect:"error",signal:AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))});
@@ -43,8 +47,9 @@ export async function backendRequest<T>(operation:Operation,input:BackendInput={
         throw new BffError(projected.status,projected.code,projected.requestId,projected.retryAfter,undefined,projected.details);
       }
       const status=Object.hasOwn(messages,response.status)&&![413,415].includes(response.status)?response.status:503;
-      const codes=new Set(["binding_version_conflict","binding_state_conflict","invalid_request","invalid_cursor","unauthorized","forbidden","csrf_invalid","not_found","oauth_transaction_consumed","rate_limited","service_unavailable","sync_in_progress","idempotency_conflict","idempotency_expired","source_cooldown","catalog_changed","precondition_failed","precondition_required","artwork_unavailable","artwork_in_editorial_use"]);
-      const code=codes.has(body?.error?.code)?body.error.code:"service_unavailable";
+      const codes=new Set(["access_denied","revision_conflict","dependency_unavailable","binding_version_conflict","binding_state_conflict","invalid_request","invalid_cursor","unauthorized","forbidden","csrf_invalid","not_found","oauth_transaction_consumed","rate_limited","service_unavailable","sync_in_progress","idempotency_conflict","idempotency_expired","source_cooldown","catalog_changed","catalog_membership_changed","precondition_failed","precondition_required","artwork_unavailable","artwork_in_editorial_use"]);
+      const candidateCode=typeof body?.error==="string"&&operation.startsWith("connector")?body.error:body?.error?.code;
+      const code=codes.has(candidateCode)?candidateCode:"service_unavailable";
       const requestId=/^[0-9a-f-]{36}$/.test(body?.error?.requestId??"")?body.error.requestId:undefined;
       const retry=response.headers.get("retry-after"),detail=body?.error?.details;
       const runId=code==="sync_in_progress"&&Array.isArray(detail)?detail.find((v:unknown)=>typeof v==="object"&&v!==null&&"field" in v&&v.field==="runId"&&"reason" in v&&typeof v.reason==="string"&&uuidPattern.test(v.reason))?.reason:undefined;

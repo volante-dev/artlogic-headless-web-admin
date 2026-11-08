@@ -8,6 +8,38 @@ export type ConfigValue = string | number | string[] | Record<string, string>;
 export type Config = Readonly<Record<string, ConfigValue | undefined>> & { readonly role: Scope };
 type Rule = { scopes: string; kind: string; required?: boolean; optionalScopes?: string; default?: string; values?: string[]; min?: number; max?: number; secret?: boolean };
 export const variables: Readonly<Record<string, Rule>> = {
+  MCP_ENABLED:{scopes:"AWB",kind:"enum",default:"false",values:["true","false"]},
+  MCP_RESOURCE_URL:{scopes:"AW",kind:"url"},
+  MCP_OAUTH_ISSUER_URL:{scopes:"A",kind:"url"},
+  MCP_CLIENT_ID:{scopes:"AW",kind:"string"},
+  MCP_CLIENT_SECRET_HASH:{scopes:"A",kind:"string",secret:true},
+  MCP_CLIENT_REDIRECT_URIS_JSON:{scopes:"A",kind:"list"},
+  MCP_ALLOWED_ORIGINS_JSON:{scopes:"A",kind:"origins",default:"[]"},
+  MCP_ACCESS_TTL_SECONDS:{scopes:"A",kind:"number",default:"300",min:30,max:300},
+  MCP_CODE_TTL_SECONDS:{scopes:"A",kind:"number",default:"60",min:15,max:60},
+  MCP_CONSENT_TTL_SECONDS:{scopes:"A",kind:"number",default:"600",min:60,max:600},
+  MCP_REFRESH_ABSOLUTE_SECONDS:{scopes:"AW",kind:"number",default:"2592000",min:3600,max:2592000},
+  MCP_REFRESH_IDLE_SECONDS:{scopes:"AW",kind:"number",default:"604800",min:3600,max:604800},
+  MCP_REQUEST_BYTES:{scopes:"A",kind:"number",default:"1048576",min:4096,max:1048576},
+  MCP_RESULT_BYTES:{scopes:"A",kind:"number",default:"262144",min:4096,max:262144},
+  MCP_CANDIDATE_BYTES:{scopes:"AW",kind:"number",default:"16777216",min:1048576,max:16777216},
+
+  PUBLIC_IMAGE_VARIANTS_ENABLED:{scopes:"A",kind:"enum",default:"false",values:["true","false"]},
+  PUBLIC_IMAGE_RESPONSIVE_ENABLED:{scopes:"F",kind:"enum",default:"false",values:["true","false"]},
+  PUBLIC_IMAGE_CAPABILITY_GENERATION:{scopes:"A",kind:"number",default:"1",min:1,max:2147483647},
+  PUBLIC_IMAGE_CAPABILITY_SIGN_TIMEOUT_MS:{scopes:"A",kind:"number",default:"5000",min:500,max:10000},
+  PUBLIC_IMAGE_DESCRIPTOR_TIMEOUT_MS:{scopes:"F",kind:"number",default:"1500",min:100,max:3000},
+  PUBLIC_MEDIA_DELIVERY_PHASE:{scopes:"A",kind:"enum",default:"relay",values:["relay","authorization","direct"]},
+  MEDIA_S3_ENDPOINT:{scopes:"A",kind:"url"},
+  MEDIA_S3_REGION:{scopes:"A",kind:"string"},
+  MEDIA_S3_ACCESS_KEY_ID:{scopes:"A",kind:"string",secret:true},
+  MEDIA_S3_SECRET_ACCESS_KEY:{scopes:"A",kind:"string",secret:true},
+  PUBLIC_MEDIA_READ_TTL_SECONDS:{scopes:"A",kind:"number",default:"86400",min:15,max:604800},
+  PUBLIC_MEDIA_CLOCK_MAX_AGE_MS:{scopes:"A",kind:"number",default:"30000",min:1000,max:30000},
+  PUBLIC_MEDIA_CLOCK_PROBE_TIMEOUT_MS:{scopes:"A",kind:"number",default:"2000",min:100,max:2000},
+  PUBLIC_MEDIA_DIRECT_ENABLED:{scopes:"F",kind:"enum",default:"false",values:["true","false"]},
+  PUBLIC_MEDIA_DELIVERY_ORIGINS_JSON:{scopes:"F",kind:"origins",default:"[]"},
+  PUBLIC_MEDIA_LOAD_TIMEOUT_MS:{scopes:"F",kind:"number",default:"60000",min:5001,max:180000},
   PRESENTATION_FOOTER_ENABLED:{scopes:"AWM",kind:"enum",default:"false",values:["true","false"]},
   FORMS_ENABLED: {"scopes":"AWMFB","kind":"enum","default":"false","values":["true","false"]},
   FORMS_NOTIFICATION_MODE: {scopes:"AWM",kind:"enum",values:["real","mock"]},
@@ -215,6 +247,11 @@ export const variables: Readonly<Record<string, Rule>> = {
     "required": true,
     "optionalScopes": "M"
   },
+  "SITE_ALLOWED_ORIGINS_JSON": {
+    "scopes": "F",
+    "kind": "origins",
+    "default": "[]"
+  },
   "ADMIN_ORIGIN": {
     "scopes": "AWFB",
     "kind": "origin",
@@ -331,6 +368,8 @@ export const variables: Readonly<Record<string, Rule>> = {
       "linked-v2"
     ]
   },
+  "ARTLOGIC_DESCRIPTION_LAYOUT": {"scopes":"WM","kind":"enum","values":["single","en-fr-separated"],"default":"single"},
+  "ARTLOGIC_DESCRIPTION_SOURCE_LOCALE": {"scopes":"WM","kind":"string"},
   "ARTLOGIC_FEED_ALLOWED_ORIGINS": {
     "scopes": "W",
     "kind": "origins",
@@ -410,7 +449,7 @@ export const variables: Readonly<Record<string, Rule>> = {
     "max": 1073741824
   },
   "SYNC_MAX_TEXT_LENGTH": {
-    "scopes": "W",
+    "scopes": "AW",
     "kind": "number",
     "default": "10000",
     "min": 1,
@@ -536,6 +575,12 @@ export const variables: Readonly<Record<string, Rule>> = {
     "default": "15000",
     "min": 1,
     "max": 120000
+  },
+  "PUBLIC_PAGE_REQUEST_TIMEOUT_MS": {
+    "scopes":"F", "kind":"number", "default":"45000", "min":1000, "max":120000
+  },
+  "PUBLIC_MEDIA_REQUEST_TIMEOUT_MS": {
+    "scopes": "F", "kind": "number", "default": "45000", "min": 1000, "max": 120000
   },
   "PUBLIC_RATE_LIMIT_PER_MINUTE": {
     "scopes": "A",
@@ -766,6 +811,7 @@ function parseLocales(raw:string,name="SITE_LOCALES_JSON",minimum=1):ConfiguredL
 }
 export function configuredLocalePolicy(config:Config):{defaultLocale:string;locales:ConfiguredLocale[]}{
   const locales=parseLocales(stringValue(config,"SITE_LOCALES_JSON")),defaultLocale=stringValue(config,"SITE_DEFAULT_LOCALE");
+  if(config.ARTLOGIC_DESCRIPTION_SOURCE_LOCALE&&(String(config.ARTLOGIC_DESCRIPTION_SOURCE_LOCALE).length>35||!/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/.test(String(config.ARTLOGIC_DESCRIPTION_SOURCE_LOCALE))))fail("ARTLOGIC_DESCRIPTION_SOURCE_LOCALE","langue source invalide");
   if(!locales.some(locale=>locale.code===defaultLocale))fail("SITE_DEFAULT_LOCALE","doit appartenir aux langues configurees");
   return {defaultLocale,locales};
 }
@@ -904,6 +950,34 @@ export function readConfig(role: Scope, env: Record<string, string | undefined> 
     result[name] = parse(name, input, rule);
   }
   const config = result as Config;
+  if(config.MCP_ENABLED==="true"&&(role==="A"||role==="W")){
+    for(const name of ["MCP_RESOURCE_URL","MCP_CLIENT_ID","CRM_SITE_DIRECTORY_URL","CRM_SITE_DIRECTORY_CLIENT_ID","CRM_SITE_DIRECTORY_KEY_ID","CRM_SITE_DIRECTORY_PRIVATE_KEY",...(role==="A"?["MCP_OAUTH_ISSUER_URL","MCP_CLIENT_SECRET_HASH","MCP_CLIENT_REDIRECT_URIS_JSON"]:[])])if(!config[name])fail(name,"requis pour la delegation MCP active");
+    const resource=new URL(stringValue(config,"MCP_RESOURCE_URL"));
+    if(resource.protocol!=="https:"||resource.pathname!=="/mcp"||resource.search||resource.hash||resource.username||resource.password||resource.hostname.includes("*"))fail("MCP_RESOURCE_URL","ressource HTTPS exacte /mcp requise");
+    const client=stringValue(config,"MCP_CLIENT_ID");if(!client.trim()||client!==client.trim()||client.length>200||/[\r\n\0]/.test(client))fail("MCP_CLIENT_ID","client enregistre borne requis");
+    if(numberValue(config,"MCP_REFRESH_IDLE_SECONDS")>numberValue(config,"MCP_REFRESH_ABSOLUTE_SECONDS"))fail("MCP_REFRESH_IDLE_SECONDS","ne peut depasser la duree absolue");
+    if(role==="A"){
+      if(stringValue(config,"MCP_OAUTH_ISSUER_URL")!==resource.origin+"/oauth/mcp")fail("MCP_OAUTH_ISSUER_URL","issuer exact du backend /oauth/mcp requis");
+      if(!/^[a-f0-9]{64}$/.test(stringValue(config,"MCP_CLIENT_SECRET_HASH")))fail("MCP_CLIENT_SECRET_HASH","SHA-256 hex requis");
+      const redirects=listValue(config,"MCP_CLIENT_REDIRECT_URIS_JSON");if(!redirects.length||redirects.length>8||new Set(redirects).size!==redirects.length)fail("MCP_CLIENT_REDIRECT_URIS_JSON","un a huit callbacks exacts uniques requis");
+      for(const raw of redirects){let u:URL;try{u=new URL(raw);}catch{return fail("MCP_CLIENT_REDIRECT_URIS_JSON","callback invalide");}if(u.protocol!=="https:"||u.username||u.password||u.hash||u.hostname.includes("*")||raw.length>2048)fail("MCP_CLIENT_REDIRECT_URIS_JSON","callback HTTPS exact sans wildcard ou fragment requis");}
+    }
+  }
+  if(role==="A"){
+
+    if(config.MEDIA_S3_ENDPOINT){const url=parseURL("MEDIA_S3_ENDPOINT",stringValue(config,"MEDIA_S3_ENDPOINT"));if(url.search||url.hostname.includes("*")||url.protocol!=="https:"&&!(config.DATA_MODE==="mock"&&isLoopback(url.hostname)))fail("MEDIA_S3_ENDPOINT","endpoint HTTPS exact requis");}
+  }
+  if(role==="F"){
+    const siteOrigins=listValue(config,"SITE_ALLOWED_ORIGINS_JSON");
+    if(siteOrigins.length>16)fail("SITE_ALLOWED_ORIGINS_JSON","seize origines maximum");
+    for(const origin of siteOrigins){const url=parseURL("SITE_ALLOWED_ORIGINS_JSON",origin,true);if(url.hostname.includes("*")||url.protocol!=="https:"&&!(config.DATA_MODE==="mock"&&isLoopback(url.hostname)))fail("SITE_ALLOWED_ORIGINS_JSON","origine HTTPS exacte requise");}
+    const origins=listValue(config,"PUBLIC_MEDIA_DELIVERY_ORIGINS_JSON");
+    if(config.PUBLIC_IMAGE_RESPONSIVE_ENABLED==="true"&&config.PUBLIC_MEDIA_DIRECT_ENABLED!=="true")fail("PUBLIC_IMAGE_RESPONSIVE_ENABLED","diffusion directe requise");
+    if(config.PUBLIC_MEDIA_DIRECT_ENABLED==="true"&&!origins.length)fail("PUBLIC_MEDIA_DELIVERY_ORIGINS_JSON","origine requise en direct");
+    for(const origin of origins){const url=parseURL("PUBLIC_MEDIA_DELIVERY_ORIGINS_JSON",origin,true);if(url.hostname.includes("*")||url.protocol!=="https:"&&!(config.DATA_MODE==="mock"&&isLoopback(url.hostname)))fail("PUBLIC_MEDIA_DELIVERY_ORIGINS_JSON","origine HTTPS exacte requise");}
+    if(numberValue(config,"PUBLIC_MEDIA_LOAD_TIMEOUT_MS")<numberValue(config,"PUBLIC_PAGE_REQUEST_TIMEOUT_MS")+5000)fail("PUBLIC_MEDIA_LOAD_TIMEOUT_MS","doit couvrir la deadline publique plus 5000 ms");
+  }
+
   if(config.PREVIEW_SERVICE_KEY&&config.PREVIEW_SERVICE_KEY===env.BFF_SERVICE_KEY)
     fail("PREVIEW_SERVICE_KEY","doit etre distinct de BFF_SERVICE_KEY");
   if(role!=="X")configuredLocalePolicy(config);

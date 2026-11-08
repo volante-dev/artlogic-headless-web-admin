@@ -724,6 +724,8 @@ export interface components {
             condition?: components["schemas"]["FormsCondition"];
         };
         FormsDocument: {
+            /** @description Masque le titre dans tous les emplacements de cette version publiée. Absent : titre affiché. Un emplacement peut également masquer le titre. */
+            hideTitle?: boolean;
             /** @constant */
             schemaVersion: 1;
             /** @enum {string} */
@@ -8527,4 +8529,4 @@ export interface operations {
     };
 }
 
-export const formsSourceSha256="9ccb16b5f3f3eabbfa9c62b0538c5c3358ccee7fb867448d0bcacc052e8e2595";
+export const formsSourceSha256="69d006a0731e910cd965f8cfc6641e967c42acb13d8705a593745c79a4d38e82";

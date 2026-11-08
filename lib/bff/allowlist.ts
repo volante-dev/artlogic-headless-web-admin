@@ -1,5 +1,13 @@
 import "server-only";
 export const operations={
+  connectorConsentRead:{method:"GET",path:"/v1/admin/connectors/chatgpt/authorization-requests/{requestId}"},
+  connectorConsentDecision:{method:"POST",path:"/v1/admin/connectors/chatgpt/authorization-requests/{requestId}/decision"},
+  connectorSettings:{method:"GET",path:"/v1/admin/connectors/chatgpt/settings"},
+  connectorSettingsUpdate:{method:"PATCH",path:"/v1/admin/connectors/chatgpt/settings"},
+  connectorConnections:{method:"GET",path:"/v1/admin/connectors/chatgpt/connections"},
+  connectorRevoke:{method:"POST",path:"/v1/admin/connectors/chatgpt/connections/{grantId}/revoke"},
+  catalogWorkspace:{method:"GET",path:"/v1/admin/artwork-catalog/workspace"},
+  catalogPlacement:{method:"PUT",path:"/v1/admin/artwork-catalog/placements/{artworkId}"},
   confirmBinding:{method:"POST",path:"/v1/admin/binding-confirmation"},
   catalogFormatRead:{method:"GET",path:"/v1/admin/artworks/{artworkId}/catalog-display"},
   catalogFormatUpdate:{method:"PUT",path:"/v1/admin/artworks/{artworkId}/catalog-display"},
@@ -82,6 +90,8 @@ export const articleOperations={
 } as const;
 export type ArticleOperation=keyof typeof articleOperations;
 export const presentationOperations={
+ artworkSettingsRead:{method:"GET",path:"/v1/admin/presentation/artwork-settings"},
+ artworkSettingsSave:{method:"PUT",path:"/v1/admin/presentation/artwork-settings"},
  footerRead:{method:"GET",path:"/v1/admin/presentation/footer"},
  footerSave:{method:"PUT",path:"/v1/admin/presentation/footer"},
  assetUploadCreate:{method:"POST",path:"/v1/admin/presentation/assets/{assetId}/upload-attempts"},

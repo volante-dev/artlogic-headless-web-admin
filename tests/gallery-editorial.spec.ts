@@ -5,10 +5,10 @@ test("editorial draft, frozen bound preview and publication are explicit",async(
  const fixture=JSON.parse(readFileSync(process.env.E2E_GALLERY_FIXTURE!,"utf8")),site=fixture.sites[0];
  await page.goto("/");await page.getByRole("button",{name:/se connecter/i}).click();await page.getByRole("button",{name:/continuer avec le compte de test/i}).click();
  await page.goto("/artworks/"+site.artworkId);const field=page.getByLabel("Description de l’œuvre",{exact:true});await expect(field).toBeVisible();
- const text="Description éditoriale <script> sans HTML";await field.fill(text);await page.getByRole("button",{name:"Enregistrer la description",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Description enregistrée");
+ const text="Description éditoriale <script> sans HTML";await field.fill(text);await page.getByRole("button",{name:"Enregistrer les contributions",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Contributions enregistrées");
  const [preview]=await Promise.all([context.waitForEvent("page"),page.getByRole("button",{name:"Prévisualiser",exact:true}).click()]);await preview.waitForURL(/\/preview$/);
  await expect(preview.frameLocator("iframe").getByText(text,{exact:true}).first()).toBeVisible();await expect(preview.getByLabel("Langue",{exact:true})).toBeDisabled();
- await field.fill("Nouvelle description publique");await page.getByRole("button",{name:"Enregistrer la description",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Description enregistrée");
+ await field.fill("Nouvelle description publique");await page.getByRole("button",{name:"Enregistrer les contributions",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Contributions enregistrées");
  await preview.reload();await expect(preview.frameLocator("iframe").getByText(text,{exact:true}).first()).toBeVisible();
  await page.getByRole("button",{name:"Publier le site",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Publication confirmée");
  const publicRead=await page.request.get(site.apiOrigin+"/v1/public/artwork-experiences/"+site.artworkId+"?locale=fr");expect((await publicRead.json()).description).toBe("Nouvelle description publique");
@@ -25,13 +25,13 @@ test("a real shared revision conflict keeps the local description and can be com
  await field.fill("Ma description conservée");
  const path="/api/presentation/artworks/"+site.artworkId,current=await page.request.get(path),csrf=(await context.cookies(baseURL)).find(c=>c.name.endsWith("artlogic_csrf"))!.value;
  const other=await page.request.put(path,{headers:{Origin:baseURL!,"X-CSRF-Token":csrf,"If-Match":current.headers().etag!},data:{description:{fr:"Description d’une autre session"}}});expect(other.status()).toBe(200);
- await page.getByRole("button",{name:"Enregistrer la description",exact:true}).click();await expect(page.getByRole("alert").filter({hasText:/brouillon a changé/})).toBeVisible();await expect(field).toHaveValue("Ma description conservée");
+ await page.getByRole("button",{name:"Enregistrer les contributions",exact:true}).click();await expect(page.getByRole("alert").filter({hasText:/brouillon a changé/})).toBeVisible();await expect(field).toHaveValue("Ma description conservée");
  await page.getByRole("button",{name:"Comparer avec la version enregistrée",exact:true}).click();await expect(page.getByText("Description d’une autre session",{exact:true})).toBeVisible();
  if(process.env.E2E_GALLERY_CAPTURE==="1"){
   const directory=".impeccable/review/gallery";await mkdir(directory,{recursive:true});
   for(const width of [1440,375]){await page.setViewportSize({width,height:900});await field.scrollIntoViewIfNeeded();await page.screenshot({path:`${directory}/editorial-conflict-${width}.png`,fullPage:true});}
  }
- await page.getByRole("button",{name:"Utiliser cette version comme référence et garder ma saisie",exact:true}).click();await expect(field).toHaveValue("Ma description conservée");await page.getByRole("button",{name:"Enregistrer la description",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Description enregistrée");
+ await page.getByRole("button",{name:"Utiliser cette version comme référence et garder ma saisie",exact:true}).click();await expect(field).toHaveValue("Ma description conservée");await page.getByRole("button",{name:"Enregistrer les contributions",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Contributions enregistrées");
 });
 
 test("mobile frozen preview uses the common information composition and inert contact",async({page,context})=>{

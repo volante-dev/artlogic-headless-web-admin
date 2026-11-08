@@ -286,6 +286,10 @@ export const formsSchemaDocument={
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "hideTitle": {
+            "type": "boolean",
+            "description": "Masque le titre dans tous les emplacements de cette version publiée. Absent : titre affiché. Un emplacement peut également masquer le titre."
+          },
           "schemaVersion": {
             "type": "integer",
             "const": 1

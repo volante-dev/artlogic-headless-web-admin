@@ -1,0 +1,9 @@
+import {test,expect} from "@playwright/test";import {readFileSync} from "node:fs";
+test("site defaults and per-artwork choices save independently of translations",async({page})=>{
+ test.setTimeout(90000);const site=JSON.parse(readFileSync(process.env.E2E_GALLERY_FIXTURE!,"utf8")).sites[0];
+ await page.goto('/');await page.getByRole('button',{name:/se connecter/i}).click();await page.getByRole('button',{name:/continuer avec le compte de test/i}).click();
+ await page.goto('/presentation/artworks');await expect(page.getByRole('heading',{name:'Fiches d’œuvre',exact:true})).toBeVisible();const year=page.getByRole('switch',{name:'Afficher l’année par défaut'});await expect(year).toBeChecked();await year.uncheck();await page.getByRole('button',{name:'Enregistrer les réglages',exact:true}).click();await expect(page.getByText('Réglages enregistrés en brouillon.',{exact:false})).toBeVisible();
+ await page.goto('/artworks/'+site.finaleArtworkIds[3]);const choice=page.getByLabel('Année',{exact:true});await expect(choice).toBeVisible();await choice.click();await page.getByRole('option',{name:'Afficher',exact:true}).click();await expect(page.getByRole('button',{name:'Prévisualiser',exact:true})).toBeDisabled();await page.getByRole('button',{name:'Enregistrer les contributions',exact:true}).click();await expect(page.locator('.workspace-panel').getByRole('status')).toContainText('Contributions enregistrées');
+ const response=await page.request.get('/api/presentation/artworks/'+site.finaleArtworkIds[3]);expect(response.status()).toBe(200);expect((await response.json()).visibility).toMatchObject({defaults:{year:false},overrides:{year:'show'},effective:{year:true}});
+ await page.reload();await expect(page.getByLabel('Année',{exact:true})).toContainText('Afficher');await expect(page.getByRole('button',{name:'Enregistrer les contributions',exact:true})).toBeDisabled();
+});
