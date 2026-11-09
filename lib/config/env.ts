@@ -116,9 +116,9 @@ export const variables: Readonly<Record<string, Rule>> = {
   EDITORIAL_AI_INPUT_CENTS_PER_MILLION: {"scopes":"AW","kind":"number","min":0,"max":100000},
   EDITORIAL_AI_OUTPUT_CENTS_PER_MILLION: {"scopes":"AW","kind":"number","min":0,"max":100000},
 
-  EDITORIAL_IMMERSIVE_ENABLED: {scopes:"A",kind:"enum",default:"false",values:["true","false"]},
+  EDITORIAL_IMMERSIVE_ENABLED: {scopes:"AW",kind:"enum",default:"false",values:["true","false"]},
   EDITORIAL_IMMERSIVE_RENDER_ENABLED: {scopes:"F",kind:"enum",default:"true",values:["true","false"]},
-  EDITORIAL_EXHIBITIONS_ENABLED: {scopes:"A",kind:"enum",default:"false",values:["true","false"]},
+  EDITORIAL_EXHIBITIONS_ENABLED: {scopes:"AW",kind:"enum",default:"false",values:["true","false"]},
   EDITORIAL_ENABLED: {scopes:"AWMFB",kind:"enum",default:"false",values:["true","false"]},
   EDITORIAL_VERSION_LIMIT: {scopes:"AWM",kind:"number",default:"20",min:3,max:100},
   EDITORIAL_TRASH_DAYS: {scopes:"AWM",kind:"number",default:"30",min:1,max:365},
@@ -163,7 +163,7 @@ export const variables: Readonly<Record<string, Rule>> = {
 
   SITE_PROFILE: {scopes:"AWMF",kind:"profile",default:"default"},
   PRESENTATION_MANIFEST_PATH: {scopes:"AWM",kind:"localpath",required:true},
-  NAVIGATION_EDITING_ENABLED: {scopes:"A",kind:"enum",default:"false",values:["true","false"]},
+  NAVIGATION_EDITING_ENABLED: {scopes:"AW",kind:"enum",default:"false",values:["true","false"]},
   PREVIEW_SERVICE_KEY: {scopes:"AF",kind:"token",required:true,secret:true},
   PREVIEW_EXCHANGE_TTL_SECONDS: {scopes:"A",kind:"number",default:"60",min:15,max:120},
   SESSION_REMEMBER_SECONDS: {scopes:"A",kind:"number",default:"2592000",min:300,max:2592000},
