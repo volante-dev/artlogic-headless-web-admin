@@ -47,8 +47,8 @@ export async function backendRequest<T>(operation:Operation,input:BackendInput={
         throw new BffError(projected.status,projected.code,projected.requestId,projected.retryAfter,undefined,projected.details);
       }
       const status=Object.hasOwn(messages,response.status)&&![413,415].includes(response.status)?response.status:503;
-      const codes=new Set(["access_denied","revision_conflict","dependency_unavailable","binding_version_conflict","binding_state_conflict","invalid_request","invalid_cursor","unauthorized","forbidden","csrf_invalid","not_found","oauth_transaction_consumed","rate_limited","service_unavailable","sync_in_progress","idempotency_conflict","idempotency_expired","source_cooldown","catalog_changed","catalog_membership_changed","precondition_failed","precondition_required","artwork_unavailable","artwork_in_editorial_use"]);
-      const candidateCode=typeof body?.error==="string"&&operation.startsWith("connector")?body.error:body?.error?.code;
+      const codes=new Set(["preview_unavailable","review_incomplete","expired_change","invalid_change","access_denied","revision_conflict","dependency_unavailable","binding_version_conflict","binding_state_conflict","invalid_request","invalid_cursor","unauthorized","forbidden","csrf_invalid","not_found","oauth_transaction_consumed","rate_limited","service_unavailable","sync_in_progress","idempotency_conflict","idempotency_expired","source_cooldown","catalog_changed","catalog_membership_changed","precondition_failed","precondition_required","artwork_unavailable","artwork_in_editorial_use"]);
+      const candidateCode=typeof body?.error==="string"&&operation.startsWith("connector")?body.error:operation.startsWith("connector")?body?.code??body?.error?.code:body?.error?.code;
       const code=codes.has(candidateCode)?candidateCode:"service_unavailable";
       const requestId=/^[0-9a-f-]{36}$/.test(body?.error?.requestId??"")?body.error.requestId:undefined;
       const retry=response.headers.get("retry-after"),detail=body?.error?.details;

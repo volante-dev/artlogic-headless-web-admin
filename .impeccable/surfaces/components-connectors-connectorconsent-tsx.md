@@ -1,0 +1,64 @@
+---
+version: 1
+slug: "components-connectors-connectorconsent-tsx"
+primary_target: "components/connectors/ConnectorConsent.tsx"
+related_targets: ["components/connectors/ConnectorManagement.tsx","app/connectors/chatgpt/consent/page.tsx","app/connectors/chatgpt/page.tsx"]
+---
+
+# ChatGPT — consentement et connexions
+
+Mode Operate. Extension précise du web-admin existant pour la feature027 ; palette, typographie, panneaux et navigation hérités de DESIGN.md. Le parcours fonctionnel et ses permissions sont définis dans backend/specs/027-chatgpt-site-connector.
+
+## Direction contract
+
+THESIS: Rendre lisibles les droits accordés à une connexion personnelle, sans ajouter de validation à chaque publication.
+
+OWN-WORLD: Système admin existant : papier bleuté, graphite et ultramarine, Futura/Gill Sans, panneaux en relief et commandes MUI plates.
+
+STORY: Identifier le site et l’environnement, choisir les droits non cochés par défaut, autoriser ou refuser, puis pouvoir révoquer la connexion.
+
+FIRST VIEWPORT: Titre de page, identité du site, panneau unique de permissions, expiration et actions explicites. La gestion présente l’état global puis une liste séparée des connexions. Mobile : largeur disponible, étiquettes multilignes et boutons sans débordement.
+
+FORM: Extension imposée par la spec et le système existant ; pas de nouveau monde visuel ni de tirage nécessaire. Aucun mouvement ajouté à ces commandes de gestion.
+
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+
+Aucune image produite ; les captures de recette utilisent uniquement un backend synthétique local. La qualification OAuth réelle et le compte ChatGPT cible restent distincts.
+
+## Comparaison au système et preuves — 027
+
+Comparaison documentaire et visuelle terminée sur `ConnectorConsent.tsx`, `ConnectorManagement.tsx` et les deux pages `app/connectors/chatgpt`, avec PRODUCT.md et DESIGN.md comme références. L’extension reste dans « L’atelier de galerie » : papier bleuté, texte graphite, action principale ultramarine, sélection de navigation bleu pâle, même voix typographique et même panneau en relief. Les composants réemploient les variantes MUI, la surface de travail et les rôles typographiques existants ; aucune couleur, police, identité, animation ou primitive visuelle supplémentaire n’est introduite dans ces sources.
+
+Le consentement place l’identité du site et l’environnement avant le panneau de permissions, puis l’expiration et les commandes explicites. Sa largeur est plafonnée à (800px). Les libellés et descriptions restent multilignes ; les actions autorisent le retour à la ligne. La consultation du site est nécessaire et cochée dès l’initialisation ; les permissions facultatives commencent décochées. Les captures montrent la synchronisation sélectionnée et ne représentent donc pas l’état initial complet. La publication sélectionne également la préparation de brouillons ; retirer cette dernière retire la publication. Le groupe possède une légende accessible, et les états indisponibles ou en attente conservent des commandes désactivées et des messages explicites.
+
+La gestion sépare le panneau d’activation globale de la liste des connexions. L’avertissement sur la révocation de toutes les connexions reste visible près de la désactivation. Chaque entrée présente utilisateur, date, permissions, état et action de révocation ; les badges réutilisent la matière neutre du système. Les lignes passent en colonne sur petit écran, les permissions reviennent à la ligne et les identifiants peuvent se couper. Les pages conservent leurs messages de chargement ; le consentement invalide fournit une reprise depuis ChatGPT. Ces observations de code ne constituent pas une qualification de sécurité du parcours.
+
+Preuves visuelles consultées : `backend/.runtime/mcp027-ui/consent-desktop.png` (1440 × 1000), `consent-mobile.png` (390 × 1029), `connections-desktop.png` (1440 × 1000) et `connections-mobile.png` (390 × 844), chemins relatifs à la racine du dépôt. Les quatre captures montrent la galerie de recette et la mention de données fictives. Elles confirment la continuité du shell, la hiérarchie, les panneaux, les commandes plates et l’adaptation visible des deux surfaces sans débordement horizontal apparent. Ce sont des captures de recette synthétique, pas des rasters livrés au produit ; aucun raster produit n’a été créé.
+
+Le reviewer indépendant a rendu le verdict **ship**, sans défaut matériel ; résultats transmis : tests navigateur (5/5), détecteur (`[]`). Cette passe documentaire a relu les sources et inspecté les quatre captures ; elle n’a pas réexécuté ces contrôles. Les captures statiques ne prouvent pas à elles seules tous les états d’erreur, le parcours clavier complet, le zoom à 200 % ou les préférences de mouvement. La connexion OAuth réelle et l’utilisation depuis le compte ChatGPT cible restent non qualifiées par cette recette locale.
+
+Conclusion de comparaison : extension cohérente du système existant, sans nouveau token à documenter. DESIGN.md et `.impeccable/design.json` sont préservés ; leur drift préexistant n’est pas réparé par cette passe. La présente section constitue l’unique ajout documentaire.
+
+## Extension — aperçu privé de proposition — 027
+
+Mode Operate. Cette extension ajoute `components/connectors/ConnectorProposalPreview.tsx` et `app/connectors/chatgpt/changes/[changeId]/page.tsx`, avec `connectorPreview` dans `lib/bff/connectors.ts`. La comparaison à PRODUCT.md, DESIGN.md et aux surfaces de connexion existantes confirme la même matière de travail, la même typographie Futura/Gill Sans et les contrôles MUI plats. Aucun token, asset, mouvement ou monde visuel supplémentaire n’est introduit ; DESIGN.md et son sidecar restent préservés, sans réparation du drift préexistant.
+
+Le titre, le résumé et la version privée précèdent un panneau « Consulter le rendu ». Le choix de page et de langue apparaît sur une ligne à partir du breakpoint `sm`, puis en colonne sur petit écran ; l’ensemble est plafonné à (900px). Le bouton principal ouvre une copie dans un nouvel onglet. L’expiration en UTC et le retour aux connexions restent hors du panneau. Les résumés longs peuvent revenir à la ligne ; le choix d’une fiche d’œuvre réemploie le sélecteur existant et exige une œuvre avant l’ouverture.
+
+Les sources réservent ces contrôles aux propositions de présentation relues et à la révision attendue. Un lien ancien, une proposition expirée ou non relue fournit un message explicite à la place du panneau. L’ouverture en cours désactive les choix et le bouton ; un onglet bloqué, une révision devenue obsolète, un accès expiré ou un échec d’ouverture déclenche un message d’erreur. Le BFF conserve les contrôles de session et de mutation et vérifie la destination d’échange configurée ; ces observations de code ne constituent pas une qualification de sécurité du parcours réel.
+
+Captures inspectées pour cette passe : `backend/.runtime/mcp027-ui/preview-desktop.png` (1440 × 1000) et `backend/.runtime/mcp027-ui/preview-mobile.png` (390 × 844), chemins relatifs à la racine du dépôt. Elles montrent une proposition de recette locale prête à prévisualiser, la galerie de recette et la mention de données fictives. La comparaison confirme la continuité du shell, du panneau en relief, des champs et du bouton plat ; le mobile empile les champs sans débordement horizontal apparent. Le badge de développement « Cache disabled » appartient à la capture de recette. Ces captures sont des preuves synthétiques, pas des rasters livrés au produit ; aucun raster produit n’a été créé.
+
+Le reviewer indépendant frais `/root/impeccable_preview_reviewer_027` a rendu le verdict **ship**, sans correction matérielle, après lecture des sources et inspection des deux captures. Résultats transmis par l’implémentation : détecteur sur le nouveau composant et sa page (`[]`) ; recette navigateur synthétique locale `scripts/test-mcp-admin.ts` (8/8 : cinq contrôles de connexion et trois d’aperçu). Cette passe documentaire a relu les sources et inspecté les captures ; elle n’a pas réexécuté ces contrôles. Le parcours clavier, le zoom à 200 %, le comportement de l’onglet et les états non prêts n’ont pas été exercés indépendamment par le reviewer. Les captures ne qualifient pas ces interactions ; OAuth réel et usage depuis le compte ChatGPT cible restent hors de cette recette locale.
+
+## Extension — historique des opérations appliquées — 027
+
+Mode Operate. Comparaison de `components/connectors/ConnectorAudit.tsx`, des pages `app/connectors/chatgpt/operations/page.tsx` et `app/connectors/chatgpt/operations/[operationId]/page.tsx`, ainsi que du lien d’historique dans `ConnectorManagement.tsx`, à PRODUCT.md et DESIGN.md. L’extension conserve le papier bleuté, le graphite, l’ultramarine, la voix Futura/Gill Sans et les composants MUI existants. Aucun nouveau token, mouvement ou asset visuel produit n’est introduit. DESIGN.md et `.impeccable/design.json` restent préservés ; leur drift préexistant n’est pas réparé par cette passe.
+
+Le lien « Historique des opérations » rejoint une liste chronologique avec action, ressource, date UTC et origine ChatGPT ; les opérations plus anciennes et le retour aux connexions restent des liens explicites. L’état vide réemploie le panneau de travail. Le détail sépare l’enregistrement du changement de son état de diffusion, présente les valeurs « Avant » et « Après » en deux colonnes à partir de `md`, puis en une colonne sur petit écran. Les textes conservent leurs sauts de ligne et peuvent se couper ; les références techniques restent dans un élément dépliable natif. Les valeurs sont rendues comme texte React, sans interprétation HTML dans ces sources. Les pages fournissent des messages de chargement, et l’absence de détail appliqué un message d’information. Ces observations de code ne qualifient pas la sécurité du parcours réel.
+
+Captures inspectées : `backend/.runtime/mcp027-ui/audit-desktop.png` (1440 × 1000) et `backend/.runtime/mcp027-ui/audit-mobile.png` (390 × 844), chemins relatifs à la racine du dépôt. Toutes deux montrent le détail d’une modification publiée de recette locale, avec diffusion non vérifiée et références dépliées. Elles confirment la continuité du shell, la hiérarchie et l’empilement mobile sans débordement horizontal apparent ; la chaîne HTML de recette reste visible comme texte. La liste d’historique et son lien de gestion ont été relus dans les sources, sans capture indépendante de la liste. Ces images sont des preuves synthétiques et ne sont pas des rasters livrés au produit ; aucun raster produit n’a été généré.
+
+Le reviewer indépendant frais `/root/impeccable_audit_reviewer_027` a rendu le verdict **ship**, sans correction matérielle. Résultats transmis : recette navigateur synthétique locale (11/11, dont trois contrôles d’audit) ; hook de design sans constat déterministe. Cette passe documentaire a relu les sources et inspecté les deux captures de détail ; elle n’a pas réexécuté les tests ni le hook. Les captures statiques ne qualifient pas la pagination, tous les états de diffusion, le parcours clavier complet ou le zoom à 200 %. OAuth réel et usage depuis le compte ChatGPT cible restent non qualifiés par cette recette locale. Cette section est l’unique ajout documentaire de cette passe.
+
+**Complément — aperçu privé d’article — 027.** Lecture de `ConnectorProposalPreview.tsx` et de sa page de proposition : les articles relus sont désormais admis dans l’aperçu existant ; seul le choix de langue est présenté pour un article, et son corps POST omet `pageId` et `artworkId`. Les contrôles de page, de navigation et de fiche d’œuvre conservent leurs branches existantes. Les captures inspectées `backend/.runtime/mcp027-ui/article-preview-desktop.png` (1440 × 1000) et `backend/.runtime/mcp027-ui/article-preview-mobile.png` (390 × 844) montrent une proposition synthétique d’article bilingue, le champ de langue et le bouton dans le panneau établi, sans débordement horizontal apparent. Elles confirment la continuité papier/graphite/ultramarine et MUI ; le badge « Cache disabled » relève de l’environnement de développement. Le reviewer indépendant frais `/root/impeccable_article_preview_reviewer_027` a rendu **ship**, sans correction matérielle. Résultat transmis : recette navigateur synthétique (12/12), non réexécutée par cette passe documentaire. Ces captures statiques ne qualifient ni l’ouverture effective de l’onglet, ni les états d’erreur, le parcours clavier complet ou le zoom à 200 % ; OAuth réel et usage depuis le compte ChatGPT cible restent non qualifiés. Aucun token, mouvement ou raster produit supplémentaire ; DESIGN.md et son sidecar demeurent inchangés. Ce paragraphe constitue l’unique ajout de cette passe.

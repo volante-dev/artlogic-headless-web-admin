@@ -1,5 +1,9 @@
 import "server-only";
 export const operations={
+  connectorAuditList:{method:"GET",path:"/v1/admin/connectors/chatgpt/operations"},
+  connectorAuditDetail:{method:"GET",path:"/v1/admin/connectors/chatgpt/operations/{operationId}"},
+  connectorChangeRead:{method:"GET",path:"/v1/admin/connectors/chatgpt/changes/{changeId}"},
+  connectorChangePreview:{method:"POST",path:"/v1/admin/connectors/chatgpt/changes/{changeId}/preview"},
   connectorConsentRead:{method:"GET",path:"/v1/admin/connectors/chatgpt/authorization-requests/{requestId}"},
   connectorConsentDecision:{method:"POST",path:"/v1/admin/connectors/chatgpt/authorization-requests/{requestId}/decision"},
   connectorSettings:{method:"GET",path:"/v1/admin/connectors/chatgpt/settings"},

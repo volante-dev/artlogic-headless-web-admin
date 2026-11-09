@@ -25,3 +25,20 @@ export async function connectorMutation(request:NextRequest,kind:"consent"|"sett
   return NextResponse.json({redirectUrl:destination.href},{headers:privateHeaders});
  }catch(error){return failure(error);}
 }
+export type ConnectorChangeView=import("./connector-contracts.generated").components["schemas"]["Change"];
+export async function connectorChange(changeId:string){requireConnector();if(!uuidPattern.test(changeId))throw new BffError(400,"invalid_request");return (await backendRequest<ConnectorChangeView>("connectorChangeRead",{session:await requiredSession(),params:{changeId}})).body;}
+export async function connectorPreview(request:NextRequest,changeId:string){
+ try{requireConnector();if(!uuidPattern.test(changeId)||request.nextUrl.searchParams.size)throw new BffError(400,"invalid_request");const proof=mutationProof(request),body=await readMutationBody(request) as Record<string,unknown>;
+  if(!body||typeof body!=="object"||Array.isArray(body)||Object.keys(body).some(k=>!["expectedRevision","locale","pageId","artworkId"].includes(k))||typeof body.expectedRevision!=="string"||! /^[1-9][0-9]{0,19}$/.test(body.expectedRevision)||typeof body.locale!=="string"||body.locale.length>35||body.pageId!==undefined&&(typeof body.pageId!=="string"||body.pageId.length>64)||body.artworkId!==undefined&&(typeof body.artworkId!=="string"||!uuidPattern.test(body.artworkId)))throw new BffError(400,"invalid_request");
+  const result=await backendRequest<{exchangeCode:string;exchangeUrl:string;expiresAt:string}>("connectorChangePreview",{...proof,params:{changeId},body});
+  const config=loadConfig(),origin=config.SITE_ORIGIN;if(typeof origin!=="string"||result.body.exchangeUrl!==origin+"/preview/exchange")throw new BffError(503,"dependency_unavailable");
+  return NextResponse.json(result.body,{status:201,headers:privateHeaders});
+ }catch(error){return failure(error);}
+}
+
+export type ConnectorAuditSummary=import("./connector-contracts.generated").components["schemas"]["AuditSummary"];
+export type ConnectorOperationDetail=import("./connector-contracts.generated").components["schemas"]["OperationDetail"];
+export interface ConnectorAuditPage {items:ConnectorAuditSummary[];nextCursor:string|null}
+function auditCursor(cursor?:string){if(cursor!==undefined&&(typeof cursor!=="string"||!cursor||cursor.length>2048))throw new BffError(400,"invalid_request");return cursor?new URLSearchParams({cursor}):undefined;}
+export async function connectorAuditList(cursor?:string){requireConnector();return (await backendRequest<ConnectorAuditPage>("connectorAuditList",{session:await requiredSession(),query:auditCursor(cursor)})).body;}
+export async function connectorAuditDetail(operationId:string,cursor?:string){requireConnector();if(!uuidPattern.test(operationId))throw new BffError(400,"invalid_request");return (await backendRequest<ConnectorOperationDetail>("connectorAuditDetail",{session:await requiredSession(),params:{operationId},query:auditCursor(cursor)})).body;}

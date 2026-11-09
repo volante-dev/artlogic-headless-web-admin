@@ -133,3 +133,7 @@ Voir le [guide de configuration, recette et exploitation](../backend/specs/013-a
 Les changements validés sont publiés sur la branche `main`. Le projet Vercel est connecté à ce dépôt GitHub : chaque mise à jour de `main` déclenche automatiquement un build puis la mise en production sur le domaine canonique. Vérifier le résultat du déploiement et le domaine après le push.
 
 `BACKEND_URL` est défini dans les variables du projet Vercel et pointe vers l’API Render ; aucune adresse API ne doit être codée en dur. Un changement de variable nécessite un nouveau déploiement.
+
+### Connexion ChatGPT
+
+Quand le module est configuré, `/connectors/chatgpt` gère les connexions et leur révocation, `/connectors/chatgpt/consent` réutilise le SSO et le CSRF existants, les propositions ont un aperçu facultatif sous session et `/connectors/chatgpt/operations` présente l’audit des opérations appliquées aux administrateurs habilités. Les liens de propositions ne contiennent aucun jeton ; l’ouverture d’aperçu passe par un échange POST. Un administrateur ne voit pas les propositions privées d’un autre compte. Le BFF ne remplace pas la validation des droits côté backend. Voir le [runbook backend](../backend/docs/runbooks/chatgpt-connector.md) et les [gates de qualification](../backend/specs/027-chatgpt-site-connector/review/qualification.md).
