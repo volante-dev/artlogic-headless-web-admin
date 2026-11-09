@@ -525,6 +525,8 @@ export interface operations {
                 resource: string;
                 code_challenge: string;
                 code_challenge_method: "S256";
+                /** @description Optional client language hint, accepted but not forwarded to authorization or used to select identity, scope or redirect. */
+                ui_locales?: string;
             };
             header?: never;
             path?: never;
