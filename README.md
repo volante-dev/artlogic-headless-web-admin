@@ -126,3 +126,10 @@ Publications, actualités et expositions partagent le choix manuel/automatique, 
 Le gate `EDITORIAL_AI_ENABLED` est fermé par défaut. La clé `EDITORIAL_AI_API_KEY` appartient uniquement au worker ; le mode mock est réservé aux environnements de test. Les nouvelles demandes exigent une lease worker saine et des paramètres compatibles. Aucun retry fournisseur automatique après envoi incertain. Les migrations028–030 sont additives et n’ont été appliquées par cette recette que dans les bases isolées.
 
 Voir le [guide de configuration, recette et exploitation](../backend/specs/013-ai-editorial-composition/quickstart.md) pour les commandes, les limites, la reprise GET, les candidats exacts et la conservation. La qualification synthétique de GPT-6 Luna est consignée dans validation.md de la feature013 ; la recette avec cinq contributeurs reste distincte.
+
+
+## Déploiement depuis main
+
+Les changements validés sont publiés sur la branche `main`. Le projet Vercel est connecté à ce dépôt GitHub : chaque mise à jour de `main` déclenche automatiquement un build puis la mise en production sur le domaine canonique. Vérifier le résultat du déploiement et le domaine après le push.
+
+`BACKEND_URL` est défini dans les variables du projet Vercel et pointe vers l’API Render ; aucune adresse API ne doit être codée en dur. Un changement de variable nécessite un nouveau déploiement.
