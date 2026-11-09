@@ -10,7 +10,7 @@ test("editorial draft, frozen bound preview and publication are explicit",async(
  await expect(preview.frameLocator("iframe").getByText(text,{exact:true}).first()).toBeVisible();await expect(preview.getByLabel("Langue",{exact:true})).toBeDisabled();
  await field.fill("Nouvelle description publique");await page.getByRole("button",{name:"Enregistrer les contributions",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Contributions enregistrées");
  await preview.reload();await expect(preview.frameLocator("iframe").getByText(text,{exact:true}).first()).toBeVisible();
- await page.getByRole("button",{name:"Publier le site",exact:true}).click();await expect(page.locator(".workspace-panel").getByRole("status")).toContainText("Publication confirmée");
+ await page.getByRole("button",{name:"Publier le site",exact:true}).click();await expect(page.locator("[data-publication-notification]")).toContainText("Publication confirmée");
  const publicRead=await page.request.get(site.apiOrigin+"/v1/public/artwork-experiences/"+site.artworkId+"?locale=fr");expect((await publicRead.json()).description).toBe("Nouvelle description publique");
  await preview.getByRole("button",{name:"Fermer l’aperçu",exact:true}).click();
  await page.getByLabel("Langue de la description",{exact:true}).click();await page.getByRole("option",{name:/English|Anglais/}).click();

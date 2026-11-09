@@ -7,5 +7,16 @@ test("loads and saves editorial content and presentation through transformed HTT
  await page.getByLabel("Traduction — Actualités",{exact:true}).fill("Actualités de la galerie");await page.getByRole("button",{name:"Enregistrer",exact:true}).click();await expect(page.getByRole("status")).toContainText("Enregistrement confirmé");
  await page.reload();await expect(page.getByLabel("Traduction — Actualités",{exact:true})).toHaveValue("Actualités de la galerie");
  await page.goto("/presentation");await expect(page.getByRole("heading",{name:"Apparence et pages",exact:true})).toBeVisible();
- await expect(page.getByRole("button",{name:"Publier",exact:true})).toBeEnabled();await page.getByRole("button",{name:"Publier",exact:true}).click();await expect(page.getByRole("status")).toContainText("Publication confirmée");
+ const publish=page.getByRole("button",{name:"Publier",exact:true}),notification=page.locator('[data-publication-notification]');
+ let releaseValidation!:()=>void,releasePublication!:()=>void,releaseReload!:()=>void,writes=0,reloadReads=0;
+ const validationGate=new Promise<void>(resolve=>{releaseValidation=resolve;}),publicationGate=new Promise<void>(resolve=>{releasePublication=resolve;}),reloadGate=new Promise<void>(resolve=>{releaseReload=resolve;});
+ await page.route('**/api/presentation',async route=>{if(writes){reloadReads++;await reloadGate;}await route.continue();});
+ await page.route('**/api/presentation/validation',async route=>{await validationGate;await route.continue();});
+ await page.route('**/api/presentation/publications',async route=>{if(route.request().method()!=="POST"){await route.continue();return;}writes++;await publicationGate;await route.continue();});
+ await expect(publish).toBeEnabled();await publish.evaluate(button=>{(button as HTMLButtonElement).click();(button as HTMLButtonElement).click();});
+ await expect(notification).toContainText("Publication en cours");await expect(publish).toBeDisabled();releaseValidation();
+ await expect.poll(()=>writes).toBe(1);await expect(publish).toBeDisabled();releasePublication();
+ await expect.poll(()=>reloadReads).toBeGreaterThan(0);await expect(publish).toBeDisabled();releaseReload();
+ await expect(notification).toContainText("Publication confirmée");await expect(publish).toBeEnabled();await expect(notification.locator('..')).toHaveCSS('position','fixed');
+ await notification.getByRole('button',{name:'Fermer la notification'}).click();await expect(notification).toBeHidden();
 });

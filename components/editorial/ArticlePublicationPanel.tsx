@@ -1,4 +1,5 @@
 "use client";
+import {usePublicationFeedback} from "../PublicationFeedback";
 import {postPreviewCode} from "@/lib/presentation/post-preview-code";
 import {useEffect,useState} from "react";
 import {Alert,Button,Dialog,DialogActions,DialogContent,DialogTitle,Skeleton,Stack,TextField} from "@mui/material";
@@ -11,15 +12,20 @@ import {ArticleScheduleFields} from "./ArticleScheduleFields";
 type S=components["schemas"];type Version=S["EditorialVersionSummary"];type Issue=S["EditorialIssue"];
 const statuses={pending:"À venir",activated:"En cours",completed:"Terminée",cancelled:"Annulée",superseded:"Remplacée",failed:"Échec",missed:"Créneau dépassé"};
 export function ArticlePublicationPanel({article,document,capabilities,locale,csrfCookie,ready,onBusyChange,onRefresh,onLocate}:{article:AdminArticle;document:ArticleDocument;capabilities:ArticleCapabilities;locale:string;csrfCookie:string;ready:boolean;onBusyChange(value:boolean):void;onRefresh(replaceDocument?:boolean):Promise<void>;onLocate(issue:Issue):void}){
+ const feedback=usePublicationFeedback();
  const [busy,setBusy]=useState(false),[error,setError]=useState<unknown>(null),[notice,setNotice]=useState(""),[name,setName]=useState(""),[page,setPage]=useState(1),[bump,setBump]=useState(0),[history,setHistory]=useState<(S["EditorialVersionPage"]&{requestPage:number})|null>(null),[historyError,setHistoryError]=useState<unknown>(null),[validation,setValidation]=useState<{revision:string;value:S["EditorialValidation"]}|null>(null),[detail,setDetail]=useState<S["EditorialVersionDetail"]|null>(null),[renaming,setRenaming]=useState<{version:Version;name:string}|null>(null),[scheduling,setScheduling]=useState<{version:Version;window:{startsAt:string;endsAt:string|null;timeZone:string}|null}|null>(null);
- const path="/articles/"+article.id,tag='"article-'+article.id+'-'+article.revision+'"',blocked=error instanceof ArticleError&&[0,401,403,412].includes(error.status),disabled=!ready||busy||blocked||article.lifecycle!=="editable";
+ const path="/articles/"+article.id,tag='"article-'+article.id+'-'+article.revision+'"',blocked=error instanceof ArticleError&&[0,401,403,412].includes(error.status),disabled=!ready||busy||feedback.publishing||blocked||article.lifecycle!=="editable";
  useEffect(()=>{const controller=new AbortController();void articleFetch<S["EditorialVersionPage"]>(path+"/versions?"+new URLSearchParams({page:String(page),pageSize:"20"}),{signal:controller.signal}).then(result=>{if(!controller.signal.aborted){setHistory({...result.data,requestPage:page});setHistoryError(null);}}).catch(error=>{if(!controller.signal.aborted)setHistoryError(error);});return()=>controller.abort();},[path,page,bump]);
  useEffect(()=>{const version=new URLSearchParams(window.location.search).get("version");if(!version||!/^[a-f0-9-]{36}$/i.test(version))return;const controller=new AbortController();void articleFetch<S["EditorialVersionDetail"]>(path+"/versions/"+version,{signal:controller.signal}).then(result=>{if(!controller.signal.aborted)setDetail(result.data);}).catch(error=>{if(!controller.signal.aborted)setError(error);});return()=>controller.abort();},[path]);
  const contributionsClosed=article.kind==="exhibition"&&!capabilities.exhibitionsWritable,writeDisabled=disabled||contributionsClosed;
  const pending=(value:boolean)=>{setBusy(value);onBusyChange(value);};
  async function command(suffix:string,body:unknown,message:string,{method="POST",idempotent=true,replace=false}={}){
-  if(disabled||contributionsClosed&&!suffix.endsWith("/cancel"))return;pending(true);setError(null);setNotice("");try{await articleFetch<S["EditorialCommandResult"]>(path+suffix,{method,body,tag,key:idempotent?crypto.randomUUID():undefined,csrfCookie});await onRefresh(replace);setBump(value=>value+1);setNotice(message);setRenaming(null);setScheduling(null);if(suffix==="/versions")setName("");}catch(error){setError(error);}finally{pending(false);}
+  if(disabled||contributionsClosed&&!suffix.endsWith("/cancel"))return;
+  const publication=suffix==="/publish"||suffix==="/schedule";
+  const execute=async()=>{pending(true);setError(null);setNotice("");try{await articleFetch<S["EditorialCommandResult"]>(path+suffix,{method,body,tag,key:idempotent?crypto.randomUUID():undefined,csrfCookie});await onRefresh(replace);setBump(value=>value+1);if(!publication)setNotice(message);setRenaming(null);setScheduling(null);if(suffix==="/versions")setName("");return {message};}catch(error){setError(error);throw error;}finally{pending(false);}};
+  if(publication)await feedback.run(execute,{errorMessage:articleErrorMessage});else await execute().catch(()=>{});
  }
+
  async function reread(){pending(true);try{await onRefresh();setBump(value=>value+1);setError(null);setNotice("L’état enregistré a été relu. Consultez la version publique, les versions conservées et les programmations avant une nouvelle action.");}catch(error){setError(error);}finally{pending(false);}}
  async function validate(){if(disabled)return;pending(true);setError(null);try{const result=await articleFetch<S["EditorialValidation"]>(path+"/validation",{method:"POST",body:{},tag,csrfCookie});setValidation({revision:article.revision,value:result.data});}catch(error){setError(error);}finally{pending(false);}}
  async function compare(version:Version){pending(true);setError(null);try{const result=await articleFetch<S["EditorialVersionDetail"]>(path+"/versions/"+version.id);setDetail(result.data);}catch(error){setError(error);}finally{pending(false);}}
