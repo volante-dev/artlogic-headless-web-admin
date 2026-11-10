@@ -417,6 +417,8 @@ export interface components {
             syncRunId?: components["schemas"]["Mcp_Id"];
             errorCode?: components["schemas"]["Mcp_ErrorCode"];
             syncRun?: components["schemas"]["Mcp_SyncRun"];
+            /** @description Décisions de visibilité par œuvre, dans l’ordre demandé. Lot atomique : aucun résultat partiel ni mutation si un contrôle échoue. Une œuvre déjà dans cet état a changed=false. */
+            artworkResults?: components["schemas"]["Mcp_ArtworkVisibilityResult"][];
         };
         Mcp_SyncRun: {
             id: components["schemas"]["Mcp_Id"];
@@ -465,6 +467,17 @@ export interface components {
         Mcp_Revision: string;
         OperationDetail: components["schemas"]["Mcp_OperationDetail"];
         AuditSummary: components["schemas"]["Mcp_AuditSummary"];
+        /** @description Résultat individuel d’une décision de visibilité atomiquement appliquée. Présent uniquement dans une opération committed ; visibility de l’opération reste la preuve de diffusion distincte. */
+        Mcp_ArtworkVisibilityResult: {
+            resource: {
+                /** @constant */
+                kind: "artwork";
+                id: components["schemas"]["Mcp_Id"];
+            };
+            revision: string;
+            visible: boolean;
+            changed: boolean;
+        };
     };
     responses: never;
     parameters: never;
