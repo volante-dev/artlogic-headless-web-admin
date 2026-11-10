@@ -4228,6 +4228,13 @@ export interface components {
             hidden: boolean;
             props: {
                 columns?: number;
+                emptyMessage?: {
+                    [key: string]: string | null;
+                };
+                emptyLinkLabel?: {
+                    [key: string]: string | null;
+                };
+                emptyLink?: components["schemas"]["PresentationLink"];
             };
         };
         ResolvedPresentationArtworkCatalogSection: {
@@ -4241,6 +4248,9 @@ export interface components {
             variant: "grid";
             props: {
                 columns?: number;
+                emptyMessage?: string;
+                emptyLinkLabel?: string;
+                emptyLink?: components["schemas"]["ResolvedPresentationLink"];
             };
         };
         PresentationArtworkDetailsSection: {
@@ -38938,4 +38948,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "67748cc1b444f05460316947dfe4c84cf2c139ce3a0dc240949d59b3aad1b8dc";
+export const sourceSha256 = "3a3a0a0a0429928b61c14519156b6aaead86fce571eb85fe268ea36007c4dd10";
