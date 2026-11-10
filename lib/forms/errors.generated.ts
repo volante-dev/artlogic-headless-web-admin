@@ -2,7 +2,7 @@
 export class DomainError extends Error {
   constructor(
     readonly code: string,
-    readonly context: Readonly<{ revision?:string;issues?:readonly {path:string;code:string;locale?:string;fieldId?:string;objectId?:string}[]; retryAfterSeconds?: number; runId?: string; details?:readonly {field:string;reason:string}[]; locale?:string; keys?:readonly string[] }> = {},
+    readonly context: Readonly<{ typeAvailability?:"unavailable"|"unsupported";revision?:string;issues?:readonly {path:string;code:string;locale?:string;fieldId?:string;objectId?:string}[]; retryAfterSeconds?: number; runId?: string; details?:readonly {field:string;reason:string}[]; locale?:string; keys?:readonly string[] }> = {},
   ) { super(code); this.name = "DomainError"; }
 }
 export function ensure(condition: unknown, code: string): asserts condition {

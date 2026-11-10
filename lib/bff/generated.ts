@@ -3608,10 +3608,17 @@ export interface components {
             "editorial.artworkTitle": string;
             "editorial.searchTerms": string;
             "editorial.filterLimit": string;
+            "gallery.typeFilters": string;
+            "gallery.typeHeading": string;
+            "gallery.typeClear": string;
+            "gallery.typeEmpty": string;
+            "gallery.typeUnavailable": string;
+            "gallery.typeNormalized": string;
+            "gallery.typeLimit": string;
         };
         SiteMessageDefinition: {
             /** @enum {string} */
-            key: "nav.news" | "nav.artworks" | "nav.exhibitions" | "nav.publications" | "nav.expertise" | "nav.contact" | "header.homeLabel" | "header.navigationLabel" | "header.openMenu" | "header.closeMenu" | "header.languageLabel" | "header.skipToContent" | "page.home.title" | "page.news.title" | "page.news.empty" | "page.artworks.title" | "page.exhibitions.title" | "page.exhibitions.empty" | "page.publications.title" | "page.publications.empty" | "page.expertise.title" | "page.expertise.empty" | "page.contact.title" | "page.contact.empty" | "catalog.loading" | "catalog.empty" | "catalog.restarted" | "catalog.next" | "catalog.errorTitle" | "catalog.errorMessage" | "catalog.retry" | "catalog.unavailableTitle" | "artwork.loading" | "artwork.back" | "artwork.untitled" | "artwork.unknownArtist" | "artwork.artist" | "artwork.year" | "artwork.medium" | "artwork.dimensions" | "artwork.unspecified" | "artwork.imageUnavailable" | "artwork.imageAlt" | "error.artworkNotFoundTitle" | "error.artworkNotFoundMessage" | "error.pageNotFoundTitle" | "error.pageNotFoundMessage" | "error.viewArtworks" | "video.play" | "video.pause" | "video.unavailable" | "video.reducedMotion" | "presentation.discover" | "presentation.readMore" | "presentation.galleryLabel" | "presentation.previous" | "presentation.next" | "presentation.empty" | "error.presentationTitle" | "error.presentationMessage" | "preview.title" | "preview.notice" | "preview.desktop" | "preview.mobile" | "preview.close" | "preview.expired" | "preview.unavailable" | "preview.checking" | "preview.backToAdmin" | "video.playLabel" | "video.pauseLabel" | "presentation.explore" | "presentation.demonstration" | "contact.name" | "contact.email" | "contact.subject" | "contact.message" | "contact.required" | "contact.limits" | "contact.privacy" | "contact.privacyLink" | "contact.submit" | "contact.sending" | "contact.confirmed" | "contact.confirmationHelp" | "contact.reference" | "contact.disabled" | "contact.unavailable" | "contact.invalid" | "contact.requiredError" | "contact.invalidEmail" | "contact.tooLong" | "contact.rateLimited" | "contact.retryAfter" | "contact.recover" | "contact.recovering" | "contact.unknownReceipt" | "contact.conflict" | "contact.newEnquiry" | "contact.newConfirm" | "contact.artworkCta" | "contact.artworkHeading" | "contact.artworkSubject" | "contact.artworkUnavailable" | "contact.general" | "contact.backArtwork" | "contact.leaveConfirm" | "contact.demonstration" | "contact.notificationHeading" | "contact.notificationGallery" | "contact.notificationLocale" | "contact.notificationArtwork" | "contact.load" | "contact.sentCopy" | "contact.notificationType" | "contact.notificationGeneral" | "gallery.searchLabel" | "gallery.searchSubmit" | "gallery.searchClear" | "gallery.noResults" | "gallery.paginationLabel" | "gallery.previousPage" | "gallery.nextPage" | "gallery.page" | "gallery.of" | "gallery.closeArtwork" | "gallery.opening" | "gallery.unavailable" | "gallery.progressLabel" | "gallery.view" | "gallery.presentation" | "gallery.description" | "gallery.revalidate" | "gallery.restart" | "gallery.zoomIn" | "gallery.zoomOut" | "gallery.zoomHelp" | "gallery.openInformation" | "gallery.backToImages" | "gallery.viewWholeImage" | "gallery.mobileGestureHelp" | "gallery.panHelp" | "editorial.play" | "editorial.pause" | "editorial.fullscreen" | "editorial.soundOn" | "editorial.soundOff" | "editorial.videoUnavailable" | "editorial.autoplayBlocked" | "editorial.previousSlide" | "editorial.nextSlide" | "editorial.pauseCarousel" | "editorial.resumeCarousel" | "editorial.slide" | "editorial.close" | "editorial.zoomImage" | "editorial.imageDialog" | "editorial.authors" | "editorial.authorProfile" | "editorial.related" | "editorial.search" | "editorial.noResults" | "editorial.loadError" | "editorial.retry" | "editorial.readArticle" | "editorial.previousPage" | "editorial.nextPage" | "editorial.page" | "editorial.allCategories" | "editorial.filters" | "editorial.resetSearch" | "editorial.carousel" | "editorial.imageUnavailable" | "editorial.artworkTitle" | "editorial.searchTerms" | "editorial.filterLimit";
+            key: "nav.news" | "nav.artworks" | "nav.exhibitions" | "nav.publications" | "nav.expertise" | "nav.contact" | "header.homeLabel" | "header.navigationLabel" | "header.openMenu" | "header.closeMenu" | "header.languageLabel" | "header.skipToContent" | "page.home.title" | "page.news.title" | "page.news.empty" | "page.artworks.title" | "page.exhibitions.title" | "page.exhibitions.empty" | "page.publications.title" | "page.publications.empty" | "page.expertise.title" | "page.expertise.empty" | "page.contact.title" | "page.contact.empty" | "catalog.loading" | "catalog.empty" | "catalog.restarted" | "catalog.next" | "catalog.errorTitle" | "catalog.errorMessage" | "catalog.retry" | "catalog.unavailableTitle" | "artwork.loading" | "artwork.back" | "artwork.untitled" | "artwork.unknownArtist" | "artwork.artist" | "artwork.year" | "artwork.medium" | "artwork.dimensions" | "artwork.unspecified" | "artwork.imageUnavailable" | "artwork.imageAlt" | "error.artworkNotFoundTitle" | "error.artworkNotFoundMessage" | "error.pageNotFoundTitle" | "error.pageNotFoundMessage" | "error.viewArtworks" | "video.play" | "video.pause" | "video.unavailable" | "video.reducedMotion" | "presentation.discover" | "presentation.readMore" | "presentation.galleryLabel" | "presentation.previous" | "presentation.next" | "presentation.empty" | "error.presentationTitle" | "error.presentationMessage" | "preview.title" | "preview.notice" | "preview.desktop" | "preview.mobile" | "preview.close" | "preview.expired" | "preview.unavailable" | "preview.checking" | "preview.backToAdmin" | "video.playLabel" | "video.pauseLabel" | "presentation.explore" | "presentation.demonstration" | "contact.name" | "contact.email" | "contact.subject" | "contact.message" | "contact.required" | "contact.limits" | "contact.privacy" | "contact.privacyLink" | "contact.submit" | "contact.sending" | "contact.confirmed" | "contact.confirmationHelp" | "contact.reference" | "contact.disabled" | "contact.unavailable" | "contact.invalid" | "contact.requiredError" | "contact.invalidEmail" | "contact.tooLong" | "contact.rateLimited" | "contact.retryAfter" | "contact.recover" | "contact.recovering" | "contact.unknownReceipt" | "contact.conflict" | "contact.newEnquiry" | "contact.newConfirm" | "contact.artworkCta" | "contact.artworkHeading" | "contact.artworkSubject" | "contact.artworkUnavailable" | "contact.general" | "contact.backArtwork" | "contact.leaveConfirm" | "contact.demonstration" | "contact.notificationHeading" | "contact.notificationGallery" | "contact.notificationLocale" | "contact.notificationArtwork" | "contact.load" | "contact.sentCopy" | "contact.notificationType" | "contact.notificationGeneral" | "gallery.searchLabel" | "gallery.searchSubmit" | "gallery.searchClear" | "gallery.noResults" | "gallery.paginationLabel" | "gallery.previousPage" | "gallery.nextPage" | "gallery.page" | "gallery.of" | "gallery.closeArtwork" | "gallery.opening" | "gallery.unavailable" | "gallery.progressLabel" | "gallery.view" | "gallery.presentation" | "gallery.description" | "gallery.revalidate" | "gallery.restart" | "gallery.zoomIn" | "gallery.zoomOut" | "gallery.zoomHelp" | "gallery.openInformation" | "gallery.backToImages" | "gallery.viewWholeImage" | "gallery.mobileGestureHelp" | "gallery.panHelp" | "editorial.play" | "editorial.pause" | "editorial.fullscreen" | "editorial.soundOn" | "editorial.soundOff" | "editorial.videoUnavailable" | "editorial.autoplayBlocked" | "editorial.previousSlide" | "editorial.nextSlide" | "editorial.pauseCarousel" | "editorial.resumeCarousel" | "editorial.slide" | "editorial.close" | "editorial.zoomImage" | "editorial.imageDialog" | "editorial.authors" | "editorial.authorProfile" | "editorial.related" | "editorial.search" | "editorial.noResults" | "editorial.loadError" | "editorial.retry" | "editorial.readArticle" | "editorial.previousPage" | "editorial.nextPage" | "editorial.page" | "editorial.allCategories" | "editorial.filters" | "editorial.resetSearch" | "editorial.carousel" | "editorial.imageUnavailable" | "editorial.artworkTitle" | "editorial.searchTerms" | "editorial.filterLimit" | "gallery.typeFilters" | "gallery.typeHeading" | "gallery.typeClear" | "gallery.typeEmpty" | "gallery.typeUnavailable" | "gallery.typeNormalized" | "gallery.typeLimit";
             /** @enum {string} */
             group: "navigation" | "header" | "pages" | "catalog" | "artwork" | "errors" | "video" | "presentation" | "preview" | "contact" | "gallery" | "editorial";
             label: string;
@@ -3620,7 +3627,7 @@ export interface components {
         };
         SiteTranslation: {
             /** @enum {string} */
-            key: "nav.news" | "nav.artworks" | "nav.exhibitions" | "nav.publications" | "nav.expertise" | "nav.contact" | "header.homeLabel" | "header.navigationLabel" | "header.openMenu" | "header.closeMenu" | "header.languageLabel" | "header.skipToContent" | "page.home.title" | "page.news.title" | "page.news.empty" | "page.artworks.title" | "page.exhibitions.title" | "page.exhibitions.empty" | "page.publications.title" | "page.publications.empty" | "page.expertise.title" | "page.expertise.empty" | "page.contact.title" | "page.contact.empty" | "catalog.loading" | "catalog.empty" | "catalog.restarted" | "catalog.next" | "catalog.errorTitle" | "catalog.errorMessage" | "catalog.retry" | "catalog.unavailableTitle" | "artwork.loading" | "artwork.back" | "artwork.untitled" | "artwork.unknownArtist" | "artwork.artist" | "artwork.year" | "artwork.medium" | "artwork.dimensions" | "artwork.unspecified" | "artwork.imageUnavailable" | "artwork.imageAlt" | "error.artworkNotFoundTitle" | "error.artworkNotFoundMessage" | "error.pageNotFoundTitle" | "error.pageNotFoundMessage" | "error.viewArtworks" | "video.play" | "video.pause" | "video.unavailable" | "video.reducedMotion" | "presentation.discover" | "presentation.readMore" | "presentation.galleryLabel" | "presentation.previous" | "presentation.next" | "presentation.empty" | "error.presentationTitle" | "error.presentationMessage" | "preview.title" | "preview.notice" | "preview.desktop" | "preview.mobile" | "preview.close" | "preview.expired" | "preview.unavailable" | "preview.checking" | "preview.backToAdmin" | "video.playLabel" | "video.pauseLabel" | "presentation.explore" | "presentation.demonstration" | "contact.name" | "contact.email" | "contact.subject" | "contact.message" | "contact.required" | "contact.limits" | "contact.privacy" | "contact.privacyLink" | "contact.submit" | "contact.sending" | "contact.confirmed" | "contact.confirmationHelp" | "contact.reference" | "contact.disabled" | "contact.unavailable" | "contact.invalid" | "contact.requiredError" | "contact.invalidEmail" | "contact.tooLong" | "contact.rateLimited" | "contact.retryAfter" | "contact.recover" | "contact.recovering" | "contact.unknownReceipt" | "contact.conflict" | "contact.newEnquiry" | "contact.newConfirm" | "contact.artworkCta" | "contact.artworkHeading" | "contact.artworkSubject" | "contact.artworkUnavailable" | "contact.general" | "contact.backArtwork" | "contact.leaveConfirm" | "contact.demonstration" | "contact.notificationHeading" | "contact.notificationGallery" | "contact.notificationLocale" | "contact.notificationArtwork" | "contact.load" | "contact.sentCopy" | "contact.notificationType" | "contact.notificationGeneral" | "gallery.searchLabel" | "gallery.searchSubmit" | "gallery.searchClear" | "gallery.noResults" | "gallery.paginationLabel" | "gallery.previousPage" | "gallery.nextPage" | "gallery.page" | "gallery.of" | "gallery.closeArtwork" | "gallery.opening" | "gallery.unavailable" | "gallery.progressLabel" | "gallery.view" | "gallery.presentation" | "gallery.description" | "gallery.revalidate" | "gallery.restart" | "gallery.zoomIn" | "gallery.zoomOut" | "gallery.zoomHelp" | "gallery.openInformation" | "gallery.backToImages" | "gallery.viewWholeImage" | "gallery.mobileGestureHelp" | "gallery.panHelp" | "editorial.play" | "editorial.pause" | "editorial.fullscreen" | "editorial.soundOn" | "editorial.soundOff" | "editorial.videoUnavailable" | "editorial.autoplayBlocked" | "editorial.previousSlide" | "editorial.nextSlide" | "editorial.pauseCarousel" | "editorial.resumeCarousel" | "editorial.slide" | "editorial.close" | "editorial.zoomImage" | "editorial.imageDialog" | "editorial.authors" | "editorial.authorProfile" | "editorial.related" | "editorial.search" | "editorial.noResults" | "editorial.loadError" | "editorial.retry" | "editorial.readArticle" | "editorial.previousPage" | "editorial.nextPage" | "editorial.page" | "editorial.allCategories" | "editorial.filters" | "editorial.resetSearch" | "editorial.carousel" | "editorial.imageUnavailable" | "editorial.artworkTitle" | "editorial.searchTerms" | "editorial.filterLimit";
+            key: "nav.news" | "nav.artworks" | "nav.exhibitions" | "nav.publications" | "nav.expertise" | "nav.contact" | "header.homeLabel" | "header.navigationLabel" | "header.openMenu" | "header.closeMenu" | "header.languageLabel" | "header.skipToContent" | "page.home.title" | "page.news.title" | "page.news.empty" | "page.artworks.title" | "page.exhibitions.title" | "page.exhibitions.empty" | "page.publications.title" | "page.publications.empty" | "page.expertise.title" | "page.expertise.empty" | "page.contact.title" | "page.contact.empty" | "catalog.loading" | "catalog.empty" | "catalog.restarted" | "catalog.next" | "catalog.errorTitle" | "catalog.errorMessage" | "catalog.retry" | "catalog.unavailableTitle" | "artwork.loading" | "artwork.back" | "artwork.untitled" | "artwork.unknownArtist" | "artwork.artist" | "artwork.year" | "artwork.medium" | "artwork.dimensions" | "artwork.unspecified" | "artwork.imageUnavailable" | "artwork.imageAlt" | "error.artworkNotFoundTitle" | "error.artworkNotFoundMessage" | "error.pageNotFoundTitle" | "error.pageNotFoundMessage" | "error.viewArtworks" | "video.play" | "video.pause" | "video.unavailable" | "video.reducedMotion" | "presentation.discover" | "presentation.readMore" | "presentation.galleryLabel" | "presentation.previous" | "presentation.next" | "presentation.empty" | "error.presentationTitle" | "error.presentationMessage" | "preview.title" | "preview.notice" | "preview.desktop" | "preview.mobile" | "preview.close" | "preview.expired" | "preview.unavailable" | "preview.checking" | "preview.backToAdmin" | "video.playLabel" | "video.pauseLabel" | "presentation.explore" | "presentation.demonstration" | "contact.name" | "contact.email" | "contact.subject" | "contact.message" | "contact.required" | "contact.limits" | "contact.privacy" | "contact.privacyLink" | "contact.submit" | "contact.sending" | "contact.confirmed" | "contact.confirmationHelp" | "contact.reference" | "contact.disabled" | "contact.unavailable" | "contact.invalid" | "contact.requiredError" | "contact.invalidEmail" | "contact.tooLong" | "contact.rateLimited" | "contact.retryAfter" | "contact.recover" | "contact.recovering" | "contact.unknownReceipt" | "contact.conflict" | "contact.newEnquiry" | "contact.newConfirm" | "contact.artworkCta" | "contact.artworkHeading" | "contact.artworkSubject" | "contact.artworkUnavailable" | "contact.general" | "contact.backArtwork" | "contact.leaveConfirm" | "contact.demonstration" | "contact.notificationHeading" | "contact.notificationGallery" | "contact.notificationLocale" | "contact.notificationArtwork" | "contact.load" | "contact.sentCopy" | "contact.notificationType" | "contact.notificationGeneral" | "gallery.searchLabel" | "gallery.searchSubmit" | "gallery.searchClear" | "gallery.noResults" | "gallery.paginationLabel" | "gallery.previousPage" | "gallery.nextPage" | "gallery.page" | "gallery.of" | "gallery.closeArtwork" | "gallery.opening" | "gallery.unavailable" | "gallery.progressLabel" | "gallery.view" | "gallery.presentation" | "gallery.description" | "gallery.revalidate" | "gallery.restart" | "gallery.zoomIn" | "gallery.zoomOut" | "gallery.zoomHelp" | "gallery.openInformation" | "gallery.backToImages" | "gallery.viewWholeImage" | "gallery.mobileGestureHelp" | "gallery.panHelp" | "editorial.play" | "editorial.pause" | "editorial.fullscreen" | "editorial.soundOn" | "editorial.soundOff" | "editorial.videoUnavailable" | "editorial.autoplayBlocked" | "editorial.previousSlide" | "editorial.nextSlide" | "editorial.pauseCarousel" | "editorial.resumeCarousel" | "editorial.slide" | "editorial.close" | "editorial.zoomImage" | "editorial.imageDialog" | "editorial.authors" | "editorial.authorProfile" | "editorial.related" | "editorial.search" | "editorial.noResults" | "editorial.loadError" | "editorial.retry" | "editorial.readArticle" | "editorial.previousPage" | "editorial.nextPage" | "editorial.page" | "editorial.allCategories" | "editorial.filters" | "editorial.resetSearch" | "editorial.carousel" | "editorial.imageUnavailable" | "editorial.artworkTitle" | "editorial.searchTerms" | "editorial.filterLimit" | "gallery.typeFilters" | "gallery.typeHeading" | "gallery.typeClear" | "gallery.typeEmpty" | "gallery.typeUnavailable" | "gallery.typeNormalized" | "gallery.typeLimit";
             locale: string;
             value: string | null;
             resolvedValue: string;
@@ -4573,6 +4580,7 @@ export interface components {
             cover: {
                 srcPath: string;
                 alt: string;
+                image?: components["schemas"]["EditorialImageMetadata"];
             } | null;
             authors: components["schemas"]["EditorialAuthorCard"][];
             exhibitionPeriod?: {
@@ -4963,6 +4971,15 @@ export interface components {
         PresentationArtworkSettingsUpdate: {
             defaults: components["schemas"]["PresentationArtworkDefaults"];
         };
+        /** @description Immutable physical source facts for native SSR src/srcset. No storage key or signed delivery URL. */
+        EditorialImageMetadata: {
+            sourceVersion: string;
+            width: number;
+            height: number;
+            /** @enum {string} */
+            mimeType: "image/webp" | "image/jpeg" | "image/png" | "image/gif" | "image/svg+xml";
+            byteSize?: number;
+        };
         ContactError: {
             error: {
                 /** @enum {string} */
@@ -5129,6 +5146,7 @@ export interface components {
             totalItems: number;
             pageCount: number;
             catalogRevision: number;
+            typeFilters?: components["schemas"]["GalleryTypeFilters"];
         };
         GalleryExperience: {
             /** @constant */
@@ -5246,6 +5264,7 @@ export interface components {
             display: "plp";
             /** @enum {string} */
             layout: "grid" | "masonry";
+            typeFilters?: components["schemas"]["GalleryTypeFilters"];
         };
         GalleryFocusSelection: {
             /** Format: uuid */
@@ -5278,6 +5297,35 @@ export interface components {
             effective: {
                 year: boolean;
                 provenance: boolean;
+            };
+        };
+        GalleryTypeFilters: {
+            /** @enum {string} */
+            availability: "ready" | "unavailable" | "unsupported";
+            options: {
+                id: number;
+                name: string;
+            }[];
+            requestedIds: number[];
+            selectedIds: number[];
+            ignoredIds: number[];
+            normalized: boolean;
+        };
+        GalleryTypeUnavailable: {
+            error: {
+                /** @enum {string} */
+                code: "type_filters_unavailable";
+                message: string;
+                requestId: string;
+            };
+            criteria: {
+                q: string;
+                types: number[];
+                pageSize: number;
+            };
+            typeFilters: {
+                /** @enum {string} */
+                availability: "unavailable" | "unsupported";
             };
         };
         EditorialLocalizedText: {
@@ -5740,6 +5788,7 @@ export interface components {
                 srcPath: string;
                 width?: number | null;
                 height?: number | null;
+                image?: components["schemas"]["EditorialImageMetadata"];
             } | {
                 /** @constant */
                 kind: "artwork";
@@ -5751,6 +5800,7 @@ export interface components {
                 href: string;
                 width?: number | null;
                 height?: number | null;
+                image?: components["schemas"]["EditorialImageMetadata"];
             } | {
                 /** @constant */
                 kind: "youtube";
@@ -5898,6 +5948,7 @@ export interface components {
             cover: {
                 srcPath: string;
                 alt: string;
+                image?: components["schemas"]["EditorialImageMetadata"];
             } | null;
             authors: components["schemas"]["EditorialPublicAuthor"][];
             terms: components["schemas"]["EditorialPublicTerm"][];
@@ -6001,6 +6052,7 @@ export interface components {
             cover: {
                 srcPath: string;
                 alt: string;
+                image?: components["schemas"]["EditorialImageMetadata"];
             } | null;
             authors: components["schemas"]["EditorialPublicAuthor"][];
             terms: components["schemas"]["EditorialPublicTerm"][];
@@ -6085,6 +6137,7 @@ export interface components {
                 srcPath: string;
                 width?: number | null;
                 height?: number | null;
+                image?: components["schemas"]["EditorialImageMetadata"];
             };
             alt: string;
             subtext: components["schemas"]["EditorialRichText"] | null;
@@ -8603,7 +8656,14 @@ export interface operations {
                      *         "editorial.imageUnavailable": "This image is unavailable.",
                      *         "editorial.artworkTitle": "Artwork",
                      *         "editorial.searchTerms": "Search classifications",
-                     *         "editorial.filterLimit": "Select up to 20 classifications."
+                     *         "editorial.filterLimit": "Select up to 20 classifications.",
+                     *         "gallery.typeFilters": "Filters",
+                     *         "gallery.typeHeading": "Artwork types",
+                     *         "gallery.typeClear": "Clear filters",
+                     *         "gallery.typeEmpty": "No artwork types available",
+                     *         "gallery.typeUnavailable": "Filters are temporarily unavailable.",
+                     *         "gallery.typeNormalized": "Some filters are no longer available and have been removed.",
+                     *         "gallery.typeLimit": "Select up to 100 artwork types."
                      *       },
                      *       "logo": null
                      *     }
@@ -9763,6 +9823,48 @@ export interface operations {
                      *           "key": "editorial.filterLimit",
                      *           "group": "editorial",
                      *           "label": "Limite des classements sélectionnés",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeFilters",
+                     *           "group": "gallery",
+                     *           "label": "Filtres",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeHeading",
+                     *           "group": "gallery",
+                     *           "label": "Types d’œuvres",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeClear",
+                     *           "group": "gallery",
+                     *           "label": "Effacer les filtres",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeEmpty",
+                     *           "group": "gallery",
+                     *           "label": "Aucun type disponible",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeUnavailable",
+                     *           "group": "gallery",
+                     *           "label": "Les filtres sont momentanément indisponibles.",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeNormalized",
+                     *           "group": "gallery",
+                     *           "label": "Certains filtres ne sont plus disponibles et ont été retirés.",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeLimit",
+                     *           "group": "gallery",
+                     *           "label": "Limite de types sélectionnés",
                      *           "maxLength": 80
                      *         }
                      *       ],
@@ -12230,6 +12332,104 @@ export interface operations {
                      *           "value": "Select up to 20 classifications.",
                      *           "resolvedValue": "Select up to 20 classifications.",
                      *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeFilters",
+                     *           "locale": "fr",
+                     *           "value": "Filtres",
+                     *           "resolvedValue": "Filtres",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeFilters",
+                     *           "locale": "en",
+                     *           "value": "Filters",
+                     *           "resolvedValue": "Filters",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeHeading",
+                     *           "locale": "fr",
+                     *           "value": "Types d’œuvres",
+                     *           "resolvedValue": "Types d’œuvres",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeHeading",
+                     *           "locale": "en",
+                     *           "value": "Artwork types",
+                     *           "resolvedValue": "Artwork types",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeClear",
+                     *           "locale": "fr",
+                     *           "value": "Effacer les filtres",
+                     *           "resolvedValue": "Effacer les filtres",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeClear",
+                     *           "locale": "en",
+                     *           "value": "Clear filters",
+                     *           "resolvedValue": "Clear filters",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeEmpty",
+                     *           "locale": "fr",
+                     *           "value": "Aucun type disponible",
+                     *           "resolvedValue": "Aucun type disponible",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeEmpty",
+                     *           "locale": "en",
+                     *           "value": "No artwork types available",
+                     *           "resolvedValue": "No artwork types available",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeUnavailable",
+                     *           "locale": "fr",
+                     *           "value": "Les filtres sont momentanément indisponibles.",
+                     *           "resolvedValue": "Les filtres sont momentanément indisponibles.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeUnavailable",
+                     *           "locale": "en",
+                     *           "value": "Filters are temporarily unavailable.",
+                     *           "resolvedValue": "Filters are temporarily unavailable.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeNormalized",
+                     *           "locale": "fr",
+                     *           "value": "Certains filtres ne sont plus disponibles et ont été retirés.",
+                     *           "resolvedValue": "Certains filtres ne sont plus disponibles et ont été retirés.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeNormalized",
+                     *           "locale": "en",
+                     *           "value": "Some filters are no longer available and have been removed.",
+                     *           "resolvedValue": "Some filters are no longer available and have been removed.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeLimit",
+                     *           "locale": "fr",
+                     *           "value": "Sélectionnez jusqu’à 100 types.",
+                     *           "resolvedValue": "Sélectionnez jusqu’à 100 types.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeLimit",
+                     *           "locale": "en",
+                     *           "value": "Select up to 100 artwork types.",
+                     *           "resolvedValue": "Select up to 100 artwork types.",
+                     *           "fallback": false
                      *         }
                      *       ],
                      *       "logo": null,
@@ -13401,6 +13601,48 @@ export interface operations {
                      *           "key": "editorial.filterLimit",
                      *           "group": "editorial",
                      *           "label": "Limite des classements sélectionnés",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeFilters",
+                     *           "group": "gallery",
+                     *           "label": "Filtres",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeHeading",
+                     *           "group": "gallery",
+                     *           "label": "Types d’œuvres",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeClear",
+                     *           "group": "gallery",
+                     *           "label": "Effacer les filtres",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeEmpty",
+                     *           "group": "gallery",
+                     *           "label": "Aucun type disponible",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeUnavailable",
+                     *           "group": "gallery",
+                     *           "label": "Les filtres sont momentanément indisponibles.",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeNormalized",
+                     *           "group": "gallery",
+                     *           "label": "Certains filtres ne sont plus disponibles et ont été retirés.",
+                     *           "maxLength": 80
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeLimit",
+                     *           "group": "gallery",
+                     *           "label": "Limite de types sélectionnés",
                      *           "maxLength": 80
                      *         }
                      *       ],
@@ -15867,6 +16109,104 @@ export interface operations {
                      *           "locale": "en",
                      *           "value": "Select up to 20 classifications.",
                      *           "resolvedValue": "Select up to 20 classifications.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeFilters",
+                     *           "locale": "fr",
+                     *           "value": "Filtres",
+                     *           "resolvedValue": "Filtres",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeFilters",
+                     *           "locale": "en",
+                     *           "value": "Filters",
+                     *           "resolvedValue": "Filters",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeHeading",
+                     *           "locale": "fr",
+                     *           "value": "Types d’œuvres",
+                     *           "resolvedValue": "Types d’œuvres",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeHeading",
+                     *           "locale": "en",
+                     *           "value": "Artwork types",
+                     *           "resolvedValue": "Artwork types",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeClear",
+                     *           "locale": "fr",
+                     *           "value": "Effacer les filtres",
+                     *           "resolvedValue": "Effacer les filtres",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeClear",
+                     *           "locale": "en",
+                     *           "value": "Clear filters",
+                     *           "resolvedValue": "Clear filters",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeEmpty",
+                     *           "locale": "fr",
+                     *           "value": "Aucun type disponible",
+                     *           "resolvedValue": "Aucun type disponible",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeEmpty",
+                     *           "locale": "en",
+                     *           "value": "No artwork types available",
+                     *           "resolvedValue": "No artwork types available",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeUnavailable",
+                     *           "locale": "fr",
+                     *           "value": "Les filtres sont momentanément indisponibles.",
+                     *           "resolvedValue": "Les filtres sont momentanément indisponibles.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeUnavailable",
+                     *           "locale": "en",
+                     *           "value": "Filters are temporarily unavailable.",
+                     *           "resolvedValue": "Filters are temporarily unavailable.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeNormalized",
+                     *           "locale": "fr",
+                     *           "value": "Certains filtres ne sont plus disponibles et ont été retirés.",
+                     *           "resolvedValue": "Certains filtres ne sont plus disponibles et ont été retirés.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeNormalized",
+                     *           "locale": "en",
+                     *           "value": "Some filters are no longer available and have been removed.",
+                     *           "resolvedValue": "Some filters are no longer available and have been removed.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeLimit",
+                     *           "locale": "fr",
+                     *           "value": "Sélectionnez jusqu’à 100 types.",
+                     *           "resolvedValue": "Sélectionnez jusqu’à 100 types.",
+                     *           "fallback": false
+                     *         },
+                     *         {
+                     *           "key": "gallery.typeLimit",
+                     *           "locale": "en",
+                     *           "value": "Select up to 100 artwork types.",
+                     *           "resolvedValue": "Select up to 100 artwork types.",
                      *           "fallback": false
                      *         }
                      *       ],
@@ -21275,6 +21615,10 @@ export interface operations {
                 display?: "plp";
                 /** @description Langue configurée ; défaut langue principale et titre source. */
                 locale?: string;
+                /** @description Opt in to artwork type filter metadata. */
+                includeTypes?: "1";
+                /** @description OR of up to 100 distinct positive safe integer IDs. Requires includeTypes=1. */
+                types?: string;
             };
             header?: never;
             path?: never;
@@ -21433,7 +21777,7 @@ export interface operations {
                      *       }
                      *     }
                      */
-                    "application/json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"] | components["schemas"]["GalleryTypeUnavailable"];
                 };
             };
         };
@@ -38594,4 +38938,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "ed1cb187ea17c84bfb86cd283b3bd3d3a3c1a56dccbc01b0e2696475cc36a7da";
+export const sourceSha256 = "67748cc1b444f05460316947dfe4c84cf2c139ce3a0dc240949d59b3aad1b8dc";
