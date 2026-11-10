@@ -3174,6 +3174,8 @@ export interface components {
             counts: components["schemas"]["SyncCounts"];
             errorCode: string | null;
             warnings: string[];
+            /** @description feed_data.generated from the first artwork feed page, preserved without timezone conversion. Null when unavailable. On the list, from the latest successful import. */
+            sourceGeneratedAt?: string | null;
         };
         SyncRunPage: {
             items: components["schemas"]["SyncRun"][];
@@ -3182,6 +3184,8 @@ export interface components {
             lastSuccessAt: string | null;
             /** Format: date-time */
             nextAllowedAt: string | null;
+            /** @description feed_data.generated from the first artwork feed page, preserved without timezone conversion. Null when unavailable. On the list, from the latest successful import. */
+            sourceGeneratedAt?: string | null;
         };
         /**
          * @example {
@@ -38948,4 +38952,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "3a3a0a0a0429928b61c14519156b6aaead86fce571eb85fe268ea36007c4dd10";
+export const sourceSha256 = "fcb44c1e6817729ad38e3dff0634e11db00cd70bfd9e83340997702650cf445d";

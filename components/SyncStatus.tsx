@@ -1,4 +1,5 @@
 "use client";
+import {ArtlogicFeedDate} from "./ArtlogicFeedDate";
 import {useEffect,useState} from "react";
 import type {SyncRun} from "@/lib/bff/sync-runs";
 export const statusLabels={queued:"En attente du worker",running:"Synchronisation en cours",succeeded:"Synchronisation terminée",succeeded_with_warnings:"Synchronisation terminée avec avertissements",failed:"Synchronisation échouée"};
@@ -15,7 +16,7 @@ export function SyncStatus({initial,pollInterval}:{initial:SyncRun;pollInterval:
     timer=setTimeout(poll,pollInterval);return()=>{stopped=true;clearTimeout(timer);controller.abort();};
   },[initial.id,pollInterval,active,attempt]);
   return <section><p role="status" data-testid="sync-status" aria-live="polite"><strong>{statusLabels[run.status]}</strong></p>
-    <dl className="facts"><div><dt>Demandée par</dt><dd>{run.initiatorSubject}</dd></div><div><dt>Demandée le</dt><dd>{new Date(run.createdAt).toLocaleString("fr-FR")}</dd></div>{run.startedAt&&<div><dt>Démarrée le</dt><dd>{new Date(run.startedAt).toLocaleString("fr-FR")}</dd></div>}{run.finishedAt&&<div><dt>Terminée le</dt><dd>{new Date(run.finishedAt).toLocaleString("fr-FR")}</dd></div>}{run.nextAttemptAt&&active&&<div><dt>Prochaine tentative au plus tôt</dt><dd>{new Date(run.nextAttemptAt).toLocaleString("fr-FR")}</dd></div>}</dl>
+    <dl className="facts"><div><dt>Dernière mise à jour du feed Artlogic</dt><dd><ArtlogicFeedDate value={run.sourceGeneratedAt}/></dd></div><div><dt>Demandée par</dt><dd>{run.initiatorSubject}</dd></div><div><dt>Demandée le</dt><dd>{new Date(run.createdAt).toLocaleString("fr-FR")}</dd></div>{run.startedAt&&<div><dt>Démarrée le</dt><dd>{new Date(run.startedAt).toLocaleString("fr-FR")}</dd></div>}{run.finishedAt&&<div><dt>Terminée le</dt><dd>{new Date(run.finishedAt).toLocaleString("fr-FR")}</dd></div>}{run.nextAttemptAt&&active&&<div><dt>Prochaine tentative au plus tôt</dt><dd>{new Date(run.nextAttemptAt).toLocaleString("fr-FR")}</dd></div>}</dl>
     {active?<p>Les compteurs définitifs seront affichés après validation complète du catalogue. Vous pouvez quitter cette page.</p>:<dl className="counts">{Object.entries(countLabels).map(([name,label])=><div key={name}><dt>{label}</dt><dd>{run.counts[name as keyof typeof run.counts]}</dd></div>)}</dl>}
     {run.status==="failed"&&<p role="alert">L’import a échoué. Le dernier catalogue validé est conservé. Vous pouvez lancer une nouvelle synchronisation.</p>}
     {run.warnings.length>0&&<p>Certains éléments présentent des avertissements. Les images indisponibles conservent leur dernière copie locale lorsqu’elle existe.</p>}
