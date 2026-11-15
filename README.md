@@ -14,6 +14,10 @@ Suivre le [quickstart](../backend/specs/001-artlogic-site-boilerplate/quickstart
 
 Variables serveur : SITE_ID/SITE_NAME, SITE_LOCALES_JSON/SITE_DEFAULT_LOCALE, origines, BACKEND_URL, BFF_SERVICE_KEY et paramètres de session (scope B). Aucun `NEXT_PUBLIC_` ni secret Supabase/Artlogic/SSO dans ce package. L’identité est lue à la requête : changer les variables et redémarrer suffit, sans reconstruire l’image.
 
+### Bascule publique du 15 novembre 2026
+
+L’origine publique du site est `https://www.lucasratton.com` dans `SITE_ORIGIN`. Le domaine admin, le domaine API, le callback SSO et l’environnement d’identité restent inchangés. Après enregistrement des variables, le déploiement est déclenché par la mise à jour de `main`, comme pour le frontend et l’API. Voir le [guide des domaines](../backend/docs/runbooks/domain-configuration.md).
+
 Le login suit le fournisseur OIDC, la sync donne un suivi durable, et le catalogue permet recherche, filtres, prévisualisation et publication individuelle. En conflit 412, la fiche est relue et une nouvelle décision explicite est demandée. Une œuvre retirée ne peut pas être publiée. Une erreur de logout conserve les cookies pour permettre une nouvelle tentative ; une panne du SSO n’empêche pas la révocation locale.
 
 ### Connexion en local
