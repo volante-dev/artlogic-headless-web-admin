@@ -3644,6 +3644,8 @@ export interface components {
             messages: components["schemas"]["SiteMessages"];
             logo: components["schemas"]["SiteLogo"] | null;
             whiteLogo?: components["schemas"]["SiteLogo"] | null;
+            /** @description Legal page for the requested locale, falling back as a whole to the reference locale. Null before the first contribution. */
+            legalPage?: components["schemas"]["SiteLegalPageResolved"] | null;
         };
         SiteContentAdmin: {
             revision: number;
@@ -3658,6 +3660,10 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
             whiteLogo?: components["schemas"]["SiteLogo"] | null;
+            /** @description Published legal pages by locale. Removed locales are retained. Changes use the shared site-content revision. */
+            legalPages?: {
+                [key: string]: components["schemas"]["SiteLegalPage"];
+            };
         };
         SiteTranslationChange: {
             /** @description Syntaxe seulement avant transaction ; appartenance au registre vérifiée après politique et ETag, afin de préserver la priorité du conflit de version. */
@@ -3672,6 +3678,10 @@ export interface components {
             logoId?: string | null;
             /** Format: uuid */
             whiteLogoId?: string | null;
+            /** @description Merge only supplied active locales. Null removes a secondary translation; the reference page cannot be removed. Titles and rich bodies are published atomically. */
+            legalPages?: {
+                [key: string]: components["schemas"]["SiteLegalPage"] | null;
+            };
         };
         /** @description Détails du PATCH uniquement : positions 0–63 dans le corps soumis, raisons fermées, aucune valeur contributive ni chemin libre. Le BFF vérifie à nouveau cette liste et produit ses propres messages français. */
         SiteContentValidationError: components["schemas"]["Error"] & {
@@ -3705,6 +3715,10 @@ export interface components {
                     field: "logoId" | "whiteLogoId";
                     /** @enum {string} */
                     reason: "invalid_type";
+                } | {
+                    field: string;
+                    /** @enum {string} */
+                    reason: "required" | "invalid_type" | "reference_required" | "max_length" | "unsupported_locale";
                 })[];
             };
         };
@@ -3719,6 +3733,51 @@ export interface components {
                     reason: "invalid_image" | "mime_mismatch" | "animated_image" | "pixel_limit" | "output_too_large";
                 }[];
             };
+        };
+        SiteLegalRichText: {
+            /** @constant */
+            type: "doc";
+            content: components["schemas"]["SiteLegalRichNode"][];
+        };
+        SiteLegalRichNode: {
+            /** @constant */
+            type: "text";
+            text: string;
+            marks?: components["schemas"]["SiteLegalRichMark"][];
+        } | {
+            /** @constant */
+            type: "heading";
+            attrs: {
+                /** @enum {unknown} */
+                level: 2 | 3;
+            };
+            content?: components["schemas"]["SiteLegalRichNode"][];
+        } | {
+            /** @enum {unknown} */
+            type: "paragraph" | "bulletList" | "orderedList" | "listItem" | "blockquote";
+            content?: components["schemas"]["SiteLegalRichNode"][];
+        } | {
+            /** @constant */
+            type: "hardBreak";
+        };
+        SiteLegalRichMark: {
+            /** @enum {unknown} */
+            type: "bold" | "italic";
+        } | {
+            /** @constant */
+            type: "link";
+            attrs: {
+                href: string;
+            };
+        };
+        SiteLegalPage: {
+            title: string;
+            body: components["schemas"]["SiteLegalRichText"];
+        };
+        SiteLegalPageResolved: {
+            title: string;
+            body: components["schemas"]["SiteLegalRichText"];
+            locale: string;
         };
         /** @enum {string} */
         PresentationPageKey: "home" | "news" | "artworks" | "exhibitions" | "publications" | "expertise" | "contact" | "artworkDetail" | "galerist";
@@ -38958,4 +39017,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "eb7f77f8bb83503038ba76519277c9d38ccfdd0366759835301ab039ba58cd6e";
+export const sourceSha256 = "47dccf2d6a8faaeedf262f8d45cbedeba53bda5f5291b76f6f774d5f285825e6";
