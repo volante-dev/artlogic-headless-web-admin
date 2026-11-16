@@ -4857,6 +4857,10 @@ export interface components {
             address?: {
                 [key: string]: components["schemas"]["PresentationFooterRichText"];
             } | null;
+            /** @description Optional footer credit. Localized rich text in the draft, resolved to the requested locale in public and preview snapshots. Empty or absent content is hidden; there is no brand default. */
+            credit?: {
+                [key: string]: components["schemas"]["PresentationFooterRichText"];
+            } | null;
         };
         PresentationFooterRead: {
             /** @constant */
@@ -4917,6 +4921,8 @@ export interface components {
             showLanguageSelector: boolean;
             showDescription: boolean;
             address?: components["schemas"]["PresentationFooterRichText"] | null;
+            /** @description Optional footer credit. Localized rich text in the draft, resolved to the requested locale in public and preview snapshots. Empty or absent content is hidden; there is no brand default. */
+            credit?: components["schemas"]["PresentationFooterRichText"] | null;
         };
         PresentationFooterCapability: {
             /** @constant */
@@ -38952,4 +38958,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "fcb44c1e6817729ad38e3dff0634e11db00cd70bfd9e83340997702650cf445d";
+export const sourceSha256 = "eb7f77f8bb83503038ba76519277c9d38ccfdd0366759835301ab039ba58cd6e";
