@@ -8,6 +8,22 @@ export type ConfigValue = string | number | string[] | Record<string, string>;
 export type Config = Readonly<Record<string, ConfigValue | undefined>> & { readonly role: Scope };
 type Rule = { scopes: string; kind: string; required?: boolean; optionalScopes?: string; default?: string; values?: string[]; min?: number; max?: number; secret?: boolean };
 export const variables: Readonly<Record<string, Rule>> = {
+  COMMERCE_ENABLED:{scopes:"AWMFB",kind:"enum",default:"false",values:["true","false"]},
+  COMMERCE_SERVICE_KEY:{scopes:"AWF",kind:"token",secret:true},
+  COMMERCE_PAYMENT_MODE:{scopes:"AW",kind:"enum",default:"mock",values:["mock","stripe"]},
+  COMMERCE_MOCK_CONTROL_TOKEN:{scopes:"A",kind:"token",secret:true},
+  STRIPE_MODE:{scopes:"AW",kind:"enum",default:"test",values:["test","live"]},
+  STRIPE_ACCOUNT_ID:{scopes:"AW",kind:"string"},
+  STRIPE_SECRET_KEY:{scopes:"AW",kind:"token",secret:true},
+  STRIPE_API_BASE_URL:{scopes:"AW",kind:"url",default:"https://api.stripe.com"},
+  STRIPE_PUBLISHABLE_KEY:{scopes:"A",kind:"string"},
+  STRIPE_WEBHOOK_SECRET:{scopes:"A",kind:"token",secret:true},
+  COMMERCE_NOTIFICATION_MODE:{scopes:"AW",kind:"enum",default:"mock",values:["mock","real"]},
+  COMMERCE_RECONCILE_SECONDS:{scopes:"W",kind:"number",default:"60",min:30,max:300},
+  COMMERCE_JOB_CONCURRENCY:{scopes:"W",kind:"number",default:"1",min:1,max:2},
+  COMMERCE_LOOKUP_REQUESTS_PER_VISITOR_15M:{scopes:"A",kind:"number",default:"10",min:1,max:1000},
+  COMMERCE_LOOKUP_REQUESTS_PER_REFERENCE_HOUR:{scopes:"A",kind:"number",default:"20",min:1,max:1000},
+  COMMERCE_LOOKUP_REQUESTS_PER_SITE_HOUR:{scopes:"A",kind:"number",default:"1000",min:1,max:100000},
   MCP_ENABLED:{scopes:"AWB",kind:"enum",default:"false",values:["true","false"]},
   MCP_RESOURCE_URL:{scopes:"AW",kind:"url"},
   MCP_OAUTH_ISSUER_URL:{scopes:"A",kind:"url"},
@@ -243,10 +259,10 @@ export const variables: Readonly<Record<string, Rule>> = {
     "default": ""
   },
   "SITE_ORIGIN": {
-    "scopes": "AMFB",
+    "scopes": "AWMFB",
     "kind": "origin",
     "required": true,
-    "optionalScopes": "M"
+    "optionalScopes": "MW"
   },
   "SITE_ALLOWED_ORIGINS_JSON": {
     "scopes": "F",
@@ -354,6 +370,7 @@ export const variables: Readonly<Record<string, Rule>> = {
     "default": "{}",
     "secret": true
   },
+  "ARTLOGIC_ARTWORK_TYPES_URL": {"scopes":"AW","kind":"url","secret":true},
   "ARTLOGIC_ARTWORKS_URL": {
     "scopes": "WM",
     "kind": "url",
@@ -1007,6 +1024,23 @@ export function readConfig(role: Scope, env: Record<string, string | undefined> 
   const mode = stringValue(config, "DATA_MODE");
   const deployment = stringValue(config, "DEPLOYMENT_ENV");
   const notificationMode=config.FORMS_NOTIFICATION_MODE??mode;
+  // Missing merchant settings close checkout through readiness, without breaking editorial startup.
+  // Provided unsafe provider endpoints or mismatched credentials still fail configuration.
+  if(["A","W"].includes(role)){
+    if(config.STRIPE_SECRET_KEY){
+      const endpoint=new URL(stringValue(config,'STRIPE_API_BASE_URL'));
+      if(config.COMMERCE_PAYMENT_MODE==='mock'&&(!isLoopback(endpoint.hostname)||endpoint.protocol!=='http:'||config.DATA_MODE!=='mock'||config.DEPLOYMENT_ENV!=='test'))fail('STRIPE_API_BASE_URL','simulateur Stripe local de recette requis');
+      if(config.COMMERCE_PAYMENT_MODE==='stripe'&&endpoint.origin!=='https://api.stripe.com')fail('STRIPE_API_BASE_URL','origine Stripe officielle requise');
+      if(endpoint.pathname!=='/'||endpoint.username||endpoint.password||endpoint.search||endpoint.hash)fail('STRIPE_API_BASE_URL','origine simple requise');
+    }
+    if(config.COMMERCE_PAYMENT_MODE==='stripe'){
+      if(config.STRIPE_ACCOUNT_ID&&!/^acct_[A-Za-z0-9]+$/.test(String(config.STRIPE_ACCOUNT_ID)))fail('STRIPE_ACCOUNT_ID','compte direct requis');
+      const stripeMode=stringValue(config,'STRIPE_MODE');
+      if(config.STRIPE_SECRET_KEY&&!String(config.STRIPE_SECRET_KEY).startsWith('sk_'+stripeMode+'_'))fail('STRIPE_SECRET_KEY','mode Stripe incoherent');
+      if(config.STRIPE_PUBLISHABLE_KEY&&!String(config.STRIPE_PUBLISHABLE_KEY).startsWith('pk_'+stripeMode+'_'))fail('STRIPE_PUBLISHABLE_KEY','cle publique du meme mode requise');
+      if(config.STRIPE_WEBHOOK_SECRET&&!String(config.STRIPE_WEBHOOK_SECRET).startsWith('whsec_'))fail('STRIPE_WEBHOOK_SECRET','secret webhook invalide');
+    }
+  }
   if(config.FORMS_CONTACT_CUTOVER==="true"&&config.FORMS_ENABLED!=="true")fail("FORMS_CONTACT_CUTOVER","module Forms requis");
   if(config.FORMS_NOTIFICATIONS_ENABLED==="true"&&config.FORMS_ENABLED!=="true")fail("FORMS_NOTIFICATIONS_ENABLED","module Forms requis");
   if(config.FORMS_ENABLED==="true"&&["A","W","M"].includes(role)){
@@ -1096,6 +1130,7 @@ export function readConfig(role: Scope, env: Record<string, string | undefined> 
       if (numberValue(config, name) >= deadline * 1000) fail(name, "doit etre inferieur a la deadline");
     if (!listValue(config, "ARTLOGIC_FEED_ALLOWED_ORIGINS").includes(new URL(stringValue(config, "ARTLOGIC_ARTWORKS_URL")).origin))
       fail("ARTLOGIC_FEED_ALLOWED_ORIGINS", "origine initiale absente");
+    if(config.ARTLOGIC_ARTWORK_TYPES_URL&&!listValue(config,"ARTLOGIC_FEED_ALLOWED_ORIGINS").includes(new URL(stringValue(config,"ARTLOGIC_ARTWORK_TYPES_URL")).origin))fail("ARTLOGIC_ARTWORK_TYPES_URL","origine absente des origines autorisees");
     if (Boolean(config.SOURCE_AUTH_HEADER_NAME) !== Boolean(config.SOURCE_AUTH_HEADER_VALUE))
       fail("SOURCE_AUTH_HEADER_NAME", "nom et valeur doivent etre fournis ensemble");
     const name = config.SOURCE_AUTH_HEADER_NAME;

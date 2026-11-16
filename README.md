@@ -141,3 +141,10 @@ Les changements validés sont publiés sur la branche `main`. Le projet Vercel e
 ### Connexion ChatGPT
 
 Quand le module est configuré, `/connectors/chatgpt` gère les connexions et leur révocation, `/connectors/chatgpt/consent` réutilise le SSO et le CSRF existants, les propositions ont un aperçu facultatif sous session et `/connectors/chatgpt/operations` présente l’audit des opérations appliquées aux administrateurs habilités. Les liens de propositions ne contiennent aucun jeton ; l’ouverture d’aperçu passe par un échange POST. Un administrateur ne voit pas les propositions privées d’un autre compte. Le BFF ne remplace pas la validation des droits côté backend. Voir le [runbook backend](../backend/docs/runbooks/chatgpt-connector.md) et les [gates de qualification](../backend/specs/027-chatgpt-site-connector/review/qualification.md).
+
+
+## Administration du Store
+
+`/store` gère les produits et stocks, commandes et expéditions manuelles, paramètres vendeur/livraison/taxes, versions légales immuables, incidents et rétractations. Les droits SSO, le site courant, le CSRF, les révisions et intentions sont vérifiés côté API à chaque action. La finance vient de Stripe ; retours physiques et remboursements sont distincts. Les modèles légaux doivent être complétés et validés avant publication et ouverture réelle.
+
+`COMMERCE_ENABLED=false` ne supprime pas l’administration des engagements historiques. Aucune clé secrète Stripe n’appartient à l’admin. Configuration, rapprochement et suspension : [runbook Commerce](../backend/docs/runbooks/commerce-operations.md). Voir la [recette032](../backend/specs/032-optional-store-commerce/quickstart.md) pour les fixtures isolées et les limites de qualification. La livraison utilise main et l’intégration Git existante.

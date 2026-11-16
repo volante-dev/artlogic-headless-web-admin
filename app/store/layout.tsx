@@ -1,0 +1,3 @@
+import {PublicationFeedbackProvider} from '@/components/PublicationFeedback';
+export const metadata={robots:{index:false,follow:false}};
+export default function Layout({children}:{children:React.ReactNode}){return <PublicationFeedbackProvider>{children}</PublicationFeedbackProvider>;}

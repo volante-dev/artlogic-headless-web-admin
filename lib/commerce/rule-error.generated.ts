@@ -1,0 +1,13 @@
+// Generated from Commerce032 by backend/scripts/generate-contracts.ts. Do not edit.
+export class DomainError extends Error {
+  constructor(
+    readonly code: string,
+    readonly context: Readonly<{ typeAvailability?:"unavailable"|"unsupported";revision?:string;issues?:readonly {path:string;code:string;locale?:string;fieldId?:string;objectId?:string}[]; retryAfterSeconds?: number; runId?: string; details?:readonly {field:string;reason:string}[]; locale?:string; keys?:readonly string[] }> = {},
+  ) { super(code); this.name = "DomainError"; }
+}
+export function ensure(condition: unknown, code: string): asserts condition {
+  if (!condition) throw new DomainError(code);
+}
+export class SourceError extends DomainError {
+  constructor(code:string,readonly retryAfter?:string){super(code);}
+}

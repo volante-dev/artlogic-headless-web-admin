@@ -8,6 +8,7 @@ import {AdminIcon} from "./AdminIcon";
 const links=[
  ["/","Accueil","home"],
  ["/artworks","Œuvres","artworks"],
+ ["/store/products","Store","content"],
  ["/publications","Publications","content"],
  ["/news","Actualités","content"],
  ["/exhibitions","Expositions","content"],
