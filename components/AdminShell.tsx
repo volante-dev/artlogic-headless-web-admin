@@ -15,6 +15,7 @@ const links=[
  ["/taxonomies","Taxonomies","content"],
  ["/presentation","Apparence et pages","presentation"],
  ["/site-content","Contenu du site","content"],
+ ["/legal","Mentions légales","content"],
  ["/forms","Formulaires","content"],
  ["/inquiries","Demandes","inquiries"],
  ["/sync-runs","Synchronisations","sync"],

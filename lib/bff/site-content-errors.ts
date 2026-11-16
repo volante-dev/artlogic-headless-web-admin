@@ -12,7 +12,8 @@ export function editorialDetails(operation:EditorialOperation,code:string,value:
     if(operation!=="siteContentUpdate"||code!=="validation_error")return false;
     const fields:Record<string,string[]>={body:["required","invalid_type","unknown_field"],translations:["required","invalid_type","too_many_changes"],logoId:["invalid_type"],whiteLogoId:["invalid_type"],key:["required","invalid_type","unknown_key","duplicate_translation"],locale:["required","invalid_type","unsupported_locale"],value:["required","invalid_type","reference_required","max_length"]};
     const part=/^translations\.(?:[0-9]|[1-5][0-9]|6[0-3])\.(key|locale|value)$/.exec(detail.field)?.[1]??detail.field;
-    return detail.field.length<=22&&detail.reason.length<=21&&(fields[part]?.includes(detail.reason)??false);
+    const legal=/^legalPages(?:\.[a-z]{2,3}(?:-[a-z0-9]{2,8})*(?:\.(?:title|body))?)?$/.test(detail.field);
+    return detail.field.length<=(legal?64:22)&&detail.reason.length<=21&&(legal?["required","invalid_type","reference_required","max_length","unsupported_locale"].includes(detail.reason):(fields[part]?.includes(detail.reason)??false));
   }).map(({field,reason})=>({field,reason}));
   return details.length?details:undefined;
 }
