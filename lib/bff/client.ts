@@ -62,10 +62,10 @@ export async function backendRequest<T>(operation:Operation,input:BackendInput={
   }catch(error){if(error instanceof BffError)throw error;throw new BffError(503,isContactOperation(operation)?"contact_unavailable":"service_unavailable");}
 }
 export async function backendJson<T>(operation:Operation,input:BackendInput={}):Promise<T>{return (await backendRequest<T>(operation,input)).body;}
-export async function backendMedia(mediaId:string,session:string):Promise<Response>{
+export async function backendMedia(mediaId:string,session:string,thumbnail=false):Promise<Response>{
   if(!uuidPattern.test(mediaId))throw new BffError(400,"invalid_request");const config=loadConfig();
   try{
-    const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+operations.media.path.replace("{mediaId}",mediaId),{
+    const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+operations.media.path.replace("{mediaId}",mediaId)+(thumbnail?"?variant=thumbnail":""),{
       headers:{Accept:"image/webp","X-BFF-Key":stringValue(config,"BFF_SERVICE_KEY"),"X-Admin-Session":session},cache:"no-store",redirect:"error",signal:AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))});
     if(!response.ok){await response.body?.cancel();throw new BffError(Object.hasOwn(messages,response.status)&&![413,415].includes(response.status)?response.status:503,({401:"unauthorized",403:"forbidden",404:"not_found",429:"rate_limited"} as Record<number,string>)[response.status]??"service_unavailable");}
     if(!response.body||response.headers.get("content-type")?.split(";")[0]!=="image/webp"){await response.body?.cancel();throw new Error();}

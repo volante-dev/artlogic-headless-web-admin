@@ -25,6 +25,8 @@ export const variables: Readonly<Record<string, Rule>> = {
   COMMERCE_LOOKUP_REQUESTS_PER_REFERENCE_HOUR:{scopes:"A",kind:"number",default:"20",min:1,max:1000},
   COMMERCE_LOOKUP_REQUESTS_PER_SITE_HOUR:{scopes:"A",kind:"number",default:"1000",min:1,max:100000},
   MCP_ENABLED:{scopes:"AWB",kind:"enum",default:"false",values:["true","false"]},
+  MCP_COMMERCE_ENABLED:{scopes:"AWM",kind:"enum",default:"false",values:["true","false"]},
+  MCP_STATE_NAMESPACE:{scopes:"AWM",kind:"enum",values:["local","test","production"]},
   MCP_RESOURCE_URL:{scopes:"AW",kind:"url"},
   MCP_OAUTH_ISSUER_URL:{scopes:"A",kind:"url"},
   MCP_CLIENT_ID:{scopes:"AW",kind:"string"},

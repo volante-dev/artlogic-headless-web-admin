@@ -9669,7 +9669,10 @@ export interface operations {
     };
     getAdminMedia: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Existing consumers receive the original image. Admin galleries may request a private 640px thumbnail. */
+                variant?: "thumbnail";
+            };
             header?: never;
             path: {
                 /** @description Identifiant opaque interne au déploiement. */
@@ -48509,4 +48512,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "a0354ac68b401a82b892051e85ae47d789e198124054e72a8b9b70c50c6bddcd";
+export const sourceSha256 = "0cb28286e8345c494c29d88161e308ee5a79a5454b431c48c642652b5c74eb99";
