@@ -4892,6 +4892,7 @@ export interface components {
                 button: components["schemas"]["PresentationTypographyRole"];
             };
             fonts: components["schemas"]["PresentationFontFamily"][];
+            loaderImageId?: string | null;
         };
         PresentationThemeOverrides: {
             colors?: components["schemas"]["PresentationColorOverrides"];
@@ -4905,6 +4906,7 @@ export interface components {
                 button?: components["schemas"]["PresentationTypographyRoleOverride"];
             };
             fonts?: components["schemas"]["PresentationFontFamily"][];
+            loaderImageId?: string | null;
         };
         PresentationFontDescriptor: {
             /** Format: uuid */
@@ -4958,6 +4960,7 @@ export interface components {
                 videoId?: string | null;
                 mobileVideoId?: string | null;
                 focalPoint?: components["schemas"]["PresentationFocalPoint"];
+                overlayId?: string | null;
             };
         };
         ResolvedPresentationHeroMediaSection: {
@@ -4978,6 +4981,7 @@ export interface components {
                 poster?: components["schemas"]["PresentationPublicAsset"] | null;
                 video?: components["schemas"]["PresentationPublicAsset"] | null;
                 mobileVideo?: components["schemas"]["PresentationPublicAsset"] | null;
+                overlay?: components["schemas"]["PresentationPublicAsset"] | null;
             };
         };
         PresentationTextSection: {
@@ -5416,6 +5420,8 @@ export interface components {
             pageIdentity?: components["schemas"]["PresentationGaleristIdentity"];
             footer?: components["schemas"]["PresentationFooterResolved"] | null;
             metaDescription?: string;
+            /** @description Only returned when X-Presentation-Animated-Webp: 1 is requested. The historical response is preserved otherwise. */
+            loader?: components["schemas"]["PresentationPublicAsset"] | null;
         };
         PresentationAssetCreate: {
             /** @enum {string} */
@@ -5515,6 +5521,12 @@ export interface components {
                 /** @constant */
                 contractVersion: 1;
             };
+            animatedWebp?: {
+                /** @constant */
+                writable: true;
+                /** @constant */
+                contractVersion: 1;
+            };
         };
         PresentationPreviewInput: {
             pageKey: components["schemas"]["PresentationPageKey"];
@@ -5589,6 +5601,8 @@ export interface components {
             pageIdentity?: components["schemas"]["PresentationGaleristIdentity"];
             footer?: components["schemas"]["PresentationFooterResolved"] | null;
             metaDescription?: string;
+            /** @description Only returned when X-Presentation-Animated-Webp: 1 is requested. The historical response is preserved otherwise. */
+            loader?: components["schemas"]["PresentationPublicAsset"] | null;
         };
         PresentationUploadAttempt: {
             /** Format: uuid */
@@ -22325,7 +22339,10 @@ export interface operations {
                 locale: string;
                 expectedReleaseId?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Opt in to the centered hero overlay and global loader assets. Omission preserves the previous response shape. */
+                "X-Presentation-Animated-Webp"?: "1";
+            };
             path?: never;
             cookie?: never;
         };
@@ -22937,7 +22954,10 @@ export interface operations {
                 pageKey: components["schemas"]["PresentationPageKey"];
                 locale: string;
             };
-            header?: never;
+            header?: {
+                /** @description Opt in to the centered hero overlay and global loader assets. Omission preserves the previous response shape. */
+                "X-Presentation-Animated-Webp"?: "1";
+            };
             path?: never;
             cookie?: never;
         };
@@ -24201,7 +24221,10 @@ export interface operations {
                 locale: string;
                 slug: string;
             };
-            header?: never;
+            header?: {
+                /** @description Opt in to the centered hero overlay and global loader assets. Omission preserves the previous response shape. */
+                "X-Presentation-Animated-Webp"?: "1";
+            };
             path?: never;
             cookie?: never;
         };
@@ -50957,4 +50980,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "6fcdb05430a75c844d513c9002fd62abff047b4f9f3fb890ea9b153dd88a8edf";
+export const sourceSha256 = "859b06bf1dcaf8f1524b0a63b003705bcc29496d536e67f63ae25c1172b03282";
