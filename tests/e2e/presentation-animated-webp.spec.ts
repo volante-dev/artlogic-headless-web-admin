@@ -2,12 +2,16 @@ import {test,expect} from "@playwright/test";
 import {readFileSync} from "node:fs";
 test.skip(!process.env.E2E_PRESENTATION_FIXTURE,"Requires the isolated presentation harness.");
 test.setTimeout(180000);
-test("imports and publishes centered animated WebP and global loaders on desktop/mobile with reduced-motion and error fallbacks",async({page},testInfo)=>{
+test("plays the hero once and replaces only centered page loaders on desktop/mobile with reduced-motion and error fallbacks",async({page},testInfo)=>{
  const fixture=JSON.parse(readFileSync(process.env.E2E_PRESENTATION_FIXTURE!,"utf8")),site=process.env.E2E_PUBLIC_URL!;
  await page.goto("/");await page.getByRole("button",{name:/se connecter/i}).click();await page.getByRole("button",{name:/continuer avec le compte de test/i}).click();
  await page.goto("/presentation/pages/home");await page.getByRole("button",{name:/^(Choisir|Changer) visuel webp centré$/i}).click();
  const dialog=page.getByRole("dialog",{name:"Visuel WebP centré",exact:true});
- await dialog.getByLabel("Fichier image",{exact:true}).setInputFiles(fixture.assetDirectory+"invalid/animated.webp");
+ const bytes=Buffer.from(readFileSync(fixture.assetDirectory+"invalid/animated.webp"));
+ // Give the two synthetic frames a six-second timeline so geometry can be
+ // inspected before completion, without modifying the committed media fixture.
+ for(let at=12;at<bytes.length;){const size=bytes.readUInt32LE(at+4);if(bytes.toString("ascii",at,at+4)==="ANMF")bytes.writeUIntLE(3000,at+20,3);at+=8+size+(size%2);}
+ await dialog.getByLabel("Fichier image",{exact:true}).setInputFiles({name:"hero-loop.webp",mimeType:"image/webp",buffer:bytes});
  await dialog.getByLabel(/Je confirme disposer des droits/).check();
  const upload=page.waitForResponse(r=>r.url().includes("/api/presentation/assets/")&&r.url().endsWith("/finalize")&&r.request().method()==="POST");
  await dialog.getByRole("button",{name:"Importer et préparer",exact:true}).click();const response=await upload;expect(response.status()).toBe(200);const {asset}=await response.json();
@@ -19,17 +23,20 @@ test("imports and publishes centered animated WebP and global loaders on desktop
  await page.getByRole("button",{name:"Enregistrer le brouillon",exact:true}).click();await expect(page.getByText("Toutes les modifications sont enregistrées",{exact:true})).toBeVisible();
  for(const width of [1440,375]){await page.setViewportSize({width,height:900});await page.getByRole("heading",{name:"Indicateurs de chargement",exact:true}).scrollIntoViewIfNeeded();await page.screenshot({path:testInfo.outputPath(`admin-loader-${width}.png`)});}
  await page.goto("/presentation/pages/home");await page.getByRole("button",{name:"Publier le site",exact:true}).click();await expect(page.getByText(/Publication confirmée/).first()).toBeVisible();
- await page.goto(site+"/");const overlay=page.getByTestId("hero-media").locator("picture img");await expect(overlay).toBeVisible();await expect.poll(()=>overlay.evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth>0)).toBe(true);
+ await page.goto(site+"/");const overlay=page.getByTestId("hero-media").locator("[data-hero-webp] img");await expect(overlay).toBeVisible();await expect.poll(()=>overlay.evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth>0)).toBe(true);
  for(const width of [1440,375]){await page.setViewportSize({width,height:900});const hero=await page.getByTestId("hero-media").boundingBox(),box=await overlay.boundingBox();expect(Math.abs(box!.x+box!.width/2-hero!.width/2)).toBeLessThan(1);expect(Math.abs(box!.y+box!.height/2-hero!.height/2)).toBeLessThan(1);await page.screenshot({path:testInfo.outputPath(`hero-${width}.png`)});}
- await expect.poll(()=>overlay.evaluate((img:HTMLImageElement)=>img.currentSrc)).toContain("variant=original");
- await page.getByRole("button",{name:"Mettre le film en pause",exact:true}).click();await expect(overlay).toHaveAttribute("src",/variant=w640/);
- await page.getByRole("button",{name:"Lire le film",exact:true}).click();await expect(overlay).toHaveAttribute("src",/variant=original/);
+ await expect.poll(()=>overlay.evaluate((img:HTMLImageElement)=>img.currentSrc)).toMatch(/^blob:/);
+ expect(await overlay.evaluate(async(img:HTMLImageElement)=>{const bytes=new Uint8Array(await(await fetch(img.currentSrc)).arrayBuffer()),view=new DataView(bytes.buffer);for(let at=12;at<bytes.length;){const size=view.getUint32(at+4,true);if(String.fromCharCode(...bytes.subarray(at,at+4))==="ANIM")return view.getUint16(at+12,true);at+=8+size+(size%2);}return -1;})).toBe(1);
  await page.emulateMedia({reducedMotion:"reduce"});await expect.poll(()=>overlay.evaluate((img:HTMLImageElement)=>img.currentSrc)).toContain("variant=w640");
+ await expect(overlay).toHaveCount(0,{timeout:8000});
  await page.emulateMedia({reducedMotion:"no-preference"});await page.setViewportSize({width:1440,height:900});
+ await page.getByRole("button",{name:/^(Lire le film|Mettre le film en pause)$/}).click();await expect(overlay).toHaveCount(0);
+ // A manual pause also dismisses an active overlay, and resuming never replays it.
+ await page.goto(site+"/");await expect(overlay).toBeVisible();await page.getByRole("button",{name:"Mettre le film en pause",exact:true}).click();await expect(overlay).toHaveCount(0);await page.getByRole("button",{name:"Lire le film",exact:true}).click();await expect(overlay).toHaveCount(0);
  let release=()=>{};const held=new Promise<void>(resolve=>{release=resolve;});
  await page.route("**/contact?*",async route=>{if(route.request().headers().rsc!=="1"){await route.continue();return;}const response=await route.fetch();await held;await route.fulfill({response});});
  try{
-  await page.locator('header a[href="/contact"]').click({noWaitAfter:true});const loader=page.locator('[data-header-status][role="progressbar"]');await expect(loader).toBeVisible();const image=loader.locator("picture img");await expect(image).toBeVisible();await expect.poll(()=>image.evaluate((img:HTMLImageElement)=>img.currentSrc)).toContain("variant=original");await expect.poll(()=>image.evaluate(img=>getComputedStyle(img.closest("span")!).opacity)).toBe("1");await page.screenshot({path:testInfo.outputPath("custom-loader-desktop.png")});
+  await page.locator('header a[href="/contact"]').click({noWaitAfter:true});const loader=page.locator('[data-header-status][role="progressbar"]');await expect(loader).toBeVisible();const image=loader.locator("picture img");await expect(image).toBeVisible();expect((await image.boundingBox())!.width).toBe(96);expect((await image.boundingBox())!.height).toBe(96);await expect.poll(()=>image.evaluate((img:HTMLImageElement)=>img.currentSrc)).toContain("variant=original");await expect.poll(()=>image.evaluate(img=>getComputedStyle(img.closest("span")!).opacity)).toBe("1");await page.screenshot({path:testInfo.outputPath("custom-loader-desktop.png")});
   await page.emulateMedia({reducedMotion:"reduce"});await expect.poll(()=>image.evaluate((img:HTMLImageElement)=>img.currentSrc)).toContain("variant=w640");await page.setViewportSize({width:375,height:900});await page.screenshot({path:testInfo.outputPath("custom-loader-mobile-reduced.png")});
   await page.route("**/presentation-assets/"+asset.id+"**",route=>route.abort());await image.evaluate((img:HTMLImageElement)=>{img.dispatchEvent(new Event("error"));});await expect(loader.locator("picture")).toHaveCount(0);await expect(loader.locator("span span")).toBeVisible();
  }finally{release();await page.unrouteAll({behavior:"ignoreErrors"});}
