@@ -1222,5 +1222,446 @@ export const commerceOperations=[
       429,
       503
     ]
+  },
+  {
+    "id": "commerceAdminListDeliveryMethods",
+    "method": "GET",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery-methods",
+    "bodyLimit": 0,
+    "bodySchema": null,
+    "responseSchemas": {
+      "200": "CommerceDeliveryMethods"
+    },
+    "query": [],
+    "headers": [
+      "x-admin-session"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminCreateDeliveryMethod",
+    "method": "POST",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery-methods",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceDeliveryMethodInput",
+    "responseSchemas": {
+      "201": "CommerceDeliveryMethod"
+    },
+    "query": [],
+    "headers": [
+      "idempotency-key",
+      "x-admin-session",
+      "x-csrf-token"
+    ],
+    "statuses": [
+      201,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminReadDeliveryMethod",
+    "method": "GET",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery-methods/{methodId}",
+    "bodyLimit": 0,
+    "bodySchema": null,
+    "responseSchemas": {
+      "200": "CommerceDeliveryMethod"
+    },
+    "query": [],
+    "headers": [
+      "x-admin-session"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminUpdateDeliveryMethod",
+    "method": "PUT",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery-methods/{methodId}",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceDeliveryMethodInput",
+    "responseSchemas": {
+      "200": "CommerceDeliveryMethod"
+    },
+    "query": [],
+    "headers": [
+      "if-match",
+      "x-admin-session",
+      "x-csrf-token"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminReadPickup",
+    "method": "GET",
+    "area": "admin",
+    "path": "/v1/admin/store/pickup",
+    "bodyLimit": 0,
+    "bodySchema": null,
+    "responseSchemas": {
+      "200": "CommercePickupSettings"
+    },
+    "query": [],
+    "headers": [
+      "x-admin-session"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminUpdatePickup",
+    "method": "PUT",
+    "area": "admin",
+    "path": "/v1/admin/store/pickup",
+    "bodyLimit": 65536,
+    "bodySchema": "CommercePickupSettingsInput",
+    "responseSchemas": {
+      "200": "CommercePickupSettings"
+    },
+    "query": [],
+    "headers": [
+      "if-match",
+      "x-admin-session",
+      "x-csrf-token"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminReadDeliveryProduct",
+    "method": "GET",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery/products/{productId}",
+    "bodyLimit": 0,
+    "bodySchema": null,
+    "responseSchemas": {
+      "200": "CommerceDeliveryProduct"
+    },
+    "query": [],
+    "headers": [
+      "x-admin-session"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminUpdateDeliveryProduct",
+    "method": "PATCH",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery/products/{productId}",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceDeliveryProductPatch",
+    "responseSchemas": {
+      "200": "CommerceDeliveryProduct"
+    },
+    "query": [],
+    "headers": [
+      "if-match",
+      "x-admin-session",
+      "x-csrf-token"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminCreateDeliveryProduct",
+    "method": "POST",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery/products",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceDeliveryProductCreate",
+    "responseSchemas": {
+      "201": "CommerceDeliveryProduct"
+    },
+    "query": [],
+    "headers": [
+      "idempotency-key",
+      "x-admin-session",
+      "x-csrf-token"
+    ],
+    "statuses": [
+      201,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceDeliveryPlan",
+    "method": "POST",
+    "area": "internal",
+    "path": "/v1/internal/store/delivery-plan",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceDeliveryPlanInput",
+    "responseSchemas": {
+      "200": "CommerceDeliveryPlan"
+    },
+    "query": [],
+    "headers": [],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceDeliveryQuote",
+    "method": "POST",
+    "area": "internal",
+    "path": "/v1/internal/store/delivery-quotes",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceDeliveryQuoteInput",
+    "responseSchemas": {
+      "201": "CommerceDeliveryQuote"
+    },
+    "query": [],
+    "headers": [
+      "x-commerce-capability"
+    ],
+    "statuses": [
+      201,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminDeliveryCapabilities",
+    "method": "GET",
+    "area": "admin",
+    "path": "/v1/admin/store/delivery-capabilities",
+    "bodyLimit": 0,
+    "bodySchema": null,
+    "responseSchemas": {
+      "200": "CommerceDeliveryCapabilities"
+    },
+    "query": [],
+    "headers": [
+      "x-admin-session"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceInternalDeliveryCapabilities",
+    "method": "GET",
+    "area": "internal",
+    "path": "/v1/internal/store/delivery-capabilities",
+    "bodyLimit": 65536,
+    "bodySchema": null,
+    "responseSchemas": {
+      "200": "CommerceDeliveryCapabilities"
+    },
+    "query": [],
+    "headers": [],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminReadOrderDelivery",
+    "method": "GET",
+    "area": "admin",
+    "path": "/v1/admin/store/orders/{orderId}/delivery",
+    "bodyLimit": 0,
+    "bodySchema": null,
+    "responseSchemas": {
+      "200": "CommerceDeliveryOrder"
+    },
+    "query": [],
+    "headers": [
+      "x-admin-session"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceAdminFulfillDelivery",
+    "method": "POST",
+    "area": "admin",
+    "path": "/v1/admin/store/orders/{orderId}/delivery",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceDeliveryFulfillmentInput",
+    "responseSchemas": {
+      "200": "CommerceDeliveryOrder"
+    },
+    "query": [],
+    "headers": [
+      "idempotency-key",
+      "if-match",
+      "x-admin-session",
+      "x-csrf-token"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
+  },
+  {
+    "id": "commerceDeliveryLookupOrder",
+    "method": "POST",
+    "area": "internal",
+    "path": "/v1/internal/store/orders/delivery-lookup",
+    "bodyLimit": 65536,
+    "bodySchema": "CommerceLookup",
+    "responseSchemas": {
+      "200": "CommerceDeliveryTracking"
+    },
+    "query": [],
+    "headers": [
+      "x-commerce-visitor-ip"
+    ],
+    "statuses": [
+      200,
+      400,
+      401,
+      403,
+      404,
+      409,
+      410,
+      422,
+      429,
+      503
+    ]
   }
 ] as const;

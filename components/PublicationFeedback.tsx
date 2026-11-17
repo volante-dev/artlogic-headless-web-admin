@@ -24,7 +24,7 @@ export function PublicationFeedbackProvider({children}:{children:React.ReactNode
      role={notice?.severity==="error"?"alert":"status"}
      aria-live={notice?.severity==="error"?"assertive":"polite"} aria-atomic="true" data-publication-pending={notice?.pending?"true":"false"}
      closeText="Fermer la notification" onClose={notice?.pending?undefined:dismiss}
-     sx={{width:"100%",boxSizing:"border-box",alignItems:"flex-start","& .MuiAlert-message":{minWidth:0,overflowWrap:"anywhere",width:"100%"}}}>
+     sx={{width:"100%",boxSizing:"border-box",alignItems:"flex-start","& .MuiAlert-message":{minWidth:0,overflowWrap:"anywhere",whiteSpace:"pre-line",maxHeight:"50dvh",overflowY:"auto",width:"100%"}}}>
      {notice?.message}
      {notice?.pending&&<LinearProgress aria-label="Publication en cours" sx={{mt:1}}/>}
     </Alert>

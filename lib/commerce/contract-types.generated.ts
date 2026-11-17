@@ -674,6 +674,266 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/public/store/delivery-capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceDeliveryCapabilities
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceDeliveryCapabilities"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/store/delivery-methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceAdminListDeliveryMethods
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceAdminListDeliveryMethods"];
+        put?: never;
+        /**
+         * commerceAdminCreateDeliveryMethod
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        post: operations["commerceAdminCreateDeliveryMethod"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/store/delivery-methods/{methodId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceAdminReadDeliveryMethod
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceAdminReadDeliveryMethod"];
+        /**
+         * commerceAdminUpdateDeliveryMethod
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        put: operations["commerceAdminUpdateDeliveryMethod"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/store/pickup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceAdminReadPickup
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceAdminReadPickup"];
+        /**
+         * commerceAdminUpdatePickup
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        put: operations["commerceAdminUpdatePickup"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/store/delivery/products/{productId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceAdminReadDeliveryProduct
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceAdminReadDeliveryProduct"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * commerceAdminUpdateDeliveryProduct
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        patch: operations["commerceAdminUpdateDeliveryProduct"];
+        trace?: never;
+    };
+    "/v1/admin/store/delivery/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * commerceAdminCreateDeliveryProduct
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        post: operations["commerceAdminCreateDeliveryProduct"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/store/delivery-plan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * commerceDeliveryPlan
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        post: operations["commerceDeliveryPlan"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/store/delivery-quotes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * commerceDeliveryQuote
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        post: operations["commerceDeliveryQuote"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/store/delivery-capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceAdminDeliveryCapabilities
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceAdminDeliveryCapabilities"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/store/delivery-capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceInternalDeliveryCapabilities
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceInternalDeliveryCapabilities"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/store/orders/{orderId}/delivery": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * commerceAdminReadOrderDelivery
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        get: operations["commerceAdminReadOrderDelivery"];
+        put?: never;
+        /**
+         * commerceAdminFulfillDelivery
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        post: operations["commerceAdminFulfillDelivery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/store/orders/delivery-lookup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * commerceDeliveryLookupOrder
+         * @description Optional delivery capability. Legacy routes and response shapes remain unchanged.
+         */
+        post: operations["commerceDeliveryLookupOrder"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1515,6 +1775,211 @@ export interface components {
          * @description Exact raw body, signature verified before JSON parsing
          */
         CommerceStripeWebhookInput: string;
+        CommerceDeliveryCalendar: {
+            timeZone: string;
+            workingDays: number[];
+            cutoff: string;
+            /** @enum {string} */
+            holidayRegion: "fr-metropole" | "none";
+            extraClosedDates: string[];
+        };
+        CommerceDeliveryZone: {
+            /** Format: uuid */
+            id: string;
+            active: boolean;
+            countries: string[];
+            label: {
+                [key: string]: string;
+            };
+            grossAmount: number;
+            phoneRequired: boolean;
+            importDisclosure: {
+                [key: string]: string;
+            };
+            leadTimeHours?: number;
+        };
+        CommerceDeliveryMethodInput: {
+            label: {
+                [key: string]: string;
+            };
+            active: boolean;
+            leadTimeHours: number;
+            calendar: components["schemas"]["CommerceDeliveryCalendar"];
+            zones: components["schemas"]["CommerceDeliveryZone"][];
+        };
+        CommerceDeliveryMethod: {
+            label: {
+                [key: string]: string;
+            };
+            active: boolean;
+            leadTimeHours: number;
+            calendar: components["schemas"]["CommerceDeliveryCalendar"];
+            zones: components["schemas"]["CommerceDeliveryZone"][];
+            /** Format: uuid */
+            id: string;
+            revision: number;
+            legacyRates: boolean;
+            qualified: boolean;
+            archived: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        CommerceDeliveryMethods: {
+            items: components["schemas"]["CommerceDeliveryMethod"][];
+        };
+        CommercePickupSettingsInput: {
+            label: {
+                [key: string]: string;
+            };
+            address: components["schemas"]["CommerceAddress"];
+            leadTimeHours: number;
+            calendar: components["schemas"]["CommerceDeliveryCalendar"];
+        };
+        CommercePickupSettings: {
+            settings: components["schemas"]["CommercePickupDraftSettings"];
+            revision: number;
+        };
+        CommerceDeliveryCapabilities: {
+            supported: boolean;
+            enabled: boolean;
+            calendarDefaults: components["schemas"]["CommerceDeliveryCalendar"];
+        };
+        CommerceProductDeliveryPolicy: {
+            /** Format: uuid */
+            productId: string;
+            revision: number;
+            allowedMethodIds: string[];
+            /** @constant */
+            pickupAvailable: true;
+        };
+        CommerceProductDeliveryPatch: {
+            allowedMethodIds: string[];
+            expectedPolicyRevision: number;
+        };
+        CommerceDeliveryProduct: {
+            product: components["schemas"]["CommerceProductAdmin"];
+            delivery: components["schemas"]["CommerceProductDeliveryPolicy"];
+            methods: components["schemas"]["CommerceDeliveryMethod"][];
+        };
+        CommerceDeliveryProductCreate: {
+            product: components["schemas"]["CommerceProductCreate"];
+            allowedMethodIds: string[];
+        };
+        CommerceDeliveryProductPatch: {
+            product: components["schemas"]["CommerceProductPatch"];
+            delivery: components["schemas"]["CommerceProductDeliveryPatch"];
+        };
+        CommerceDeliveryEstimate: {
+            /** Format: date */
+            date: string;
+            /** Format: date-time */
+            cutoffAt: string;
+            /** Format: date-time */
+            estimatedAt: string;
+            timeZone: string;
+            leadTimeHours: number;
+            calendarFingerprint: string;
+        };
+        CommerceDeliveryGroup: {
+            id: string;
+            methodId: string;
+            label: string;
+            /** Format: uuid */
+            zoneId: string | null;
+            items: components["schemas"]["CommerceCartLineInput"][];
+            grossAmount: number;
+            estimate: components["schemas"]["CommerceDeliveryEstimate"];
+            phoneRequired: boolean;
+            importDisclosure: string;
+            productTitles: {
+                [key: string]: string;
+            };
+            alternatives: {
+                /** Format: uuid */
+                methodId: string;
+                label: string;
+                grossAmount: number;
+                estimate: components["schemas"]["CommerceDeliveryEstimate"];
+            }[];
+        };
+        CommerceDeliveryPlanInput: {
+            items: components["schemas"]["CommerceCartLineInput"][];
+            locale: string;
+            country?: string;
+            /** @enum {string} */
+            mode?: "shipping" | "pickup";
+            selections?: {
+                groupId: string;
+                /** Format: uuid */
+                methodId: string;
+            }[];
+        };
+        CommerceDeliveryPlan: {
+            /** @enum {string} */
+            mode: "shipping" | "pickup";
+            pickupOnly: boolean;
+            separateShipments: boolean;
+            groups: components["schemas"]["CommerceDeliveryGroup"][];
+            shippingGross: number;
+            fingerprint: string;
+            shippingRevision: number;
+            pickupAddress: components["schemas"]["CommerceAddress"] | null;
+            /** Format: date-time */
+            calculatedAt: string;
+        };
+        CommerceDeliveryQuoteInput: {
+            checkout: components["schemas"]["CommerceQuoteInput"];
+            delivery: components["schemas"]["CommerceDeliveryPlanInput"];
+        };
+        CommerceDeliveryQuote: {
+            quote: components["schemas"]["CommerceQuote"];
+            delivery: components["schemas"]["CommerceDeliveryPlan"];
+        };
+        CommerceDeliveryFulfillmentEvent: {
+            groupId: string;
+            /** @enum {string} */
+            action: "shipped" | "delivered" | "collected";
+            /** Format: date-time */
+            at: string;
+            shipment?: components["schemas"]["CommerceShipmentInput"];
+        };
+        CommerceDeliveryOrder: {
+            order: components["schemas"]["CommerceAdminOrder"];
+            delivery: components["schemas"]["CommerceDeliveryPlan"] | null;
+            events: components["schemas"]["CommerceDeliveryFulfillmentEvent"][];
+        };
+        CommerceDeliveryFulfillmentInput: {
+            groupId: string;
+            /** @enum {string} */
+            action: "shipped" | "delivered" | "collected";
+            shipment?: components["schemas"]["CommerceShipmentInput"];
+            expectedRevision: number;
+        };
+        CommerceDeliveryTracking: {
+            order: components["schemas"]["CommerceOrderTracking"];
+            delivery: components["schemas"]["CommerceDeliveryPlan"] | null;
+            events: components["schemas"]["CommerceDeliveryFulfillmentEvent"][];
+        };
+        CommercePickupDraftAddress: {
+            fullName: string;
+            line1: string;
+            line2?: string;
+            locality: string;
+            region?: string;
+            postalCode?: string;
+            country: string;
+            phone?: string;
+        };
+        CommercePickupDraftSettings: {
+            label: {
+                [key: string]: string;
+            };
+            address: components["schemas"]["CommercePickupDraftAddress"];
+            leadTimeHours: number;
+            calendar: components["schemas"]["CommerceDeliveryCalendar"];
+        };
     };
     responses: never;
     parameters: {
@@ -1919,6 +2384,7 @@ export interface operations {
             query: {
                 locale: components["parameters"]["CommerceLocale"];
                 version?: string;
+                test?: boolean;
             };
             header?: never;
             path: {
@@ -7552,6 +8018,1985 @@ export interface operations {
             };
         };
     };
+    commerceDeliveryCapabilities: {
+        parameters: {
+            query: {
+                locale: components["parameters"]["CommerceLocale"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryCapabilities"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminListDeliveryMethods: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryMethods"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminCreateDeliveryMethod: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": components["parameters"]["CommerceIdempotency"];
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+                "x-csrf-token": components["parameters"]["CommerceCSRF"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceDeliveryMethodInput"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryMethod"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminReadDeliveryMethod: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+            };
+            path: {
+                methodId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryMethod"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminUpdateDeliveryMethod: {
+        parameters: {
+            query?: never;
+            header: {
+                "If-Match": components["parameters"]["CommerceRevision"];
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+                "x-csrf-token": components["parameters"]["CommerceCSRF"];
+            };
+            path: {
+                methodId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceDeliveryMethodInput"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryMethod"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminReadPickup: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommercePickupSettings"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminUpdatePickup: {
+        parameters: {
+            query?: never;
+            header: {
+                "If-Match": components["parameters"]["CommerceRevision"];
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+                "x-csrf-token": components["parameters"]["CommerceCSRF"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommercePickupSettingsInput"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommercePickupSettings"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminReadDeliveryProduct: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+            };
+            path: {
+                productId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryProduct"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminUpdateDeliveryProduct: {
+        parameters: {
+            query?: never;
+            header: {
+                "If-Match": components["parameters"]["CommerceRevision"];
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+                "x-csrf-token": components["parameters"]["CommerceCSRF"];
+            };
+            path: {
+                productId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceDeliveryProductPatch"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryProduct"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminCreateDeliveryProduct: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": components["parameters"]["CommerceIdempotency"];
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+                "x-csrf-token": components["parameters"]["CommerceCSRF"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceDeliveryProductCreate"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryProduct"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceDeliveryPlan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceDeliveryPlanInput"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryPlan"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceDeliveryQuote: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-commerce-capability": components["parameters"]["CommerceCapability"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceDeliveryQuoteInput"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryQuote"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminDeliveryCapabilities: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryCapabilities"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceInternalDeliveryCapabilities: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryCapabilities"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminReadOrderDelivery: {
+        parameters: {
+            query?: never;
+            header: {
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+            };
+            path: {
+                orderId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryOrder"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceAdminFulfillDelivery: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": components["parameters"]["CommerceIdempotency"];
+                "If-Match": components["parameters"]["CommerceRevision"];
+                "x-admin-session": components["parameters"]["CommerceAdminSession"];
+                "x-csrf-token": components["parameters"]["CommerceCSRF"];
+            };
+            path: {
+                orderId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceDeliveryFulfillmentInput"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryOrder"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
+    commerceDeliveryLookupOrder: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description Trusted ingress address relayed only by the authenticated Commerce BFF. Never taken from a browser value. */
+                "X-Commerce-Visitor-IP": components["parameters"]["CommerceVisitorIP"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CommerceLookup"];
+            };
+        };
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceDeliveryTracking"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            400: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            401: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            403: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            404: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            409: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            410: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            422: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            429: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    "Retry-After"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+            /** @description Normalized Commerce error */
+            503: {
+                headers: {
+                    "Cache-Control"?: "private, no-store";
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CommerceError"];
+                };
+            };
+        };
+    };
 }
 
-export const commerceSourceSha256="1e5de87ecad8b0599aa085c33408dedeca04ae46813e5a327e79fb895fb49e24";
+export const commerceSourceSha256="74a1f6ea725a1a463ad22d8fa31b3b78edccebffe4b4e2c5fb68fc6afb40c267";

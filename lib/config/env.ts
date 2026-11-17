@@ -8,6 +8,10 @@ export type ConfigValue = string | number | string[] | Record<string, string>;
 export type Config = Readonly<Record<string, ConfigValue | undefined>> & { readonly role: Scope };
 type Rule = { scopes: string; kind: string; required?: boolean; optionalScopes?: string; default?: string; values?: string[]; min?: number; max?: number; secret?: boolean };
 export const variables: Readonly<Record<string, Rule>> = {
+  COMMERCE_TEST_SITE_ORIGIN:{scopes:"AWM",kind:"url"},
+  COMMERCE_TEST_CHECKOUT_ENABLED:{scopes:"AWMFB",kind:"enum",default:"false",values:["true","false"]},
+  COMMERCE_DELIVERY_ENABLED:{scopes:"AWM",kind:"enum",default:"false",values:["true","false"]},
+  COMMERCE_HOLIDAYS_URL:{scopes:"A",kind:"url",default:"https://calendrier.api.gouv.fr/jours-feries/metropole.json"},
   COMMERCE_ENABLED:{scopes:"AWMFB",kind:"enum",default:"false",values:["true","false"]},
   COMMERCE_SERVICE_KEY:{scopes:"AWF",kind:"token",secret:true},
   COMMERCE_PAYMENT_MODE:{scopes:"AW",kind:"enum",default:"mock",values:["mock","stripe"]},

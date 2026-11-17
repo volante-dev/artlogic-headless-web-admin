@@ -1,5 +1,6 @@
 import "server-only";
-import {validCommerceContract} from "./contracts";
+import {commerceSettingsIssues,safeCommerceIssues} from "./validation";
+import {commerceContractIssues,validCommerceContract} from "./contracts";
 import {loadConfig,stringValue,numberValue} from "../config/env";
 import {BffError} from "../bff/client";
 import {boundedBytes} from "../bff/presentation";
@@ -15,14 +16,15 @@ export async function commerceServerRequest<T>(method:string,segments:readonly s
  if((op.headers as readonly string[]).includes('if-match')){if(!input.tag||!/^"[^"\r\n]{1,148}"$/.test(input.tag))throw new BffError(400,'revision_conflict');headers.set('If-Match',input.tag);}
  if((op.headers as readonly string[]).includes('idempotency-key')){if(!input.intent||!uuid.test(input.intent))throw new BffError(400,'validation_failed');headers.set('Idempotency-Key',input.intent);}
  const query=input.query??new URLSearchParams();for(const k of query.keys())if(!(op.query as readonly string[]).includes(k)||query.getAll(k).length!==1||query.get(k)!.length>1024)throw new BffError(400,'validation_failed');
- if(op.bodySchema&&!validCommerceContract(op.bodySchema,input.body))throw new BffError(400,'validation_failed');
+ if(op.bodySchema){const issues=[...commerceContractIssues(op.bodySchema,input.body),...(op.id==='commerceAdminUpdateSettings'?commerceSettingsIssues(input.body):[])];if(issues.length){const error=new BffError(400,'validation_failed',undefined,undefined,undefined,issues.map(i=>({field:i.path,reason:i.code})));console.warn(JSON.stringify({event:'commerce.validation_rejected',operation:op.id,requestId:error.requestId,issues}));throw error;}}
  if(input.body!==undefined)headers.set('Content-Type','application/json');
  let response:Response;try{response=await fetch(stringValue(config,'BACKEND_URL').replace(/\/$/,'')+op.resolvedPath+(query.size?'?'+query.toString():''),{method,headers,body:input.body===undefined?undefined:JSON.stringify(input.body),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(numberValue(config,'REQUEST_TIMEOUT_MS'))});}catch{throw new BffError(503,'provider_unavailable');}
+ if(op.id==='commerceAdminDeliveryCapabilities'&&response.status===404)throw new BffError(404,'not_found');
  if(response.ok&&op.id==='commerceAdminReadOrderDocument'){if(response.headers.get('content-type')?.split(';')[0]!=='text/html')throw new BffError(503,'persistence_unavailable');return {data:new Uint8Array(await boundedBytes(response.body,5_000_000)) as T,status:response.status,tag:null};}
  if(!(op.statuses as readonly number[]).includes(response.status)||response.headers.get('content-type')?.split(';')[0]!=='application/json')throw new BffError(503,'persistence_unavailable');
  let data;try{data=JSON.parse((await boundedBytes(response.body,['commerceAdminListLegalDocuments','commerceAdminListWithdrawals','commerceAdminReadWithdrawal'].includes(op.id)?8_000_000:1_000_000)).toString());}catch{throw new BffError(503,'persistence_unavailable');}
  if(!response.ok&&!validCommerceContract('CommerceError',data))throw new BffError(503,'persistence_unavailable');
- if(!response.ok)throw new BffError(response.status,typeof data?.error?.code==='string'&&/^[a-z_]{1,100}$/.test(data.error.code)?data.error.code:'persistence_unavailable',undefined,/^[1-9][0-9]{0,5}$/.test(response.headers.get('retry-after')??'')?response.headers.get('retry-after')!:undefined);
+ if(!response.ok)throw new BffError(response.status,typeof data?.error?.code==='string'&&/^[a-z_]{1,100}$/.test(data.error.code)?data.error.code:'persistence_unavailable',typeof data?.error?.requestId==='string'?data.error.requestId:undefined,/^[1-9][0-9]{0,5}$/.test(response.headers.get('retry-after')??'')?response.headers.get('retry-after')!:undefined,undefined,safeCommerceIssues(data?.error?.issues).map(i=>({field:i.path,reason:i.code})));
  const schema=(op.responseSchemas as Readonly<Record<string,string|null>>)[String(response.status)];if(schema&&!validCommerceContract(schema,data))throw new BffError(503,'persistence_unavailable');
  const tag=response.headers.get('x-resource-version')??response.headers.get('etag');
  return {data:data as T,status:response.status,tag:tag&&/^"[^"\r\n]{1,148}"$/.test(tag)?tag:null};

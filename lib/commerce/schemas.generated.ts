@@ -4037,6 +4037,933 @@ export const commerceSchemaDocument={
         "type": "string",
         "format": "binary",
         "description": "Exact raw body, signature verified before JSON parsing"
+      },
+      "CommerceDeliveryCalendar": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "timeZone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "workingDays": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 7
+            },
+            "maxItems": 7,
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "cutoff": {
+            "type": "string",
+            "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+          },
+          "holidayRegion": {
+            "type": "string",
+            "enum": [
+              "fr-metropole",
+              "none"
+            ]
+          },
+          "extraClosedDates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "maxItems": 1000,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "timeZone",
+          "workingDays",
+          "cutoff",
+          "holidayRegion",
+          "extraClosedDates"
+        ]
+      },
+      "CommerceDeliveryZone": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "countries": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            "maxItems": 250,
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "label": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+              "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "minProperties": 1
+          },
+          "grossAmount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 99999999
+          },
+          "phoneRequired": {
+            "type": "boolean"
+          },
+          "importDisclosure": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 4000
+            }
+          },
+          "leadTimeHours": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8760
+          }
+        },
+        "required": [
+          "id",
+          "active",
+          "countries",
+          "label",
+          "grossAmount",
+          "phoneRequired",
+          "importDisclosure"
+        ]
+      },
+      "CommerceDeliveryMethodInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+              "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "minProperties": 1
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "leadTimeHours": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8760
+          },
+          "calendar": {
+            "$ref": "#/components/schemas/CommerceDeliveryCalendar"
+          },
+          "zones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceDeliveryZone"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "label",
+          "active",
+          "leadTimeHours",
+          "calendar",
+          "zones"
+        ]
+      },
+      "CommerceDeliveryMethod": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+              "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "minProperties": 1
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "leadTimeHours": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8760
+          },
+          "calendar": {
+            "$ref": "#/components/schemas/CommerceDeliveryCalendar"
+          },
+          "zones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceDeliveryZone"
+            },
+            "maxItems": 100
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "legacyRates": {
+            "type": "boolean"
+          },
+          "qualified": {
+            "type": "boolean"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "label",
+          "active",
+          "leadTimeHours",
+          "calendar",
+          "zones",
+          "id",
+          "revision",
+          "legacyRates",
+          "qualified",
+          "archived",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CommerceDeliveryMethods": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceDeliveryMethod"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "CommercePickupSettingsInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+              "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "minProperties": 1
+          },
+          "address": {
+            "$ref": "#/components/schemas/CommerceAddress"
+          },
+          "leadTimeHours": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8760
+          },
+          "calendar": {
+            "$ref": "#/components/schemas/CommerceDeliveryCalendar"
+          }
+        },
+        "required": [
+          "label",
+          "address",
+          "leadTimeHours",
+          "calendar"
+        ]
+      },
+      "CommercePickupSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "settings": {
+            "$ref": "#/components/schemas/CommercePickupDraftSettings"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "settings",
+          "revision"
+        ]
+      },
+      "CommerceDeliveryCapabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "supported": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "calendarDefaults": {
+            "$ref": "#/components/schemas/CommerceDeliveryCalendar"
+          }
+        },
+        "required": [
+          "supported",
+          "enabled",
+          "calendarDefaults"
+        ]
+      },
+      "CommerceProductDeliveryPolicy": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "allowedMethodIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "pickupAvailable": {
+            "const": true
+          }
+        },
+        "required": [
+          "productId",
+          "revision",
+          "allowedMethodIds",
+          "pickupAvailable"
+        ]
+      },
+      "CommerceProductDeliveryPatch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "allowedMethodIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "expectedPolicyRevision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "allowedMethodIds",
+          "expectedPolicyRevision"
+        ]
+      },
+      "CommerceDeliveryProduct": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "$ref": "#/components/schemas/CommerceProductAdmin"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/CommerceProductDeliveryPolicy"
+          },
+          "methods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceDeliveryMethod"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "product",
+          "delivery",
+          "methods"
+        ]
+      },
+      "CommerceDeliveryProductCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "$ref": "#/components/schemas/CommerceProductCreate"
+          },
+          "allowedMethodIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "maxItems": 100,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "product",
+          "allowedMethodIds"
+        ]
+      },
+      "CommerceDeliveryProductPatch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "$ref": "#/components/schemas/CommerceProductPatch"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/CommerceProductDeliveryPatch"
+          }
+        },
+        "required": [
+          "product",
+          "delivery"
+        ]
+      },
+      "CommerceDeliveryEstimate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "cutoffAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "estimatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "leadTimeHours": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "calendarFingerprint": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "date",
+          "cutoffAt",
+          "estimatedAt",
+          "timeZone",
+          "leadTimeHours",
+          "calendarFingerprint"
+        ]
+      },
+      "CommerceDeliveryGroup": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "methodId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "label": {
+            "type": "string"
+          },
+          "zoneId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceCartLineInput"
+            },
+            "maxItems": 50
+          },
+          "grossAmount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "estimate": {
+            "$ref": "#/components/schemas/CommerceDeliveryEstimate"
+          },
+          "phoneRequired": {
+            "type": "boolean"
+          },
+          "importDisclosure": {
+            "type": "string"
+          },
+          "productTitles": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 200
+            }
+          },
+          "alternatives": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "methodId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "grossAmount": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "estimate": {
+                  "$ref": "#/components/schemas/CommerceDeliveryEstimate"
+                }
+              },
+              "required": [
+                "methodId",
+                "label",
+                "grossAmount",
+                "estimate"
+              ]
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "id",
+          "methodId",
+          "label",
+          "zoneId",
+          "items",
+          "grossAmount",
+          "estimate",
+          "phoneRequired",
+          "importDisclosure",
+          "productTitles",
+          "alternatives"
+        ]
+      },
+      "CommerceDeliveryPlanInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceCartLineInput"
+            },
+            "maxItems": 50
+          },
+          "locale": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "shipping",
+              "pickup"
+            ]
+          },
+          "selections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "groupId": {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                "methodId": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "required": [
+                "groupId",
+                "methodId"
+              ]
+            },
+            "maxItems": 50
+          }
+        },
+        "required": [
+          "items",
+          "locale"
+        ]
+      },
+      "CommerceDeliveryPlan": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "shipping",
+              "pickup"
+            ]
+          },
+          "pickupOnly": {
+            "type": "boolean"
+          },
+          "separateShipments": {
+            "type": "boolean"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceDeliveryGroup"
+            },
+            "maxItems": 50
+          },
+          "shippingGross": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "fingerprint": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "shippingRevision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pickupAddress": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CommerceAddress"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "calculatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "mode",
+          "pickupOnly",
+          "separateShipments",
+          "groups",
+          "shippingGross",
+          "fingerprint",
+          "shippingRevision",
+          "pickupAddress",
+          "calculatedAt"
+        ]
+      },
+      "CommerceDeliveryQuoteInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "checkout": {
+            "$ref": "#/components/schemas/CommerceQuoteInput"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/CommerceDeliveryPlanInput"
+          }
+        },
+        "required": [
+          "checkout",
+          "delivery"
+        ]
+      },
+      "CommerceDeliveryQuote": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "quote": {
+            "$ref": "#/components/schemas/CommerceQuote"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/CommerceDeliveryPlan"
+          }
+        },
+        "required": [
+          "quote",
+          "delivery"
+        ]
+      },
+      "CommerceDeliveryFulfillmentEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupId": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "shipped",
+              "delivered",
+              "collected"
+            ]
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "shipment": {
+            "$ref": "#/components/schemas/CommerceShipmentInput"
+          }
+        },
+        "required": [
+          "groupId",
+          "action",
+          "at"
+        ]
+      },
+      "CommerceDeliveryOrder": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/CommerceAdminOrder"
+          },
+          "delivery": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CommerceDeliveryPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceDeliveryFulfillmentEvent"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "order",
+          "delivery",
+          "events"
+        ]
+      },
+      "CommerceDeliveryFulfillmentInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupId": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "shipped",
+              "delivered",
+              "collected"
+            ]
+          },
+          "shipment": {
+            "$ref": "#/components/schemas/CommerceShipmentInput"
+          },
+          "expectedRevision": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "groupId",
+          "action",
+          "expectedRevision"
+        ]
+      },
+      "CommerceDeliveryTracking": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/CommerceOrderTracking"
+          },
+          "delivery": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CommerceDeliveryPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommerceDeliveryFulfillmentEvent"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "order",
+          "delivery",
+          "events"
+        ]
+      },
+      "CommercePickupDraftAddress": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 200
+          },
+          "line1": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 250
+          },
+          "line2": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 250
+          },
+          "locality": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 150
+          },
+          "region": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 150
+          },
+          "postalCode": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 32
+          },
+          "country": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 2,
+            "pattern": "^(?:[A-Z]{2})?$"
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 40
+          }
+        },
+        "required": [
+          "fullName",
+          "line1",
+          "locality",
+          "country"
+        ]
+      },
+      "CommercePickupDraftSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+              "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "minProperties": 1
+          },
+          "address": {
+            "$ref": "#/components/schemas/CommercePickupDraftAddress"
+          },
+          "leadTimeHours": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8760
+          },
+          "calendar": {
+            "$ref": "#/components/schemas/CommerceDeliveryCalendar"
+          }
+        },
+        "required": [
+          "label",
+          "address",
+          "leadTimeHours",
+          "calendar"
+        ]
       }
     },
     "parameters": {
