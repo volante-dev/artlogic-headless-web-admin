@@ -4227,6 +4227,13 @@ export interface components {
             dimensions: string | null;
             media: components["schemas"]["PublicMedia"][];
             catalogLarge: boolean;
+            /** @description Published modal focus for the current primary image, only returned with X-Artwork-Card-Focus: 1. Null when unset or stale. */
+            heroFocus?: {
+                /** Format: uuid */
+                mediaId: string;
+                x: number;
+                y: number;
+            } | null;
         };
         /**
          * @example {
@@ -6339,6 +6346,13 @@ export interface components {
             media: components["schemas"]["PublicMedia"][];
             slug: string;
             catalogLarge: boolean;
+            /** @description Published modal focus for the current primary image, only returned with X-Artwork-Card-Focus: 1. Null when unset or stale. */
+            heroFocus?: {
+                /** Format: uuid */
+                mediaId: string;
+                x: number;
+                y: number;
+            } | null;
         };
         GalleryCatalogPlp: {
             items: components["schemas"]["GalleryArtworkPlp"][];
@@ -9910,7 +9924,10 @@ export interface operations {
                 /** @description Langue configurée ; défaut langue principale et titre source. */
                 locale?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Opt in to the published primary-image focus on PLP cards. Without this header the legacy response shape is preserved. */
+                "X-Artwork-Card-Focus"?: "1";
+            };
             path?: never;
             cookie?: never;
         };
@@ -25584,7 +25601,10 @@ export interface operations {
                 /** @description OR of up to 100 distinct positive safe integer IDs. Requires includeTypes=1. */
                 types?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Opt in to the published primary-image focus on PLP cards. Without this header the legacy response shape is preserved. */
+                "X-Artwork-Card-Focus"?: "1";
+            };
             path?: never;
             cookie?: never;
         };
@@ -50980,4 +51000,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "859b06bf1dcaf8f1524b0a63b003705bcc29496d536e67f63ae25c1172b03282";
+export const sourceSha256 = "a0a5f86fc0c128de4ace04a7fb4c3c5b57d6946eb636dc82f219c7921900f3b8";
