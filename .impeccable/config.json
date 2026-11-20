@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "cssstring(font.family)",
+        "files": [
+          "components/link-in-bio/preview-document.ts"
+        ],
+        "createdAt": "2026-11-20T13:53:39.392Z",
+        "reason": "Spec 035 contracts/ui.md: the sandboxed preview must use the published public theme, while the admin shell retains its own fonts."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "cssstring(preview.appearance.typography.bodyfamily)",
+        "files": [
+          "components/link-in-bio/preview-document.ts"
+        ],
+        "createdAt": "2026-11-20T13:53:39.490Z",
+        "reason": "Spec 035 contracts/ui.md: the sandboxed preview must use the published public theme, while the admin shell retains its own fonts."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "cssstring(preview.appearance.typography.headingfamily)",
+        "files": [
+          "components/link-in-bio/preview-document.ts"
+        ],
+        "createdAt": "2026-11-20T13:53:39.587Z",
+        "reason": "Spec 035 contracts/ui.md: the sandboxed preview must use the published public theme, while the admin shell retains its own fonts."
+      }
+    ]
+  }
+}

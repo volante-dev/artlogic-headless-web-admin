@@ -6258,6 +6258,8 @@ export interface components {
             importedDescriptionLocale?: string | null;
             importedProvenance?: components["schemas"]["EditorialRichText"] | null;
             importedProvenanceLocale?: string | null;
+            /** @description Only returned when X-Artwork-Sale-Availability: 1 is requested. True only for Artlogic stock/consignment (status 1/2) with availability 1. Null means unknown or not synchronized by a compatible worker. Missing on older APIs; hide the availability indicator unless exactly true. */
+            availableForSale?: boolean | null;
         };
         GalleryPreviewExperience: {
             /** @constant */
@@ -6275,6 +6277,8 @@ export interface components {
             importedDescriptionLocale?: string | null;
             importedProvenance?: components["schemas"]["EditorialRichText"] | null;
             importedProvenanceLocale?: string | null;
+            /** @description Only returned when X-Artwork-Sale-Availability: 1 is requested. True only for Artlogic stock/consignment (status 1/2) with availability 1. Null means unknown or not synchronized by a compatible worker. Missing on older APIs; hide the availability indicator unless exactly true. */
+            availableForSale?: boolean | null;
         };
         GalleryEditorialDraft: {
             /** Format: uuid */
@@ -25771,7 +25775,10 @@ export interface operations {
             query: {
                 locale: string;
             };
-            header?: never;
+            header?: {
+                /** @description Opt into the optional availableForSale field. Omit for the legacy response shape. */
+                "X-Artwork-Sale-Availability"?: "1";
+            };
             path: {
                 artworkRef: string;
             };
@@ -26383,7 +26390,10 @@ export interface operations {
     getGalleryPreviewArtworkExperience: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Opt into the optional availableForSale field. Omit for the legacy response shape. */
+                "X-Artwork-Sale-Availability"?: "1";
+            };
             path?: never;
             cookie?: never;
         };
@@ -51000,4 +51010,4 @@ export interface operations {
     };
 }
 
-export const sourceSha256 = "a0a5f86fc0c128de4ace04a7fb4c3c5b57d6946eb636dc82f219c7921900f3b8";
+export const sourceSha256 = "3d6a170f8e4abc50ce86c0da2e47f48626ce2e681e8f7b5ead7711e230a5c66b";

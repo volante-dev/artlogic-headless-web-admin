@@ -21,5 +21,5 @@ export async function AuthorizedPage({render,loginNext}:{loginNext?:string;rende
     if(status===401||status===403)return <main id="contenu"><SessionNotice loginNext={loginNext} status={status} csrfCookie={csrfCookie} hasSession/></main>;
     content=<section><h1>{status===404?"Ressource introuvable":status===400?"Recherche invalide":"Contenu momentanément indisponible"}</h1><p role="alert">{status===404?"Cette ressource ne figure pas dans votre catalogue.":status===400?"Recommencez la recherche avec de nouveaux critères.":"Rechargez la page pour réessayer."}</p><Link prefetch={false} href="/">Revenir à l’accueil</Link></section>;
   }
-  return <AdminShell connectorsEnabled={loadConfig().MCP_ENABLED==="true"} formsEnabled={loadConfig().FORMS_ENABLED==="true"} editorialEnabled={loadConfig().EDITORIAL_ENABLED==="true"} siteName={stringValue(loadConfig(),"SITE_NAME")} displayName={admin.displayName} csrfCookie={csrfCookie}>{content}</AdminShell>;
+  return <AdminShell linkInBioEnabled={loadConfig().LINK_IN_BIO_ENABLED==="true"} connectorsEnabled={loadConfig().MCP_ENABLED==="true"} formsEnabled={loadConfig().FORMS_ENABLED==="true"} editorialEnabled={loadConfig().EDITORIAL_ENABLED==="true"} siteName={stringValue(loadConfig(),"SITE_NAME")} displayName={admin.displayName} csrfCookie={csrfCookie}>{content}</AdminShell>;
 }

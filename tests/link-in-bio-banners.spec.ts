@@ -1,0 +1,7 @@
+import {test,expect} from '@playwright/test';
+test.skip(process.env.E2E_LINK_IN_BIO!=='true','Requires the isolated Link in bio admin harness.');
+test('edits, reorders and hides banners without publishing them implicitly',async({page,context})=>{
+ await context.addCookies([{name:'artlogic_admin_session',value:'synthetic-session',url:process.env.E2E_BASE_URL!},{name:'artlogic_csrf',value:'a'.repeat(43),url:process.env.E2E_BASE_URL!}]);
+ await page.goto('/link-in-bio');await page.getByRole('button',{name:'Ajouter un bandeau',exact:true}).click();await page.getByLabel('Libellé du bandeau 1 (fr)').fill('Découvrir');await page.getByLabel('URL du bandeau 1').fill('https://example.test/');await page.getByRole('button',{name:'Ajouter un bandeau',exact:true}).click();await page.getByLabel('Libellé du bandeau 2 (fr)').fill('Nous contacter');await page.getByLabel('URL du bandeau 2').fill('https://example.test/contact');await page.getByRole('button',{name:'Monter le bandeau 2'}).click();await expect(page.getByLabel('Libellé du bandeau 1 (fr)')).toHaveValue('Nous contacter');await page.getByLabel('Afficher le bandeau 1').uncheck();
+ const request=page.waitForRequest(r=>r.url().endsWith('/draft')&&r.method()==='PUT');await page.getByRole('button',{name:'Enregistrer le brouillon',exact:true}).click();const body=(await request).postDataJSON();expect(body.banners[0]).toMatchObject({visible:false,position:0,labels:{fr:'Nous contacter'}});
+});
