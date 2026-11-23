@@ -257,7 +257,7 @@ export interface components {
             /** Format: uri */
             resource: string;
             authorization_servers: string[];
-            scopes_supported: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage")[];
+            scopes_supported: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage" | "site.inventory.read" | "site.inventory.write" | "site.inventory.publish" | "site.inventory.finance" | "site.inventory.manage")[];
             bearer_methods_supported: "header"[];
             resource_name: string;
         };
@@ -274,7 +274,7 @@ export interface components {
             grant_types_supported: ("authorization_code" | "refresh_token")[];
             code_challenge_methods_supported: "S256"[];
             token_endpoint_auth_methods_supported: "client_secret_basic"[];
-            scopes_supported: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage")[];
+            scopes_supported: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage" | "site.inventory.read" | "site.inventory.write" | "site.inventory.publish" | "site.inventory.finance" | "site.inventory.manage")[];
             /** @constant */
             authorization_response_iss_parameter_supported: true;
         };
@@ -309,8 +309,8 @@ export interface components {
             siteName: string;
             environment: string;
             clientName: string;
-            requestedScopes: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage")[];
-            allowedScopes: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage")[];
+            requestedScopes: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage" | "site.inventory.read" | "site.inventory.write" | "site.inventory.publish" | "site.inventory.finance" | "site.inventory.manage")[];
+            allowedScopes: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage" | "site.inventory.read" | "site.inventory.write" | "site.inventory.publish" | "site.inventory.finance" | "site.inventory.manage")[];
             /** Format: date-time */
             expiresAt: string;
             /** @constant */
@@ -319,7 +319,7 @@ export interface components {
         Decision: {
             /** @enum {string} */
             decision: "approve" | "deny";
-            grantedScopes?: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage")[];
+            grantedScopes?: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage" | "site.inventory.read" | "site.inventory.write" | "site.inventory.publish" | "site.inventory.finance" | "site.inventory.manage")[];
         };
         ConnectorSettings: {
             enabled: boolean;
@@ -341,7 +341,7 @@ export interface components {
             id: components["schemas"]["Mcp_Id"];
             actorLabel: string;
             isOwn: boolean;
-            scopes: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage")[];
+            scopes: ("site.read" | "site.draft" | "site.publish" | "site.sync" | "site.connector.manage" | "site.inventory.read" | "site.inventory.write" | "site.inventory.publish" | "site.inventory.finance" | "site.inventory.manage")[];
             /** @enum {string} */
             status: "active" | "revoked" | "expired";
             consentedAt: components["schemas"]["Mcp_Time"];

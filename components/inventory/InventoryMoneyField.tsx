@@ -1,0 +1,7 @@
+"use client";
+import {MenuItem,Stack,TextField} from "@mui/material";
+import {inventoryMoneyEntryValue,type InventoryMoneyEntry} from "@/lib/inventory/finance";
+import {inventoryText as t} from "@/lib/inventory/messages";
+export function InventoryMoneyField({label,value,onChange,currencies,disabled=false,required=false,fixedUnit=false}:{fixedUnit?:boolean;label:string;value:InventoryMoneyEntry;onChange:(value:InventoryMoneyEntry)=>void;currencies:readonly string[];disabled?:boolean;required?:boolean}){
+ return <Stack role="group" aria-label={label} spacing={2}><TextField label={label} required={required} value={value.text} disabled={disabled} error={Boolean(value.text)&&!inventoryMoneyEntryValue(value)} slotProps={{htmlInput:{inputMode:"decimal",maxLength:48}}} onChange={event=>onChange({...value,text:event.target.value})}/><Stack direction={{xs:"column",sm:"row"}} spacing={2}><TextField fullWidth select label={t("financeCurrency")} value={value.currency} disabled={disabled||fixedUnit} onChange={event=>onChange({...value,currency:event.target.value})}>{[...new Set([...currencies,...(value.currency?[value.currency]:[])])].map(code=><MenuItem key={code} value={code}>{code}</MenuItem>)}</TextField><TextField select sx={{width:{xs:"100%",sm:220},flexShrink:0}} label={t("financeScale")} value={value.scale} disabled={disabled||fixedUnit} onChange={event=>onChange({...value,scale:Number(event.target.value)})}>{Array.from({length:9},(_,scale)=><MenuItem key={scale} value={scale}>{scale}</MenuItem>)}</TextField></Stack></Stack>;
+}

@@ -1,0 +1,14 @@
+"use client";
+import {useEffect,useState} from "react";
+import {Alert,Autocomplete,Button,Stack,TextField} from "@mui/material";
+import {inventoryFetch,inventoryErrorText,type InventoryPage,type InventoryRead} from "@/lib/inventory/client";
+import type {InventoryUnit} from "@/lib/inventory/stock";
+import {inventoryText as t} from "@/lib/inventory/messages";
+export function UnitTargetSelector({value,onChange,disabled=false,label=t("financeTargets"),hint=t("financeTargetsHint"),eligible}:{value:InventoryUnit[];onChange:(value:InventoryUnit[])=>void;disabled?:boolean;label?:string;hint?:string;eligible?:(unit:InventoryUnit)=>boolean}){
+ const [options,setOptions]=useState<InventoryUnit[]>([]),[query,setQuery]=useState(""),[cursor,setCursor]=useState<string|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState("");
+ useEffect(()=>{const controller=new AbortController(),timer=setTimeout(()=>{setBusy(true);setError("");void inventoryFetch<InventoryPage>("/units?"+new URLSearchParams({limit:"50",...(query?{q:query}:{})}),{signal:controller.signal}).then(page=>{setOptions(page.items.map(item=>item.data as InventoryUnit));setCursor(page.nextCursor);}).catch(error=>{if(!controller.signal.aborted)setError(inventoryErrorText(error));}).finally(()=>{if(!controller.signal.aborted)setBusy(false);});},200);return()=>{clearTimeout(timer);controller.abort();};},[query]);
+ async function more(){if(!cursor)return;setBusy(true);try{const page=await inventoryFetch<InventoryPage>("/units?"+new URLSearchParams({limit:"50",cursor,...(query?{q:query}:{})}));setOptions(previous=>[...previous,...page.items.map(item=>item.data as InventoryUnit)]);setCursor(page.nextCursor);}catch(error){setError(inventoryErrorText(error));}finally{setBusy(false);}}
+ const choices=[...value,...options.filter(option=>!value.some(selected=>selected.unitId===option.unitId))];
+ return <Stack spacing={1}><Autocomplete multiple options={choices} value={value} getOptionKey={option=>option.unitId} getOptionLabel={option=>option.unitRef+(option.editionNumber?" · "+option.editionNumber:"")} getOptionDisabled={option=>eligible?!eligible(option):false} isOptionEqualToValue={(a,b)=>a.unitId===b.unitId} filterOptions={options=>options} onChange={(_event,options)=>onChange(options)} onInputChange={(_event,text,reason)=>{if(reason==="input")setQuery(text);}} loading={busy} disabled={disabled} noOptionsText={t("stockNoOptions")} renderInput={params=><TextField {...params} label={label} helperText={hint}/>}/>{error&&<Alert severity="error">{error}</Alert>}{cursor&&<Button disabled={busy||disabled} onClick={()=>void more()}>{t("stockLoadMore")}</Button>}</Stack>;
+}
+export async function loadInventoryTargets(ids:readonly string[]){return Promise.all(ids.map(async id=>(await inventoryFetch<InventoryRead>("/units/"+id)).data as InventoryUnit));}

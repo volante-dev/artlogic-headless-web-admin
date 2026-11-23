@@ -22,6 +22,26 @@ export const variables: Readonly<Record<string, Rule>> = {
   COMMERCE_TEST_CHECKOUT_ENABLED:{scopes:"AWMFB",kind:"enum",default:"false",values:["true","false"]},
   COMMERCE_DELIVERY_ENABLED:{scopes:"AWM",kind:"enum",default:"false",values:["true","false"]},
   COMMERCE_HOLIDAYS_URL:{scopes:"A",kind:"url",default:"https://calendrier.api.gouv.fr/jours-feries/metropole.json"},
+  CATALOG_SOURCE:{scopes:"AWMFB",kind:"enum",default:"artlogic",values:["artlogic","standalone"]},
+  INVENTORY_QUEUE_NAMESPACE:{scopes:"AWM",kind:"string",default:"inventory"},
+  INVENTORY_PRIVATE_BUCKET:{scopes:"AWM",kind:"string"},
+  INVENTORY_CURRENCIES_JSON:{scopes:"AWMB",kind:"list",default:'["EUR"]'},
+  INVENTORY_IMAGE_MAX_BYTES:{scopes:"AWMB",kind:"number",default:"26214400",min:1,max:26214400},
+  INVENTORY_IMAGE_MAX_PIXELS:{scopes:"AWM",kind:"number",default:"40000000",min:1,max:40000000},
+  INVENTORY_UPLOAD_ACTOR_ACTIVE:{scopes:"AWM",kind:"number",default:"8",min:1,max:100},
+  INVENTORY_UPLOAD_SITE_ACTIVE:{scopes:"AWM",kind:"number",default:"40",min:1,max:500},
+  INVENTORY_UPLOAD_RESERVED_BYTES:{scopes:"AWM",kind:"number",default:"1073741824",min:26214400,max:5368709120},
+  INVENTORY_IMPORT_ACTOR_ACTIVE:{scopes:"AWM",kind:"number",default:"2",min:1,max:20},
+  INVENTORY_IMPORT_SITE_ACTIVE:{scopes:"AWM",kind:"number",default:"8",min:1,max:100},
+  INVENTORY_IMPORT_RESERVED_BYTES:{scopes:"AWM",kind:"number",default:"4294967296",min:33554432,max:68719476736},
+  INVENTORY_DOCUMENT_MAX_BYTES:{scopes:"AWM",kind:"number",default:"8388608",min:5242880,max:8388608},
+  INVENTORY_CSV_MAX_ROWS:{scopes:"AWM",kind:"number",default:"25000",min:1,max:25000},
+  INVENTORY_CSV_MAX_BYTES:{scopes:"AWM",kind:"number",default:"33554432",min:128,max:33554432},
+  INVENTORY_CSV_RECORD_MAX_BYTES:{scopes:"AWM",kind:"number",default:"262144",min:128,max:1048576},
+  INVENTORY_BATCH_MAX_WORKS:{scopes:"AWM",kind:"number",default:"1000",min:1,max:1000},
+  INVENTORY_BATCH_MAX_FILES:{scopes:"AWM",kind:"number",default:"10000",min:1,max:10000},
+  INVENTORY_ZIP_MAX_BYTES:{scopes:"AWM",kind:"number",default:"1073741824",min:1,max:1073741824},
+  INVENTORY_ZIP_MAX_EXPANDED_BYTES:{scopes:"AWM",kind:"number",default:"5368709120",min:1,max:5368709120},
   COMMERCE_ENABLED:{scopes:"AWMFB",kind:"enum",default:"false",values:["true","false"]},
   COMMERCE_SERVICE_KEY:{scopes:"AWF",kind:"token",secret:true},
   COMMERCE_PAYMENT_MODE:{scopes:"AW",kind:"enum",default:"mock",values:["mock","stripe"]},
@@ -297,7 +317,8 @@ export const variables: Readonly<Record<string, Rule>> = {
     "required": true
   },
   "BACKEND_PUBLIC_ORIGIN": {
-    "scopes": "A",
+    "scopes": "AB",
+    "optionalScopes": "B",
     "kind": "origin"
   },
   "HOST": {
@@ -975,6 +996,7 @@ export function readConfig(role: Scope, env: Record<string, string | undefined> 
   const result: Record<string, ConfigValue | undefined> & { role: Scope } = { role };
   for (const [name, rule] of Object.entries(variables)) {
     if (!rule.scopes.includes(role)) continue;
+    if(env.CATALOG_SOURCE==="standalone"&&(name.startsWith("ARTLOGIC_")||name.startsWith("SOURCE_AUTH_HEADER_")))continue;
     const raw = env[name] === "" ? undefined : env[name];
     const input = raw ?? rule.default;
     if (input === undefined) {
@@ -984,10 +1006,13 @@ export function readConfig(role: Scope, env: Record<string, string | undefined> 
     result[name] = parse(name, input, rule);
   }
   const config = result as Config;
+  if(config.CATALOG_SOURCE==="standalone"&&["A","W","M"].includes(role)&&!config.INVENTORY_PRIVATE_BUCKET)fail("INVENTORY_PRIVATE_BUCKET","bucket prive requis pour le stock local");
+  if(config.INVENTORY_QUEUE_NAMESPACE&&!/^[a-z][a-z0-9_]{0,63}$/.test(String(config.INVENTORY_QUEUE_NAMESPACE)))fail("INVENTORY_QUEUE_NAMESPACE","namespace explicite requis");
+  if(config.INVENTORY_CURRENCIES_JSON&&(!listValue(config,"INVENTORY_CURRENCIES_JSON").length||listValue(config,"INVENTORY_CURRENCIES_JSON").some(currency=>!/^[A-Z]{3}$/.test(currency))))fail("INVENTORY_CURRENCIES_JSON","devises ISO explicites requises");
   if(config.MCP_ENABLED==="true"&&(role==="A"||role==="W")){
     for(const name of ["MCP_RESOURCE_URL","MCP_CLIENT_ID","CRM_SITE_DIRECTORY_URL","CRM_SITE_DIRECTORY_CLIENT_ID","CRM_SITE_DIRECTORY_KEY_ID","CRM_SITE_DIRECTORY_PRIVATE_KEY",...(role==="A"?["MCP_OAUTH_ISSUER_URL","MCP_CLIENT_SECRET_HASH","MCP_CLIENT_REDIRECT_URIS_JSON"]:["SSO_ISSUER","SSO_SUPABASE_URL","ADMIN_ORIGIN"])])if(!config[name])fail(name,"requis pour la delegation MCP active");
-    const scopes=listValue(config,"MCP_ALLOWED_SCOPES_JSON"),knownScopes=["site.read","site.draft","site.publish","site.sync","site.connector.manage"];
-    if(scopes.length<1||scopes.length>5||new Set(scopes).size!==scopes.length||scopes.some(s=>!knownScopes.includes(s))||!scopes.includes("site.read")||scopes.includes("site.publish")&&!scopes.includes("site.draft"))fail("MCP_ALLOWED_SCOPES_JSON","scopes explicites coherents incluant site.read requis");
+    const scopes=listValue(config,"MCP_ALLOWED_SCOPES_JSON"),knownScopes=["site.read","site.draft","site.publish","site.sync","site.connector.manage","site.inventory.read","site.inventory.write","site.inventory.publish","site.inventory.finance","site.inventory.manage"];
+    if(scopes.length<1||scopes.length>knownScopes.length||new Set(scopes).size!==scopes.length||scopes.some(s=>!knownScopes.includes(s))||!scopes.includes("site.read")||scopes.includes("site.publish")&&!scopes.includes("site.draft")||scopes.some(scope=>scope.startsWith("site.inventory.")&&scope!=="site.inventory.read")&&!scopes.includes("site.inventory.read"))fail("MCP_ALLOWED_SCOPES_JSON","scopes explicites coherents incluant site.read requis");
     const resource=new URL(stringValue(config,"MCP_RESOURCE_URL"));
     if(resource.protocol!=="https:"||resource.pathname!=="/mcp"||resource.search||resource.hash||resource.username||resource.password||resource.hostname.includes("*"))fail("MCP_RESOURCE_URL","ressource HTTPS exacte /mcp requise");
     const client=stringValue(config,"MCP_CLIENT_ID");if(!client.trim()||client!==client.trim()||client.length>200||/[\r\n\0]/.test(client))fail("MCP_CLIENT_ID","client enregistre borne requis");
@@ -1131,11 +1156,11 @@ export function readConfig(role: Scope, env: Record<string, string | undefined> 
   }
   if (["A", "W"].includes(role) && mode === "mock") {
     const origins = listValue(config, "MOCK_ALLOWED_ORIGINS");
-    for (const name of role === "A" ? ["SSO_ISSUER", "SSO_SUPABASE_URL", "CATALOG_SUPABASE_URL"] : ["ARTLOGIC_ARTWORKS_URL", "CATALOG_SUPABASE_URL"]) {
+    for (const name of role === "A" ? ["SSO_ISSUER", "SSO_SUPABASE_URL", "CATALOG_SUPABASE_URL"] : config.CATALOG_SOURCE==="standalone"?["CATALOG_SUPABASE_URL"]:["ARTLOGIC_ARTWORKS_URL", "CATALOG_SUPABASE_URL"]) {
       if (!origins.includes(new URL(stringValue(config, name)).origin)) fail("MOCK_ALLOWED_ORIGINS", "origine de dependance absente");
     }
   }
-  if (role === "W") {
+  if (role === "W" && config.CATALOG_SOURCE!=="standalone") {
     const interval = numberValue(config, "SYNC_PAGE_INTERVAL_MS"), cooldown = numberValue(config, "SYNC_PAGE_COOLDOWN_MS");
     if (mode === "real" && interval < 1000) fail("SYNC_PAGE_INTERVAL_MS", "minimum fournisseur 1000 ms");
     if (mode === "real" && cooldown < 300000) fail("SYNC_PAGE_COOLDOWN_MS", "minimum fournisseur 300000 ms");

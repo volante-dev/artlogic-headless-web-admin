@@ -272,7 +272,10 @@
     ".runtime/next-admin-62b556dc-c379-4e01-b1b4-b06600dc823b/types/**/*.ts",
     ".runtime/next-admin-62b556dc-c379-4e01-b1b4-b06600dc823b/dev/types/**/*.ts",
     ".runtime/next-admin-034a459c-aaff-464f-9817-585a6a244f68/types/**/*.ts",
-    ".runtime/next-admin-034a459c-aaff-464f-9817-585a6a244f68/dev/types/**/*.ts"
+    ".runtime/next-admin-034a459c-aaff-464f-9817-585a6a244f68/dev/types/**/*.ts",
+    ".next/dev/dev/types/**/*.ts",
+    ".runtime/next-admin-721d2134-fa6e-4cc2-849f-7a57f77830b5/types/**/*.ts",
+    ".runtime/next-admin-721d2134-fa6e-4cc2-849f-7a57f77830b5/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

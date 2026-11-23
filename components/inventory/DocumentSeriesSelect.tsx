@@ -1,0 +1,15 @@
+"use client";
+import {useEffect,useState} from "react";
+import {Alert,Autocomplete,Button,Stack,TextField} from "@mui/material";
+import {inventoryFetch,InventoryClientError,inventoryErrorText} from "@/lib/inventory/client";
+import type {components} from "@/lib/inventory/contract-types.generated";
+import type {DocumentSeries} from "@/lib/inventory/finance";
+import {inventoryText as t} from "@/lib/inventory/messages";
+type Page=components["schemas"]["InventoryDocumentSeriesViewPage"];
+export function DocumentSeriesSelect({initial,document,value,onChange,disabled}:{initial:DocumentSeries[];document:components["schemas"]["InventoryDocument"];value:DocumentSeries|null;onChange:(value:DocumentSeries|null)=>void;disabled:boolean}){
+ const [query,setQuery]=useState(""),[options,setOptions]=useState(initial),[cursor,setCursor]=useState<string|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(""),[retry,setRetry]=useState(0);
+ useEffect(()=>{const controller=new AbortController(),timer=setTimeout(()=>{setBusy(true);void inventoryFetch<Page>("/document-series?"+new URLSearchParams({limit:"50",...(query?{q:query}:{})}),{signal:controller.signal}).then(page=>{if(!controller.signal.aborted){setOptions(page.items.map(item=>item.data));setCursor(page.nextCursor);setError("");}}).catch(error=>{if(!controller.signal.aborted)setError(inventoryErrorText(error));}).finally(()=>{if(!controller.signal.aborted)setBusy(false);});},200);return()=>{clearTimeout(timer);controller.abort();};},[query,retry]);
+ async function more(){if(!cursor||busy)return;setBusy(true);try{const page=await inventoryFetch<Page>("/document-series?"+new URLSearchParams({limit:"50",cursor,...(query?{q:query}:{})}));setOptions(previous=>[...previous,...page.items.map(item=>item.data)]);setCursor(page.nextCursor);setError("");}catch(error){setError(inventoryErrorText(error));if(error instanceof InventoryClientError&&error.code==="inventory_cursor_stale")setRetry(value=>value+1);}finally{setBusy(false);}}
+ const eligible=options.filter(series=>series.active&&series.documentKind===document.kind&&series.profileId===document.profileId),choices=value&&!eligible.some(series=>series.seriesId===value.seriesId)?[value,...eligible]:eligible;
+ return <Stack spacing={1}><Autocomplete options={choices} value={value} getOptionKey={series=>series.seriesId} getOptionLabel={series=>(series.name??series.prefix)+" · "+series.prefix+(series.fiscalYear?" · "+series.fiscalYear:"")} isOptionEqualToValue={(a,b)=>a.seriesId===b.seriesId} filterOptions={options=>options} onChange={(_event,series)=>onChange(series)} onInputChange={(_event,text,reason)=>{if(reason==="input"||reason==="clear")setQuery(text);}} loading={busy} disabled={disabled} noOptionsText={t("stockNoOptions")} renderInput={params=><TextField {...params} label={t("documentsSeries")} required/>}/>{error&&<Alert severity="error" action={<Button disabled={disabled||busy} onClick={()=>setRetry(value=>value+1)}>{t("retry")}</Button>}>{error}</Alert>}{cursor&&<Button disabled={disabled||busy} onClick={()=>void more()}>{t("documentsMoreSeries")}</Button>}</Stack>;
+}

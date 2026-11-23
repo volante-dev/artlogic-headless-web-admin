@@ -1,0 +1,10 @@
+import "server-only";
+import type {NextRequest} from "next/server";
+import type {components} from "../inventory/contract-types.generated";
+import {inventoryBackend,requireInventoryFinance} from "./inventory-catalog";
+import {inventoryMediaRequest} from "./inventory-media";
+import {failure} from "./client";
+export const inventoryDocuments=(query?:URLSearchParams)=>inventoryBackend<components["schemas"]["InventoryDocumentPage"]>("documents",{query});
+export const inventoryDocument=(documentId:string)=>inventoryBackend<components["schemas"]["InventoryDocumentReadResult"]>("document",{params:{documentId}});
+export const inventoryDocumentTransmissions=(documentId:string,query?:URLSearchParams)=>inventoryBackend<components["schemas"]["InventoryTransmissionPage"]>("documentTransmissions",{params:{documentId},query});
+export const inventoryDocumentFileHandler=(operation:"documentPdf"|"documentPdfHead")=>async(request:NextRequest,context:{params:Promise<Record<string,string>>})=>{try{await requireInventoryFinance();return await inventoryMediaRequest(operation,request,await context.params);}catch(error){return failure(error);}};

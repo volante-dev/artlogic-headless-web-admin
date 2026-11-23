@@ -1,0 +1,16 @@
+"use client";
+import {useEffect,useState} from "react";
+import {Alert,Autocomplete,Button,Stack,TextField} from "@mui/material";
+import {inventoryFetch,inventoryErrorText} from "@/lib/inventory/client";
+import type {components} from "@/lib/inventory/contract-types.generated";
+import type {TaxTreatment} from "@/lib/inventory/finance";
+import {inventoryText as t} from "@/lib/inventory/messages";
+type Page=components["schemas"]["InventoryTaxTreatmentViewPage"];
+export function DocumentTaxSelect({value,onChange,locale,disabled,initial}:{value:string;onChange:(id:string)=>void;locale:string;disabled:boolean;initial:TaxTreatment[]}){
+ const [query,setQuery]=useState(""),[options,setOptions]=useState(initial),[selected,setSelected]=useState<TaxTreatment|null>(initial.find(tax=>tax.id===value)??null),[cursor,setCursor]=useState<string|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState("");
+ useEffect(()=>{if(!value)return;const controller=new AbortController();void inventoryFetch<components["schemas"]["InventoryTaxTreatmentViewReadResult"]>("/tax-treatments/"+value,{signal:controller.signal}).then(result=>{if(!controller.signal.aborted)setSelected(result.data);}).catch(error=>{if(!controller.signal.aborted)setError(inventoryErrorText(error));});return()=>controller.abort();},[value]);
+ useEffect(()=>{const controller=new AbortController(),timer=setTimeout(()=>{setBusy(true);void inventoryFetch<Page>("/tax-treatments?"+new URLSearchParams({limit:"50",...(query?{q:query}:{})}),{signal:controller.signal}).then(page=>{if(!controller.signal.aborted){setOptions(page.items.map(item=>item.data));setCursor(page.nextCursor);setError("");}}).catch(error=>{if(!controller.signal.aborted)setError(inventoryErrorText(error));}).finally(()=>{if(!controller.signal.aborted)setBusy(false);});},200);return()=>{clearTimeout(timer);controller.abort();};},[query]);
+ async function more(){if(!cursor||busy)return;setBusy(true);try{const next=await inventoryFetch<Page>("/tax-treatments?"+new URLSearchParams({limit:"50",cursor,...(query?{q:query}:{})}));setOptions(previous=>[...previous,...next.items.map(item=>item.data)]);setCursor(next.nextCursor);setError("");}catch(error){setError(inventoryErrorText(error));}finally{setBusy(false);}}
+ const choices=selected&&selected.id===value&&!options.some(tax=>tax.id===value)?[selected,...options]:options;
+ return <Stack spacing={1}><Autocomplete options={choices} value={selected?.id===value?selected:null} getOptionKey={tax=>tax.id} getOptionLabel={tax=>(tax.value.name[locale]??tax.value.code)+" · "+tax.value.code+" · "+t(tax.qualified?"fiscalQualified":"fiscalUnqualified",{revision:tax.revision})} isOptionEqualToValue={(a,b)=>a.id===b.id} filterOptions={options=>options} onChange={(_event,tax)=>{setSelected(tax);onChange(tax?.id??"");}} onInputChange={(_event,text,reason)=>{if(reason==="input"||reason==="clear")setQuery(text);}} disabled={disabled} loading={busy} noOptionsText={t("stockNoOptions")} renderInput={params=><TextField {...params} label={t("documentsTreatment")} required/>}/>{error&&<Alert severity="error">{error}</Alert>}{cursor&&<Button disabled={disabled||busy} onClick={()=>void more()}>{t("documentsMoreTaxes")}</Button>}</Stack>;
+}
