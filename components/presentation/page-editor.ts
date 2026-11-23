@@ -9,3 +9,16 @@ export function createSection(definition:SectionDefinition):Section{return {id:c
 export function duplicateProps(props:Record<string,unknown>,fields:EditorField[],active:string[]):Record<string,unknown>{const copy=structuredClone(props);if(typeof copy.id==="string")copy.id=crypto.randomUUID();for(const field of fields){if(field.kind==="localizedText"&&copy[field.path])copy[field.path]=Object.fromEntries(Object.entries(copy[field.path] as object).filter(([locale])=>active.includes(locale)));if(field.kind==="list"&&Array.isArray(copy[field.path]))copy[field.path]=(copy[field.path] as Record<string,unknown>[]).map(item=>duplicateProps(item,field.fields??[],active));}return copy;}
 export function duplicateSection(section:Section,definition:SectionDefinition,active:string[]):Section{return {...section,id:crypto.randomUUID(),props:duplicateProps(section.props,definition.fields,active)} as Section;}
 export function moveSection(page:Page,index:number,offset:number):Page{const sections=[...page.sections],target=index+offset;if(target<0||target>=sections.length)return page;[sections[index],sections[target]]=[sections[target],sections[index]];return {...page,sections};}
+
+export function composedSectionIds(page:Page&{teamPlacement?:import("@/lib/presentation/team-client").TeamPlacement|null}){
+ const ids=page.sections.map(s=>s.id),p=page.teamPlacement;if(!p)return ids;
+ const at=p.afterSectionId===null?0:ids.includes(p.afterSectionId)?ids.indexOf(p.afterSectionId)+1:ids.length;
+ ids.splice(at,0,p.id);return ids;
+}
+export function moveComposedSection<T extends Page&{teamPlacement?:import("@/lib/presentation/team-client").TeamPlacement|null}>(page:T,id:string,delta:number):T{
+ const ids=composedSectionIds(page),index=ids.indexOf(id),target=index+delta;if(index<0||target<0||target>=ids.length)return page;
+ [ids[index],ids[target]]=[ids[target],ids[index]];
+ if(page.pageKey==="artworkDetail"&&ids[0]===page.teamPlacement?.id)return page;
+ const sections=[...page.sections].sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id)),teamIndex=page.teamPlacement?ids.indexOf(page.teamPlacement.id):-1;
+ return {...page,sections,...(page.teamPlacement?{teamPlacement:{...page.teamPlacement,afterSectionId:teamIndex>0?ids[teamIndex-1]!:null}}:{})};
+}

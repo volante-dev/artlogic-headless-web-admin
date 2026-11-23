@@ -5,5 +5,10 @@
   "buildCommand": "pnpm build",
   "regions": [
     "dub1"
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "staging": false
+    }
+  }
 }

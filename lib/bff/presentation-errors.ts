@@ -1,8 +1,8 @@
 import type {PresentationOperation} from "./allowlist";
 import type {ErrorDetail} from "./site-content-errors";
 const common:Record<number,string[]>={400:["validation_error"],401:["unauthorized"],403:["forbidden","csrf_invalid"],404:["not_found"],429:["rate_limited"],503:["dependency_unavailable","presentation_configuration_mismatch"]};
-const write=new Set<PresentationOperation>(["artworkSettingsSave","footerSave","artworkSave","pageSave","theme","validation","publish","restore","previews","assetDelete","assetUpload","assetUploadCreate","assetUploadFinalize"]);
-const reasons=new Set(["empty_footer_group","reserved_slug","invalid_slug","empty_page","required","unsupported_locale","unsupported_variant","incompatible_schema","duplicate_id","missing_required_block","invalid_placement","invalid_link","asset_not_ready","asset_not_found","poster_required","font_weight_missing","font_glyph_missing","contrast_insufficient","artwork_unavailable","aggregate_too_large","duplicate_identity","invalid_structure","invalid_size","unknown_font","unsupported_section","section_limit","required_section","artwork_target_required","invalid_asset_kind","asset_in_use"]);
+const write=new Set<PresentationOperation>(["teamSave","teamPageSave","artworkSettingsSave","footerSave","artworkSave","pageSave","theme","validation","publish","restore","previews","assetDelete","assetUpload","assetUploadCreate","assetUploadFinalize"]);
+const reasons=new Set(["invalid_value","invalid_text","invalid_phone","invalid_image","photo_required","hide_instead_of_delete","group_move_preserves_other_order","group_move_appends","empty_footer_group","reserved_slug","invalid_slug","empty_page","required","unsupported_locale","unsupported_variant","incompatible_schema","duplicate_id","missing_required_block","invalid_placement","invalid_link","asset_not_ready","asset_not_found","poster_required","font_weight_missing","font_glyph_missing","contrast_insufficient","artwork_unavailable","aggregate_too_large","duplicate_identity","invalid_structure","invalid_size","unknown_font","unsupported_section","section_limit","required_section","artwork_target_required","invalid_asset_kind","asset_in_use"]);
 const colors="background|surface|mutedSurface|inverseSurface|text|mutedText|inverseText|disabledText|accent|onAccent|link|linkHover|border|focus|selection|onSelection|error|onError|success|onSuccess|warning|onWarning";
 const roles="h1|h2|h3|body|caption|navigation|button|control";
 const id="[0-9a-fA-F-]{36}",page="home|news|artworks|exhibitions|publications|expertise|contact|artworkDetail|galerist";
@@ -18,6 +18,7 @@ export function presentationError(operation:PresentationOperation,status:number,
  const generic={status:503,code:"dependency_unavailable"};
  if(!body||typeof body!=="object"||!("error" in body)||!body.error||typeof body.error!=="object")return generic;
  const error=body.error as Record<string,unknown>,allowed=[...(common[status]??[])];
+ if(operation.startsWith("team")){if(status===409)allowed.push("team_unavailable");if(status===422)allowed.push("team_validation_error");if(status===503)allowed.push("service_unavailable");}
  if(operation.startsWith("assetUpload"))allowed.push(...({400:["invalid_asset"],409:["asset_state_conflict","upload_incomplete","finalization_timeout","finalization_attempts_exhausted","direct_upload_required"],410:["upload_expired"]}[status]??[]));
  if(operation.startsWith("artwork")){if(status===409)allowed.push("artwork_media_changed");if(status===400)allowed.push("invalid_request");if(status===412)allowed.push("precondition_failed");if(status===503)allowed.push("service_unavailable");}
  if(write.has(operation))allowed.push(...({412:["version_conflict"],428:["precondition_required"],413:["payload_too_large"],415:["unsupported_media_type"]}[status]??[]));
@@ -27,8 +28,8 @@ export function presentationError(operation:PresentationOperation,status:number,
  if(["assetContent","assetHead"].includes(operation)){if(status===400)allowed.push("invalid_range");if(status===416)allowed.push("range_not_satisfiable");}
  if(typeof error.code!=="string"||!allowed.includes(error.code))return generic;
  const details:ErrorDetail[]=[];
- if(Array.isArray(error.details)&&error.details.length<=64&&["validation_error","navigation_managed_separately","presentation_not_publishable","presentation_incompatible","asset_in_use"].includes(error.code))for(const d of error.details){
-  if(d&&typeof d==="object"&&typeof d.field==="string"&&d.field.length<=240&&typeof d.reason==="string"&&reasons.has(d.reason)&&(footerField.test(d.field)||footerAddressField.test(d.field)||galeristField.test(d.field)||themeField.test(d.field)||pageField.test(d.field)||inputField.test(d.field)||artworkFocusField.test(d.field)||artworkField.test(d.field)))details.push({field:d.field,reason:d.reason});
+ if(Array.isArray(error.details)&&error.details.length<=64&&["team_validation_error","validation_error","navigation_managed_separately","presentation_not_publishable","presentation_incompatible","asset_in_use"].includes(error.code))for(const d of error.details){
+  if(d&&typeof d==="object"&&typeof d.field==="string"&&d.field.length<=240&&typeof d.reason==="string"&&reasons.has(d.reason)&&(/^team(?:\.(?:founders|members))?(?:\.[0-9a-f-]{36}(?:\.(?:firstName|lastName|email|phone|photoAssetId|focalPoint))?)?$/.test(d.field)||footerField.test(d.field)||footerAddressField.test(d.field)||galeristField.test(d.field)||themeField.test(d.field)||pageField.test(d.field)||inputField.test(d.field)||artworkFocusField.test(d.field)||artworkField.test(d.field)))details.push({field:d.field,reason:d.reason});
  }
  return {status,code:error.code,requestId:typeof error.requestId==="string"&&/^[0-9a-f-]{36}$/.test(error.requestId)?error.requestId:undefined,retryAfter:status===429&&retry&&/^[1-9][0-9]{0,5}$/.test(retry)?retry:undefined,...(details.length?{details}:{})};
 }

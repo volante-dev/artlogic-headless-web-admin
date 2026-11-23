@@ -214,6 +214,10 @@ export const articleOperations={
 } as const;
 export type ArticleOperation=keyof typeof articleOperations;
 export const presentationOperations={
+ teamCapabilities:{method:"GET",path:"/v1/admin/presentation/team/capabilities"},
+ teamRead:{method:"GET",path:"/v1/admin/presentation/team"},
+ teamSave:{method:"PUT",path:"/v1/admin/presentation/team"},
+ teamPageSave:{method:"PUT",path:"/v1/admin/presentation/team/pages/{pageKey}"},
  artworkSettingsRead:{method:"GET",path:"/v1/admin/presentation/artwork-settings"},
  artworkSettingsSave:{method:"PUT",path:"/v1/admin/presentation/artwork-settings"},
  footerRead:{method:"GET",path:"/v1/admin/presentation/footer"},
