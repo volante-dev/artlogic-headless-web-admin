@@ -4,6 +4,7 @@ import Image from "next/image";
 import {useRef,useState} from "react";
 import type {SiteContent} from "@/lib/bff/site-content";
 import {useSiteContentDraft,translationId} from "./useSiteContentDraft";
+import {SiteFaviconEditor} from "./SiteFaviconEditor";
 import {SiteLogoEditor} from "./SiteLogoEditor";
 import {TranslationGroup} from "./TranslationGroup";
 import styles from "./SiteContentEditor.module.css";
@@ -56,6 +57,7 @@ export function SiteContentEditor({initial,initialEtag,csrfCookie,initialLocale}
   const canKeep=comparison?draft.dirty.every(t=>comparison.content.definitions.some(d=>d.key===t.key)&&comparison.content.policy.locales.some(l=>l.code===t.locale)):true;
   function accept(keep:boolean){if(!comparison||keep&&!canKeep)return;draft.accept(comparison.content,comparison.etag,keep);whiteDraft.accept({...comparison.content,logo:comparison.content.whiteLogo??null,translations:[]},comparison.etag,keep);if(!comparison.content.policy.locales.some(l=>l.code===locale))setLocale(comparison.content.policy.defaultLocale);setComparison(null);setReview(false);setError("");setFields({});if(!keep){setFileError("");setWhiteFileError("");}setMessage(keep?"Brouillon conservé. Vérifiez-le puis enregistrez.":"Version enregistrée chargée.");}
   return <section className={styles.editor}><h1>Contenu du site</h1><p>Modifiez les textes du site par langue. Une traduction laissée vide reprend la référence. Les œuvres restent gérées depuis le catalogue.</p>
+    <SiteFaviconEditor csrfCookie={csrfCookie}/>
     <form onSubmit={save}><div className={styles.toolbar}><label htmlFor="editor-locale">Langue à éditer<select id="editor-locale" value={locale} disabled={pending} onChange={event=>setLocale(event.target.value)}>{draft.baseline.policy.locales.map(l=><option key={l.code} value={l.code}>{l.label}{l.code===draft.baseline.policy.defaultLocale?" — référence":""}</option>)}</select></label><span>{draft.dirty.length} traduction(s) modifiée(s)</span></div>
       {draft.dirty.length>64&&<p role="alert">64 traductions maximum par enregistrement. Réduisez les modifications de ce brouillon.</p>}
       <p role="status" aria-live="polite">{message}</p>
