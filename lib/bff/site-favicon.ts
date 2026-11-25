@@ -1,4 +1,5 @@
 import 'server-only';
+import {resourceVersion} from '../resource-version';
 import {NextResponse,type NextRequest} from 'next/server';
 import {loadConfig,stringValue,numberValue} from '../config/env';
 import {BffError,failure,privateHeaders} from './client';
@@ -20,7 +21,7 @@ export async function faviconHandler(request:NextRequest){try{
  if(response.headers.get('content-type')?.split(';')[0]!=='application/json'){await response.body?.cancel();throw new BffError(503,'service_unavailable');}
  const data=JSON.parse((await boundedBytes(response.body,16384)).toString());
  if(!response.ok){const allowed=[400,401,403,412,413,415,428,429,503],details=Array.isArray(data?.error?.details)?data.error.details.filter((d:{field?:unknown;reason?:unknown})=>d.field==='file'&&['invalid_image','animated_image'].includes(String(d.reason))):undefined;throw new BffError(allowed.includes(response.status)?response.status:503,'favicon_failed',undefined,undefined,undefined,details);}
- const etag=response.headers.get('etag');
+ const etag=resourceVersion(response.headers);
  if(!Number.isSafeInteger(data.revision)||data.revision<0||etag!=='"favicon-'+data.revision+'"'||typeof data.configured!=='boolean')throw new BffError(503,'service_unavailable');
  if(method==='GET'&&data.previewUrl!==null){const url=new URL(data.previewUrl);if((url.protocol!=='https:'&&!(config.DATA_MODE==='mock'&&['localhost','127.0.0.1'].includes(url.hostname)))||url.username||url.password)throw new BffError(503,'service_unavailable');}
  return NextResponse.json(data,{headers:{...privateHeaders,ETag:etag,'X-Resource-Version':etag}});

@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import {resourceVersion} from '../lib/resource-version';
 import {useEffect,useRef,useState} from 'react';
 import shared from './SiteContentEditor.module.css';
 import styles from './SiteFaviconEditor.module.css';
@@ -7,7 +8,7 @@ type Current={configured:boolean;previewUrl:string|null;tag:string};
 async function fetchCurrent(signal?:AbortSignal):Promise<{state:'ready'|'unsupported';current:Current|null}>{
  const response=await fetch('/api/site-favicon',{cache:'no-store',signal});
  if(response.status===404)return {state:'unsupported',current:null};
- if(!response.ok)throw Error();const data=await response.json();return {state:'ready',current:{...data,tag:response.headers.get('etag')!}};
+ if(!response.ok)throw Error();const data=await response.json();return {state:'ready',current:{...data,tag:resourceVersion(response.headers)!}};
 }
 export function SiteFaviconEditor({csrfCookie}:{csrfCookie:string}){
  const [current,setCurrent]=useState<Current|null>(null),[state,setState]=useState<'loading'|'ready'|'unsupported'|'failed'>('loading'),[file,setFile]=useState<File|null>(null),[preview,setPreview]=useState<string|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
@@ -28,7 +29,7 @@ export function SiteFaviconEditor({csrfCookie}:{csrfCookie:string}){
     if(response.status===413){setError('Le PNG dépasse 2 Mio. Choisissez un fichier plus léger.');return;}
     throw Error();
    }
-   const saved=await response.json();setCurrent({configured:saved.configured,previewUrl:remove?null:preview,tag:response.headers.get('etag')!});
+   const saved=await response.json();setCurrent({configured:saved.configured,previewUrl:remove?null:preview,tag:resourceVersion(response.headers)!});
    // Keep the object URL alive until the server preview has replaced it.
    setMessage(remove?'Le favicon de repli est rétabli.':'Favicon enregistré. Les formats navigateur et mobile sont prêts.');
    await read();setFile(null);setPreview(null);if(input.current)input.current.value='';
