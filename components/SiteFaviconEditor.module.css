@@ -5,5 +5,5 @@
 .preview { display:grid; justify-items:center; gap:12px; min-width:120px; padding:20px 12px; background:var(--admin-control); border-radius:8px; }
 .preview img { object-fit:contain; }
 .preview span { font-size:.9375rem; }
-.fallback { display:block; width:48px; height:48px; border-radius:11px; background:#8DD9C2; }
+.fallback { display:block; width:48px; height:48px; border-radius:11px; background:#000000; }
 @media(max-width:600px) { .row { align-items:start; flex-direction:column; gap:8px; } .row > :last-child { width:100%; } }
