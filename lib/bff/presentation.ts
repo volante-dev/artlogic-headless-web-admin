@@ -1,3 +1,4 @@
+import {adminLanguageBusinessHeaders} from './language-business-headers';
 import {validTeamResponse} from "./team-validation";
 import "server-only";
 import {NextResponse,type NextRequest} from "next/server";
@@ -39,6 +40,7 @@ export async function presentationRequest(operation:PresentationOperation,reques
   body=new Uint8Array(bytes).buffer;headers.set("Content-Type",mime);
  }
  const query=queryFor(operation,request.nextUrl.searchParams),path=presentationPath(operation,params);
+ for(const [key,value]of Object.entries(await adminLanguageBusinessHeaders(path,proof.session)))headers.set(key,value);
  try{
   const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+path+(query.size?"?"+query:""),{method:route.method,headers,body,cache:"no-store",redirect:"error",signal:AbortSignal.any([request.signal,AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))])});
   if(response.status===204)return new NextResponse(null,{status:204,headers:privateHeaders});

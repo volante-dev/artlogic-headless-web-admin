@@ -1,11 +1,12 @@
 "use client";
+import {FormTextInput} from './FormTextInput';
 import {Controller,useFieldArray,useFormContext,useWatch,type FieldPath} from "react-hook-form";
 import {Alert,Button,Checkbox,FormControlLabel,MenuItem,Stack,TextField,Typography} from "@mui/material";
 import type {FormDocument} from "@/lib/forms/client";
 import styles from "./forms.module.css";
 export const formFieldLabels={shortText:"Texte court",longText:"Texte long",email:"E-mail",phone:"Téléphone",number:"Nombre",date:"Date",select:"Liste déroulante",singleChoice:"Choix unique",multiChoice:"Choix multiples",checkbox:"Case à cocher",images:"Images",heading:"Titre",help:"Texte d’aide"} as const;
 export function FormTextControl({name,label,multiline=false,maxLength,disabled=false}:{name:FieldPath<FormDocument>;label:string;multiline?:boolean;maxLength?:number;disabled?:boolean}){
- const {control}=useFormContext<FormDocument>();return <Controller name={name} control={control} render={({field,fieldState})=><TextField name={field.name} inputRef={field.ref} value={typeof field.value==="string"||typeof field.value==="number"?field.value:""} onChange={field.onChange} onBlur={field.onBlur} label={label} fullWidth multiline={multiline} minRows={multiline?3:undefined} disabled={disabled} error={!!fieldState.error} helperText={fieldState.error?.message} slotProps={{htmlInput:{maxLength}}}/>}/>;
+ const {control}=useFormContext<FormDocument>();return <Controller name={name} control={control} render={({field,fieldState})=><FormTextInput name={field.name} inputRef={field.ref} value={typeof field.value==="string"||typeof field.value==="number"?String(field.value):""} onChange={field.onChange} onBlur={field.onBlur} label={label} fullWidth multiline={multiline} minRows={multiline?3:undefined} disabled={disabled} error={!!fieldState.error} helperText={fieldState.error?.message} slotProps={{htmlInput:{maxLength}}}/>}/>;
 }
 export function FormFieldEditor({index,locale,onRemove}:{index:number;locale:string;onRemove:()=>void}){
  const form=useFormContext<FormDocument>(),fields=useWatch({control:form.control,name:"fields"}),steps=useWatch({control:form.control,name:"steps"}),field=fields[index]!;
@@ -28,5 +29,5 @@ export function FormFieldEditor({index,locale,onRemove}:{index:number;locale:str
 
 function FormOptionsEditor({index,locale}:{index:number;locale:string}){
  const form=useFormContext<FormDocument>(),options=useFieldArray({control:form.control,name:`fields.${index}.options`,keyName:"optionKey"});
- return <Stack spacing={2}><Typography component="h3" variant="h3">Choix proposés</Typography>{options.fields.map((option,i)=><Stack key={option.optionKey} spacing={1}><FormTextControl name={`fields.${index}.options.${i}.translations.${locale}`} label={"Choix "+(i+1)} maxLength={256}/><div><Button type="button" size="small" disabled={options.fields.length<=1} onClick={()=>options.remove(i)}>Retirer le choix {i+1}</Button></div></Stack>)}<Button type="button" onClick={()=>options.append({id:crypto.randomUUID(),translations:Object.fromEntries(Object.keys(form.getValues("translations")).map(code=>[code,code.startsWith("fr")?"Nouveau choix":"New choice"]))})} disabled={options.fields.length>=100}>Ajouter un choix</Button></Stack>;
+ return <Stack spacing={2}><Typography component="h3" variant="h3">Choix proposés</Typography>{options.fields.map((option,i)=><Stack key={option.optionKey} spacing={1}><FormTextControl name={`fields.${index}.options.${i}.translations.${locale}`} label={"Choix "+(i+1)} maxLength={256}/><div><Button type="button" size="small" disabled={options.fields.length<=1} onClick={()=>options.remove(i)}>Retirer le choix {i+1}</Button></div></Stack>)}<Button type="button" onClick={()=>options.append({id:crypto.randomUUID(),translations:Object.fromEntries(Object.keys(form.getValues("translations")).map(code=>[code,code.startsWith("fr")?"Nouveau choix":code==='en'?"New choice":'']))})} disabled={options.fields.length>=100}>Ajouter un choix</Button></Stack>;
 }

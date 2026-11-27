@@ -1,3 +1,4 @@
+import {adminLanguageBusinessHeaders} from './language-business-headers';
 import 'server-only';
 import {NextResponse,type NextRequest} from 'next/server';
 import {linkInBioOperations} from '../link-in-bio/operations.generated';
@@ -23,6 +24,7 @@ export async function linkInBioServerRequest<T>(method:string,path:readonly stri
  const matchedHeaders:Record<string,string>={};if(input.tag)matchedHeaders['if-match']=input.tag;if(input.key)matchedHeaders['idempotency-key']=input.key;
  if(op.headerSchema){const validate=linkInBioValidator(op.headerSchema);if(!validate(matchedHeaders))throw new BffError(!input.tag&&'if-match' in op.headerSchema.properties?428:412,!input.tag?'precondition_required':'revision_conflict');}
  if(input.tag)requestHeaders['If-Match']=input.tag;if(input.key)requestHeaders['Idempotency-Key']=input.key;if(input.body!==undefined)requestHeaders['Content-Type']='application/json';
+ Object.assign(requestHeaders,await adminLanguageBusinessHeaders('/v1/admin/link-in-bio/'+path.join('/'),input.session));
  let response:Response;try{response=await fetch(stringValue(config,'BACKEND_URL').replace(/\/$/,'')+'/v1/admin/link-in-bio/'+path.join('/')+(query.size?'?'+query.toString():''),{method,headers:requestHeaders,body:input.body===undefined?undefined:JSON.stringify(input.body),redirect:'error',cache:'no-store',signal:AbortSignal.timeout(numberValue(config,'REQUEST_TIMEOUT_MS'))});}catch{throw new BffError(503,'dependency_unavailable');}
  if(op.id==='getLinkInBioAdminCapabilities'&&response.status===404){await response.body?.cancel();throw new BffError(404,'not_found');}
  if(response.headers.get('content-type')?.split(';')[0]!=='application/json')throw new BffError(503,'dependency_unavailable');

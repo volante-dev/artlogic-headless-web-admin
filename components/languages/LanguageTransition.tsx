@@ -1,0 +1,21 @@
+'use client';
+import {useEffect,useRef,useState} from 'react';
+import {useRouter} from 'next/navigation';
+import {Alert,Box,Button,Checkbox,FormControlLabel,LinearProgress,Stack,Typography} from '@mui/material';
+import type {components} from '@/lib/bff/language-contract.generated';
+import {languageOperationLabels,useLanguageOperation} from './useLanguageOperation';
+type S=components['schemas'];
+export function LanguageTransition({siteId,language,check,policyEtag,csrfCookie,canManage,action:requestedAction}:{siteId:string;language:S['Language'];check:S['Check']|null;policyEtag:string;csrfCookie:string;canManage:boolean;action?:S['Operation']['action']}){
+ const action=requestedAction??(language.state==='preparing'?'activate':'publish_translations'),operation=useLanguageOperation(siteId,language.id,csrfCookie),[confirmed,setConfirmed]=useState(false),router=useRouter(),refreshed=useRef<string|null>(null);
+ const checked=action==='deactivate'||Boolean(check&&check.state==='complete'&&check.counts.missing===0&&check.digest&&policyEtag==='"languages-'+check.policyRevision+'"'),enabled=canManage&&checked&&language.state!=='disabled'&&(action!=='activate'||language.supportStatus==='supported');
+ useEffect(()=>{if(operation.operation?.state==='effective'&&refreshed.current!==operation.operation.id){refreshed.current=operation.operation.id;router.refresh();}},[operation.operation,router]);
+ const title=action==='activate'?'Activer '+language.label:action==='deactivate'?'Désactiver '+language.label:'Publier les traductions',label=action==='activate'?'Activer la langue':action==='deactivate'?'Désactiver la langue':'Publier les traductions approuvées';
+ return <Stack component="section" aria-label="Publication de la langue" spacing={2} sx={{pt:3,borderTop:'1px solid',borderColor:'divider',minWidth:0}}><Typography component="h2" variant="h4">{title}</Typography>
+ <Typography sx={{maxWidth:'70ch'}}>{action==='activate'?'Les visiteurs pourront choisir cette langue. Les sources publiques et programmées couvertes par le bilan utiliseront leurs traductions approuvées.':action==='deactivate'?'La langue sera retirée de la navigation publique. Ses textes seront conservés et ses anciennes adresses renverront vers la langue principale.':'Les contributions approuvées retenues par ce bilan remplaceront les traductions publiques. Les autres brouillons resteront privés.'}</Typography>
+ {!checked&&<Alert severity="info">Un bilan complet et à jour est nécessaire avant de publier. Lancez un nouveau contrôle après toute modification.</Alert>}
+ {check&&action!=='deactivate'&&<Typography color="text.secondary">Bilan : {check.scannedTargets} sources contrôlées, {check.counts.complete} champs complets, {check.counts.fallback} replis autorisés.</Typography>}
+ {operation.error&&<Alert severity="warning">{operation.error}</Alert>}
+ {operation.receipt&&<Box sx={{minWidth:0}}><Typography role="status" aria-live="polite">{operation.operation?languageOperationLabels[operation.operation.state]:'Le reçu de votre demande est conservé.'}</Typography>{operation.pending&&<LinearProgress aria-label="Vérification de la publication" sx={{mt:1}}/>}{operation.operation?.reasons.map(reason=><Typography key={reason.code} sx={{mt:1}}>{reason.message}</Typography>)}<Typography variant="body2" color="text.secondary" sx={{mt:1,overflowWrap:'anywhere'}}>Référence : {operation.receipt.key}</Typography><Button disabled={operation.pending} onClick={()=>operation.resume()}>Vérifier l’état</Button></Box>}
+ <><FormControlLabel control={<Checkbox checked={confirmed} disabled={!enabled||operation.pending||operation.unresolved||!operation.restored} onChange={event=>setConfirmed(event.target.checked)}/>} label={action==='activate'?'Je confirme l’activation publique de cette langue':action==='deactivate'?'Je confirme le retrait public de cette langue':'Je confirme la publication de ces traductions'}/><Button variant="contained" sx={{alignSelf:{xs:'stretch',sm:'flex-start'}}} aria-busy={operation.pending||undefined} disabled={!enabled||!confirmed||operation.pending||operation.unresolved||!operation.restored} onClick={()=>{setConfirmed(false);void operation.start({action,...(action==='deactivate'?{}:{checkId:check!.id,checkDigest:check!.digest!})},policyEtag);}}>{label}</Button></>
+ </Stack>;
+}

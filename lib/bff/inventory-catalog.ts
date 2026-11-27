@@ -1,4 +1,5 @@
 import "server-only";
+import {adminLanguageBusinessHeaders} from './language-business-headers';
 import {NextResponse,type NextRequest} from "next/server";
 import Ajv2020 from "ajv/dist/2020";
 import addFormats from "ajv-formats";
@@ -31,6 +32,7 @@ export async function inventoryBackend<T>(operation:InventoryOperation,input:{re
  if(op.headers.some(header=>header==="Idempotency-Key")){const key=input.request!.headers.get("idempotency-key");if(!key||! /^[\x21-\x7e]{16,128}$/.test(key))throw new BffError(400,"invalid_request");headers.set("Idempotency-Key",key);}
  let body:string|undefined;if(mutation){if(input.request!.headers.get("content-type")?.split(";")[0]!=="application/json")throw new BffError(415,"unsupported_media_type");const bytes=await boundedBytes(input.request!.body,1048576);let parsed:unknown;try{parsed=JSON.parse(bytes.toString("utf8"));}catch{throw new BffError(400,"invalid_request");}if(!op.bodySchema||!validate(op.bodySchema,parsed))throw new BffError(400,"inventory_invalid_input");body=JSON.stringify(parsed);headers.set("Content-Type","application/json");}
  const query=inventoryQuery(operation,input.query??input.request?.nextUrl.searchParams),path=inventoryPath(operation,input.params);
+ for(const [key,value]of Object.entries(await adminLanguageBusinessHeaders(path,proof.session)))headers.set(key,value);
  try{
   const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+path+(query.size?"?"+query:""),{method:route.method,headers,body,cache:"no-store",redirect:"error",signal:input.request?AbortSignal.any([input.request.signal,AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))]):AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))});
   if(response.headers.get("content-type")?.split(";")[0]!=="application/json"){await response.body?.cancel();throw new BffError(503,"service_unavailable");}

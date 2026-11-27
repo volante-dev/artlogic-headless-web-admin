@@ -1,4 +1,5 @@
 import "server-only";
+export {languageAdminOperations,matchLanguageAdminRoute} from './language-allowlist';
 export const inventoryOperations={
  importTemplate:{method:"GET",path:"/v1/admin/inventory/imports/template",operationId:"inventoryGetImportTemplate"},
  createImportDraft:{method:"POST",path:"/v1/admin/inventory/imports/drafts",operationId:"inventoryCreateImportDraft"},

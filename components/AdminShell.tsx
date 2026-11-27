@@ -16,6 +16,7 @@ const links=[
  ["/taxonomies","Taxonomies","content"],
  ["/presentation","Apparence et pages","presentation"],
  ["/site-content","Contenu du site","content"],
+ ["/languages","Langues","content"],
  ["/link-in-bio","Link in bio","content"],
  ["/legal","Mentions légales","content"],
  ["/forms","Formulaires","content"],

@@ -1,3 +1,4 @@
+import {adminLanguageBusinessHeaders} from './language-business-headers';
 import "server-only";
 import {validNavigationResponse} from "./navigation-validation";
 import {NextResponse,type NextRequest} from "next/server";
@@ -20,6 +21,7 @@ export async function navigationRequest(request:NextRequest,context=false){
   if(request.headers.get("content-type")?.split(";")[0]!=="application/json")throw new BffError(415,"unsupported_media_type");
   const bytes=await boundedBytes(request.body,4096);try{JSON.parse(bytes.toString("utf8"));}catch{throw new BffError(400,"invalid_request");}body=new Uint8Array(bytes).buffer;headers.set("Content-Type","application/json");
  }
+ for(const [key,value]of Object.entries(await adminLanguageBusinessHeaders('/v1/admin/navigation',proof.session)))headers.set(key,value);
  try{
   const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+"/v1/admin/navigation"+(context?"/context":""),{method:mutation?"PUT":"GET",headers,body,cache:"no-store",redirect:"error",signal:AbortSignal.any([request.signal,AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))])});
   if(response.headers.get("content-type")?.split(";")[0]!=="application/json")throw new BffError(503,"dependency_unavailable");

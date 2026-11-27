@@ -1,3 +1,4 @@
+import {adminLanguageBusinessHeaders} from './language-business-headers';
 import "server-only";
 import {NextResponse,type NextRequest} from "next/server";
 import {loadConfig,stringValue,numberValue} from "../config/env";
@@ -35,6 +36,7 @@ export async function articleRequest(operation:ArticleOperation,request:NextRequ
  }
  if(mutation&&route.body===false&&request.body){const bytes=await boundedBytes(request.body,operation.startsWith("composition")?Math.min(numberValue(config,"EDITORIAL_REQUEST_BYTES"),numberValue(config,"EDITORIAL_AI_MAX_BODY_BYTES")):numberValue(config,"EDITORIAL_REQUEST_BYTES"));if(bytes.length)throw new BffError(400,"invalid_request");}
  const query=queryFor(operation,request.nextUrl.searchParams);
+ for(const [key,value]of Object.entries(await adminLanguageBusinessHeaders(path,proof.session)))headers.set(key,value);
  try{
   const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+path+(query.size?"?"+query:""),{method:route.method,headers,body,cache:"no-store",redirect:"error",signal:AbortSignal.any([request.signal,AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))])});
   if(response.status===204&&route.method==="DELETE"){await response.body?.cancel();return new NextResponse(null,{status:204,headers:privateHeaders});}

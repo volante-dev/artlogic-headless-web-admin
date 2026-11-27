@@ -1,3 +1,4 @@
+import {adminLanguageBusinessHeaders} from '../bff/language-business-headers';
 import "server-only";
 import {commerceSettingsIssues,safeCommerceIssues} from "./validation";
 import {commerceContractIssues,validCommerceContract} from "./contracts";
@@ -18,6 +19,7 @@ export async function commerceServerRequest<T>(method:string,segments:readonly s
  const query=input.query??new URLSearchParams();for(const k of query.keys())if(!(op.query as readonly string[]).includes(k)||query.getAll(k).length!==1||query.get(k)!.length>1024)throw new BffError(400,'validation_failed');
  if(op.bodySchema){const issues=[...commerceContractIssues(op.bodySchema,input.body),...(op.id==='commerceAdminUpdateSettings'?commerceSettingsIssues(input.body):[])];if(issues.length){const error=new BffError(400,'validation_failed',undefined,undefined,undefined,issues.map(i=>({field:i.path,reason:i.code})));console.warn(JSON.stringify({event:'commerce.validation_rejected',operation:op.id,requestId:error.requestId,issues}));throw error;}}
  if(input.body!==undefined)headers.set('Content-Type','application/json');
+ for(const [key,value]of Object.entries(await adminLanguageBusinessHeaders(op.resolvedPath,input.session)))headers.set(key,value);
  let response:Response;try{response=await fetch(stringValue(config,'BACKEND_URL').replace(/\/$/,'')+op.resolvedPath+(query.size?'?'+query.toString():''),{method,headers,body:input.body===undefined?undefined:JSON.stringify(input.body),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(numberValue(config,'REQUEST_TIMEOUT_MS'))});}catch{throw new BffError(503,'provider_unavailable');}
  if(op.id==='commerceAdminDeliveryCapabilities'&&response.status===404)throw new BffError(404,'not_found');
  if(response.ok&&op.id==='commerceAdminReadOrderDocument'){if(response.headers.get('content-type')?.split(';')[0]!=='text/html')throw new BffError(503,'persistence_unavailable');return {data:new Uint8Array(await boundedBytes(response.body,5_000_000)) as T,status:response.status,tag:null};}

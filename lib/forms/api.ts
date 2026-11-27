@@ -1,3 +1,4 @@
+import {adminLanguageBusinessHeaders} from '../bff/language-business-headers';
 import "server-only";
 import {loadConfig,stringValue,numberValue} from "../config/env";
 import {BffError} from "../bff/client";
@@ -25,6 +26,7 @@ export async function formsServerRequest<T>(method:string,segments:readonly stri
  const headers=new Headers({Accept:"application/json","X-BFF-Key":stringValue(config,"BFF_SERVICE_KEY"),"X-Admin-Session":input.session??await requiredSession()});
  if(method!=="GET"){if(!input.csrf)throw new BffError(403,"csrf_invalid");headers.set("X-CSRF-Token",input.csrf);headers.set("Origin",stringValue(config,"ADMIN_ORIGIN"));}
  if(input.tag)headers.set("If-Match",input.tag);const body=input.body===undefined?undefined:JSON.stringify(input.body);if(body!==undefined){if(Buffer.byteLength(body)>1_000_000)throw new BffError(413,"payload_too_large");headers.set("Content-Type","application/json");}
+ for(const [key,value]of Object.entries(await adminLanguageBusinessHeaders('/v1/admin/forms'+(segments.length?'/'+segments.join('/'):''),headers.get('X-Admin-Session')!)))headers.set(key,value);
  try{
   const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+"/v1/admin/forms"+(segments.length?"/"+segments.join("/"):"")+(query.size?"?"+query:""),{method,headers,body,cache:"no-store",redirect:"error",signal:input.signal?AbortSignal.any([input.signal,AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))]):AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))});
   const tag=resourceVersion(response.headers);if(response.status===204)return {data:undefined as T,tag,status:204};if(response.headers.get("content-type")?.split(";")[0]!=="application/json")throw new BffError(503,"dependency_unavailable");

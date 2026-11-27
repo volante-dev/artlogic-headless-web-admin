@@ -34,6 +34,7 @@ export async function backendRequest<T>(operation:Operation,input:BackendInput={
   }
 
   try{
+    const {adminLanguageBusinessHeaders}=await import('./language-business-headers');for(const [key,value]of Object.entries(await adminLanguageBusinessHeaders(path,input.session)))headers.set(key,value);
     const response=await fetch(stringValue(config,"BACKEND_URL").replace(/\/$/,"")+path+(input.query?.size?"?"+input.query.toString():""),{method:route.method,headers,body:input.bytes?new Uint8Array(input.bytes).buffer:input.body===undefined?undefined:JSON.stringify(input.body),
       cache:"no-store",redirect:"error",signal:AbortSignal.timeout(numberValue(config,"REQUEST_TIMEOUT_MS"))});
     if(response.status===204)return {body:undefined as T,status:204,headers:response.headers};
