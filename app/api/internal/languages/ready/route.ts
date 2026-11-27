@@ -8,7 +8,7 @@ export async function GET(request:Request){
  try{
   const config=loadConfig(),query=new URL(request.url).searchParams,challenge=authenticateConsumerProbe({key:request.headers.get('x-site-languages-probe-key'),expiresAt:request.headers.get('x-site-languages-probe-expires-at'),challengeId:query.get('challengeId')},typeof config.SITE_LANGUAGES_PROBE_KEY==='string'?config.SITE_LANGUAGES_PROBE_KEY:undefined,Date.now());
   if([...query.keys()].some(key=>key!=='challengeId')||query.getAll('challengeId').length!==1)throw new ConsumerProbeError('validation_failed',400);
-  const slotId=config.SITE_LANGUAGES_CONSUMER_SLOT_ID;if(config.SITE_LANGUAGES_RUNTIME_REQUIRED!=='true'||typeof slotId!=='string')throw new ConsumerProbeError('consumer_unavailable',503);
+  const slotId=config.SITE_LANGUAGES_CONSUMER_SLOT_ID;if(typeof slotId!=='string')throw new ConsumerProbeError('consumer_unavailable',503);
   const remaining=Date.parse(challenge.expiresAt)-Date.now();if(remaining<=0)throw new ConsumerProbeError('consumer_unavailable',503);
   const observed=await readPublicLanguageObservation(config,AbortSignal.any([request.signal,AbortSignal.timeout(remaining)]));if(Date.parse(challenge.expiresAt)<=Date.now())throw new ConsumerProbeError('consumer_unavailable',503);
   const modules=languageConsumerModules('admin',config).filter(module=>observed.modules.includes(module));if(!modules.includes('core'))throw new ConsumerProbeError('consumer_unavailable',503);

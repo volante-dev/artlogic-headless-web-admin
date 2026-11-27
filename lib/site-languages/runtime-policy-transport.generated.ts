@@ -2,9 +2,8 @@
 import {decodeLanguagePolicy,languageLeaseRemaining,LanguagePolicyLeaseCache,type PublicLanguagePolicy} from './language-policy-protocol.generated';
 export type RuntimePolicyRead =
  | {kind:'runtime';policy:PublicLanguagePolicy;remainingMs:number}
- | {kind:'legacy'}
  | {kind:'unavailable';reason:'unavailable'|'invalid_response'|'expired'|'access_denied'};
-export interface PolicyTransportOptions {siteId:string;cacheOrigin:string;backendOrigin:string;required:boolean;allowLoopbackHttp:boolean;fetch:typeof fetch;monotonic?:()=>number}
+export interface PolicyTransportOptions {siteId:string;cacheOrigin:string;backendOrigin:string;/** @deprecated Managed policy is always required. */ required?:boolean;allowLoopbackHttp:boolean;fetch:typeof fetch;monotonic?:()=>number}
 function trustedOrigin(input:string,allowHttp:boolean):string{
  const url=new URL(input),loopback=['127.0.0.1','localhost','[::1]'].includes(url.hostname);
  if(url.username||url.password||url.search||url.hash||url.pathname!=='/'||!(url.protocol==='https:'||allowHttp&&loopback&&url.protocol==='http:'))throw new Error('invalid_language_policy_origin');
@@ -36,13 +35,13 @@ export class RuntimePolicyTransport {
   try{
    // Bypass Next Data Cache, while leaving HTTP caching to the shared CDN endpoint.
    const response=await this.options.fetch(this.endpoint,{method:'GET',headers:{Accept:'application/json'},cache:'default',next:{revalidate:0},credentials:'omit',redirect:'error',signal:AbortSignal.timeout(8000)});
-   if(response.status===404){await response.body?.cancel();return !this.options.required&&!this.cache.observedManaged(this.key)?{kind:'legacy'}:{kind:'unavailable',reason:'unavailable'};}
+   if(response.status===404){await response.body?.cancel();return {kind:'unavailable',reason:'unavailable'};}
    if(response.status!==200){await response.body?.cancel();return {kind:'unavailable',reason:[401,403].includes(response.status)?'access_denied':'unavailable'};}
    if(response.headers.has('set-cookie')||response.headers.has('etag')||!response.headers.get('content-type')?.includes('application/json')){await response.body?.cancel();return {kind:'unavailable',reason:'invalid_response'};}
    const bytes=await boundedPolicyBody(response);
    const policy=decodeLanguagePolicy(JSON.parse(bytes),this.options.siteId),remainingMs=languageLeaseRemaining(policy,response.headers,this.monotonic()-started);
    if(remainingMs<=0)return {kind:'unavailable',reason:'expired'};
-   if(policy.mode==='managed')this.cache.noteManaged(this.key);if(generation===this.generation)this.cache.set(this.key,policy,remainingMs);return {kind:'runtime',policy,remainingMs};
+   if(generation===this.generation)this.cache.set(this.key,policy,remainingMs);return {kind:'runtime',policy,remainingMs};
   }catch{return {kind:'unavailable',reason:'unavailable'};}
  }
 }

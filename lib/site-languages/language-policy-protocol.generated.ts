@@ -37,12 +37,9 @@ export function languageLeaseRemaining(policy:PublicLanguagePolicy,headers:Pick<
  return Math.max(0,Math.min(30000,until-Math.max(date,issued)-Number(rawAge)*1000-1000-elapsedMs));
 }
 export class LanguagePolicyLeaseCache {
- private readonly entries=new Map<string,{policy:PublicLanguagePolicy;receivedAt:number;remaining:number;observedManaged:boolean}>();
- private readonly managed=new Set<string>();
+ private readonly entries=new Map<string,{policy:PublicLanguagePolicy;receivedAt:number;remaining:number}>();
  constructor(private readonly monotonic:()=>number=()=>performance.now()){}
  get(key:string){const e=this.entries.get(key);if(!e)return null;const elapsed=this.monotonic()-e.receivedAt,remaining=e.remaining-elapsed;if(elapsed>=5000||elapsed<0||remaining<=0){this.entries.delete(key);return null;}return {policy:e.policy,remainingMs:remaining};}
- set(key:string,policy:PublicLanguagePolicy,remainingMs:number){if(remainingMs<=0||remainingMs>30000)throw new LanguagePolicyProtocolError();if(policy.mode==='managed')this.managed.add(key);if(this.entries.size>=16&&!this.entries.has(key))this.entries.delete(this.entries.keys().next().value!);this.entries.set(key,{policy,receivedAt:this.monotonic(),remaining:remainingMs,observedManaged:this.managed.has(key)});}
+ set(key:string,policy:PublicLanguagePolicy,remainingMs:number){if(remainingMs<=0||remainingMs>30000)throw new LanguagePolicyProtocolError();if(this.entries.size>=16&&!this.entries.has(key))this.entries.delete(this.entries.keys().next().value!);this.entries.set(key,{policy,receivedAt:this.monotonic(),remaining:remainingMs});}
  invalidate(key:string){this.entries.delete(key);}
- noteManaged(key:string){this.managed.add(key);}
- observedManaged(key:string){return this.managed.has(key);}
 }

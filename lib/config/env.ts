@@ -99,6 +99,7 @@ export const variables: Readonly<Record<string, Rule>> = {
   PRESENTATION_TEAM_RENDER_ENABLED:{scopes:"F",kind:"enum",default:"false",values:["true","false"]},
   ARTWORK_ADDRESSES_MINIMUM_CONTRACT_VERSION:{scopes:"AFM",kind:"enum",default:"0",values:["0","1"]},
   ARTWORK_ADDRESS_BUILD_ID:{scopes:"AFM",kind:"string",default:"development"},
+  ARTWORK_ADDRESS_RENDER_DEPLOYMENT_TOKEN:{scopes:"AM",kind:"string",secret:true},
   ARTWORK_ADDRESS_DEPLOYMENT_TOKEN:{scopes:"AM",kind:"string",secret:true},
   ARTWORK_ADDRESS_DEPLOYMENT_TEAM_ID:{scopes:"AM",kind:"string"},
   ARTWORK_ADDRESS_CONSUMERS_JSON:{scopes:"AFM",kind:"json",default:"[]"},
@@ -285,7 +286,8 @@ export const variables: Readonly<Record<string, Rule>> = {
     "kind": "uuid",
     "required": true
   },
-  SITE_LANGUAGES_RUNTIME_REQUIRED:{scopes:"AWMFB",kind:"enum",default:"false",values:["true","false"]},
+  // Deprecated compatibility input. Managed languages are mandatory; this value is ignored.
+  SITE_LANGUAGES_RUNTIME_REQUIRED:{scopes:"AWMFB",kind:"enum",default:"true",values:["true","false"]},
   SITE_LANGUAGES_CONSUMER_SLOT_ID:{scopes:"AWFB",kind:"uuid"},
   SITE_LANGUAGES_PROBE_KEY:{scopes:"AWMFB",kind:"token",secret:true},
   SITE_LANGUAGES_POLICY_CACHE_ORIGIN:{scopes:"FB",kind:"url"},
